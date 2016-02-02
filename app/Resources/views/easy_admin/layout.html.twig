@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="generator" content="EasyAdmin"/>
+
+    <title>{% block page_title %}{{ block('content_title')|striptags|raw }}{% endblock %}</title>
+
+    {% block head_stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('bundles/easyadmin/stylesheet/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ path('_easyadmin_render_css') }}">
+
+        <style>
+            body #wrapper {
+                width: 100%;
+            }
+
+            #content {
+                margin-left: 0px;
+                width: 100%;
+            }
+        </style>
+
+    {% endblock head_stylesheets %}
+
+    {% for css_asset in easyadmin_config('design.assets.css') %}
+        <link rel="stylesheet" href="{{ asset(css_asset) }}">
+    {% endfor %}
+
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+
+    {% block head_javascript %}{% endblock %}
+</head>
+
+{% block body %}
+    <body id="{% block body_id %}{% endblock %}" class="easyadmin {% block body_class %}{% endblock %}"
+          style="padding-top: 60px;">
+    <div id="wrapper" class="container">
+    {% block wrapper %}
+        <div class="navbar navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div id="header-logo" class="navbar-brand">
+                        {% block header_logo %}
+                            {#{% set _site_name_length = easyadmin_config('site_name')|length <= 10 ? 'short'
+                            : easyadmin_config('site_name')|length <= 12 ? 'medium' : 'long'
+                            %}
+                            <a href="{{ path('admin') }}" class="{{ _site_name_length }}">{{ easyadmin_config('site_name')|raw }}</a>#}
+                        {% endblock header_logo %}
+                    </div>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if app.user and is_granted('ROLE_ADMIN') %}
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-user"></i>
+                                    <span class="username">
+                                        Usuario
+                                    </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Usuario', action: 'list' }) }}">
+                                                Usuario
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Rol', action: 'list' }) }}">
+                                                Rol
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-list"></i>
+                                    <span class="username">
+                                        Nomencladores
+                                    </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Area', action: 'list' }) }}">
+                                                Area
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'UnidadMedida', action: 'list' }) }}">
+                                                Unidad de Medida
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'TipoMenu', action: 'list' }) }}">
+                                                Tipo de Menu
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'EstadoReservacion', action: 'list' }) }}">
+                                                Estado Reservacion
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-list"></i>
+                                    <span class="username">
+                                        Gestionar
+                                    </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Producto', action: 'list' }) }}">
+                                                Producto
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Alimento', action: 'list' }) }}">
+                                                Alimento
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
+                                                Menu
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        {% endif %}
+
+                        {% if app.user and is_granted('ROLE_JEFE') %}
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-list"></i>
+                                    <span class="username">
+                                        Gestionar
+                                    </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('aprobar_menu') }}">
+                                                Aprobar Menu
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        {% endif %}
+
+                        {% if app.user and is_granted('ROLE_JEFE_SERVICIO') %}
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-list"></i>
+                                    <span class="username">
+                                        Gestionar
+                                    </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Producto', action: 'list' }) }}">
+                                                Producto
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
+                                                Menu
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        {% endif %}
+
+                        {% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-list"></i>
+                                    <span class="username">
+                                        Reservacion
+                                    </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('reservar_semana') }}">
+                                                Reservar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('cancelar_semana') }}">
+                                                Cancelar
+                                            </a>
+                                        </li>
+                                        {% if app.user and is_granted('ROLE_ECONOMICO') %}
+                                            <li>
+                                                <a href="{{ path('cobrar') }}">
+                                                    Cobrar
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="nav navbar-nav pull-right">
+                                <!-- BEGIN USER LOGIN DROPDOWN -->
+                                <li class="dropdown user">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-key"></i>
+                                <span class="username">
+                                    {{ app.user.usuario }}
+                                </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('security_logout') }}">
+                                                <i class="fa fa-sign-out"></i> Salir
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!-- END USER LOGIN DROPDOWN -->
+                            </ul>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="content" class="col-lg-12">
+            {% block content %}
+                {% block flash_messages %}
+                    {#{{ include(_entity_config.templates.flash_messages) }}#}
+                {% endblock flash_messages %}
+
+                <div class="row">
+                    <div id="content-header" class="col-sm-12">
+                        {% block content_header %}
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h1 class="title">{% block content_title %}{% endblock %}</h1>
+                                </div>
+                            </div>
+                        {% endblock content_header %}
+                    </div>
+
+                    <div id="main" class="col-sm-9">
+                        {% block main %}{% endblock %}
+                    </div>
+
+                    <div id="sidebar" class="col-sm-3">
+                        {% block sidebar %}{% endblock %}
+                    </div>
+                </div>
+            {% endblock content %}
+        </div>
+    {% endblock wrapper %}
+    </div>
+
+    {% block body_javascript %}
+        {# FOSJsRoutingBundle #}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+        {# FOSJsRoutingBundle #}
+        <script src="{{ asset('bundles/easyadmin/javascript/jquery.min.js') }}"></script>
+        <script src="{{ asset('bundles/easyadmin/javascript/jquery-flexmenu.min.js') }}"></script>
+        <script src="{{ asset('bundles/easyadmin/javascript/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('bundles/easyadmin/javascript/admin.js') }}"></script>
+    {% endblock body_javascript %}
+
+    {% for js_asset in easyadmin_config('design.assets.js') %}
+        <script src="{{ asset(js_asset) }}"></script>
+    {% endfor %}
+
+
+    </body>
+{% endblock body %}
+</html>

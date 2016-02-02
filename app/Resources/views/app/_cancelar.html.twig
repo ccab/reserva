@@ -1,0 +1,62 @@
+{% block main %}
+
+    {{ form_start(form) }}
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Tipo de Menu</th>
+            <th>Alimento</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% if reservacion %}
+                {% if reservacion.estado == 'Creada' %}
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.tipoMenu }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        {% for menu_alimento in entity.menuAlimentos if menu_alimento.id in ids %}
+                            <tr>
+                                <td></td>
+                                <td>{{ menu_alimento.alimento.nombre }}</td>
+                                <td>{{ menu_alimento.alimento.cantidad ~ " " ~ menu_alimento.alimento.unidadMedida }}</td>
+                                <td>{{ menu_alimento.alimento.precio }}</td>
+                            </tr>
+                        {% endfor %}
+
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No se encontraron resultados</td>
+                        </tr>
+                    {% endfor %}
+                {% elseif reservacion.estado == 'Cancelada' %}
+                    <tr>
+                        <td colspan="5">Reservacion Cancelada</td>
+                    </tr>
+                {% endif %}
+            {% else %}
+                <tr>
+                    <td colspan="5">No tiene reservaciones para este dia</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    {% if reservacion and reservacion.estado == 'Creada' %}
+        <div id="form-actions-row">
+            <button type="submit" class="btn">
+                <i class="fa fa-save"></i> Cancelar
+            </button>
+        </div>
+    {% endif %}
+
+    {{ form_end(form) }}
+
+{% endblock %}

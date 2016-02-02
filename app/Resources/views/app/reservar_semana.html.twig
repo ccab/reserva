@@ -1,0 +1,39 @@
+{% extends 'easy_admin/layout.html.twig' %}
+
+{% block main %}
+
+    <ul id="myTab" class="nav nav-tabs">
+        {% for key, dia in semana %}
+            <li class="list  {{ dia.active ? 'active' }}">
+                <a class="{{ dia.active ? 'search' }}" data-toggle="tab" href="#{{ key }}" id="{{ key }}">{{ dia.es }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    &nbsp;
+    <div id="menu"></div>
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getDayMenu($('.search').attr('id'));
+
+            $('li.list a').click(function () {
+                getDayMenu($(this).attr('id'))
+            });
+
+           function getDayMenu(day) {
+                $.ajax({
+                    type: "GET",
+                    url: Routing.generate('reservar', {day: day}),
+                    success: function (html) {
+                        $("#menu").html(html);
+                    }
+                });
+            }
+
+        });
+    </script>
+{% endblock body_javascript %}

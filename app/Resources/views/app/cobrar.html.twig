@@ -1,0 +1,40 @@
+{% extends ':easy_admin:layout.html.twig' %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-5">
+            <h1 class="title">Cobrar</h1>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Total a cobrar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in matrix %}
+                <tr>
+                    <td>
+                        <a href="{{ path('detalles_cobro', {'id': item.reservacion.id}) }}" class="btn btn-info">
+                            Cobrar
+                        </a>
+                    </td>
+                    <td>{{ item.reservacion.fecha|date('d/m/Y') }}</td>
+                    <td>{{ item.reservacion.usuario }}</td>
+                    <td>{{ item.total }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">No se encontraron resultados</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

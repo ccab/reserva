@@ -1,0 +1,94 @@
+{% block main %}
+
+    {{ form_start(aprobar_form) }}
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Aprobar</th>
+                <th>Tipo de Menu</th>
+                <th>Alimento</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for form in aprobar_form if form.vars.name != '_token' %}
+                {% set entity = form.vars.value %}
+                <tr>
+                    <td>{{ form_widget(form.aprobado) }}</td>
+                    <td>{{ entity.tipoMenu }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% for menu_alimento in entity.menuAlimentos %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>{{ menu_alimento.alimento.nombre }}</td>
+                        <td>{{ menu_alimento.alimento.unidadMedida }}</td>
+                        <td>{{ menu_alimento.alimento.precio }}</td>
+                    </tr>
+                {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">No se encontraron resultados</td>
+                    </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if aprobar_form.count > 1 %}
+        <div id="form-actions-row">
+            <button type="submit" class="btn">
+                <i class="fa fa-save"></i> Guardar cambios
+            </button>
+{#            <a class="btn btn-secondary" href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
+                Volver al listado
+            </a>#}
+        </div>
+    {% endif %}
+
+    {{ form_end(aprobar_form) }}
+
+{% endblock %}
+
+
+    {#<table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Aprobar</th>
+            <th>Tipo de Menu</th>
+            <th>Alimento</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+        </tr>
+        {% for entity in entities %}
+        <tr>
+            <th>
+                <input type="checkbox" class="checkboxes" name="{{ entity.id }}" value="{{ entity.id }}"
+                    {% if entity.aprobado%} checked="checked" {% endif %}
+                />
+            </th>
+            <th>{{ entity.tipoMenu }}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+            {% for menu_alimento in entity.menuAlimentos %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>{{ menu_alimento.alimento.nombre }}</td>
+                    <td>{{ menu_alimento.alimento.unidadMedida }}</td>
+                    <td>{{ menu_alimento.alimento.precio }}</td>
+                </tr>
+            {% endfor %}
+
+        {% endfor %}
+        </tbody>
+    </table>#}

@@ -1,0 +1,72 @@
+# EasyAdmin Configuration
+easy_admin:
+    site_name: '<img src="/reserva/web/logo.jpg" />'
+    design:
+        brand_color: rgb(36, 56, 113)
+    formats:
+        number: %d
+    list:
+        actions:
+            - { name: 'show', icon: 'search' }
+            - { name: 'edit', icon: 'pencil' }
+    entities:
+        Usuario:
+            class: AppBundle\Entity\Usuario
+            list:
+                actions:
+                    - { name: 'reset', type: 'route', label: 'Cambiar Clave', icon: 'key' }
+                fields:
+                    - { property: usuario, label: label.username }
+                    - { property: roles, label: 'Roles', type: array }
+            show:
+                fields:
+                    - { property: usuario, label: label.username }
+            edit:
+                fields:
+                    usuario:
+                        property: usuario
+                        label: label.username
+                    roles:
+                        property: roles
+                        label: 'Roles'
+                        type: entity
+                        type_options:
+                            class: AppBundle\Entity\Rol
+                            multiple: true
+            new:
+                fields:
+                      usuario:
+                          property: usuario
+                          label: label.username
+                      roles:
+                          property: roles
+                          label: 'Roles'
+                          type: entity
+                          type_options:
+                              class: AppBundle\Entity\Rol
+                              multiple: true
+                      clave:
+                          property: clave
+                          type: repeated
+                          type_options:
+                              type: password
+                              first_options:
+                                  label: 'Clave'
+                              second_options:
+                                  label: 'Repetir Clave'
+        Rol:
+            class: AppBundle\Entity\Rol
+        Area:
+            class: AppBundle\Entity\Area
+        UnidadMedida:
+            class: AppBundle\Entity\UnidadMedida
+        Producto:
+            class: AppBundle\Entity\Producto
+        Alimento:
+            class: AppBundle\Entity\Alimento
+        TipoMenu:
+            class: AppBundle\Entity\TipoMenu
+        Menu:
+            class: AppBundle\Entity\Menu
+        EstadoReservacion:
+            class: AppBundle\Entity\EstadoReservacion

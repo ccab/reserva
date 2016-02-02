@@ -1,0 +1,61 @@
+{% extends ':easy_admin:layout.html.twig' %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-5">
+            <h1 class="title">Detalles</h1>
+        </div>
+    </div>
+
+    {{ form_start(form) }}
+    {% set total = 0 %}
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Tipo de Menu</th>
+                <th>Alimento</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+            </tr>
+            {% for menu in menus %}
+            <tr>
+                <th>{{ menu.tipoMenu }}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for menu_alimento in menu.menuAlimentos if menu_alimento.id in ids %}
+                <tr>
+                    <td></td>
+                    <td>{{ menu_alimento.alimento.nombre }}</td>
+                    <td>{{ menu_alimento.alimento.cantidad ~ " " ~ menu_alimento.alimento.unidadMedida }}</td>
+                    <td>{{ menu_alimento.alimento.precio }}</td>
+                    {% set total =+ menu_alimento.alimento.precio %}
+                </tr>
+            {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5">No existe un menu disponible para este dia</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td><b>Total</b></td>
+                <td></td>
+                <td></td>
+                <td><b>{{ total }}</b></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="form-actions-row">
+        <button type="submit" class="btn">
+            <i class="fa fa-save"></i> Guardar cambios
+        </button>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
