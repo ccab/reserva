@@ -11,6 +11,7 @@ security:
         ROLE_JEFE: ROLE_USER
         ROLE_JEFE_SERVICIO: ROLE_USER
         ROLE_ECONOMICO: ROLE_USER
+        ROLE_ALMACENERO: ROLE_USER
 
     firewalls:
         dev:

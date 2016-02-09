@@ -196,6 +196,32 @@
                             </ul>
                         {% endif %}
 
+                        {% if app.user and is_granted('ROLE_ALMACENERO') %}
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                                        <i class="fa fa-list"></i>
+                                    <span class="username">
+                                        Gestionar
+                                    </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="{{ path('salida_producto') }}">
+                                                Salida de Producto
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ path('entrada_producto') }}">
+                                                Entrada de Producto
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        {% endif %}
+
                         {% if app.user and is_granted('IS_AUTHENTICATED_FULLY') %}
                             <ul class="nav navbar-nav">
                                 <li>

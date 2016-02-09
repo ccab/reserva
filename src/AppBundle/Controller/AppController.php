@@ -7,6 +7,9 @@ use AppBundle\Entity\ReservacionMenuAlimento;
 use AppBundle\Form\MenuAprobarType;
 use AppBundle\Form\MenuType;
 use AppBundle\Form\ProductoAlimentoType;
+use AppBundle\Form\ProductoEntradaType;
+use AppBundle\Form\ProductoSalidaType;
+use AppBundle\Form\ProductoType;
 use AppBundle\Form\ReservacionMenuAlimentoType;
 use AppBundle\Form\ResetType;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -281,6 +284,70 @@ class AppController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/salida/producto", name="salida_producto")
+     */
+    public function salidaProductoAction(Request $request)
+    {
+        $productos = $this->getDoctrine()->getRepository('AppBundle:Producto')->findAll();
+        $form = $this->createFormBuilder()->getForm();
+
+        foreach ($productos as $key => $entity) {
+            $form->add($key, new ProductoSalidaType(), [
+                'data_class' => 'AppBundle\Entity\Producto',
+                'data' => $entity,
+            ]);
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            foreach ($productos as $key => $entity) {
+                $entity->setCantidad($entity->getCantidad() - $form->get($key)->get("cantidadSalida")->getData());
+            }
+
+            $entityManager->flush();
+            return $this->redirectToRoute('salida_producto');
+        }
+
+        return $this->render('app/salida_producto.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/entrada/producto", name="entrada_producto")
+     */
+    public function entradaProductoAction(Request $request)
+    {
+        $productos = $this->getDoctrine()->getRepository('AppBundle:Producto')->findAll();
+        $form = $this->createFormBuilder()->getForm();
+
+        foreach ($productos as $key => $entity) {
+            $form->add($key, new ProductoEntradaType(), [
+                'data_class' => 'AppBundle\Entity\Producto',
+                'data' => $entity,
+            ]);
+        }
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            foreach ($productos as $key => $entity) {
+                $entity->setCantidad($entity->getCantidad() + $form->get($key)->get("cantidadRecibida")->getData());
+            }
+
+            $entityManager->flush();
+            return $this->redirectToRoute('entrada_producto');
+        }
+
+        return $this->render('app/entrada_producto.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 
     /**
      * @Route("/reporte/cobro/excel/{id}", name="reporte_cobro_excel")

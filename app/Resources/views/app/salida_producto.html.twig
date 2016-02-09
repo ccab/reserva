@@ -1,0 +1,49 @@
+{% extends ':easy_admin:layout.html.twig' %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-5">
+            <h1 class="title">Salida de Productos</h1>
+        </div>
+    </div>
+
+    {{ form_start(form) }}
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Unidad de Medida</th>
+            <th>Cantidad existente</th>
+            <th>Cantidad de salida</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in form if item.vars.name != '_token' %}
+            {% set entity = item.vars.value %}
+            <tr>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.unidadMedida }}</td>
+                <td>{{ entity.cantidad }}</td>
+                <td>{{ form_widget(item.cantidadSalida) }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No se encontraron resultados</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if form.count > 1 %}
+        <div id="form-actions-row">
+            <button type="submit" class="btn">
+                <i class="fa fa-save"></i> Guardar cambios
+            </button>
+        </div>
+    {% endif %}
+
+    {{ form_end(form) }}
+
+{% endblock %}

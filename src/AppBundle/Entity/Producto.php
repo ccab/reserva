@@ -50,6 +50,11 @@ class Producto
     private $precio;
 
     /**
+     * @ORM\Column(name="cantidad", type="float")
+     */
+    private $cantidad;
+
+    /**
      * @ORM\ManyToOne(targetEntity="UnidadMedida", inversedBy="productos")
      */
     private $unidadMedida;
@@ -235,5 +240,29 @@ class Producto
     public function __toString()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set cantidad
+     *
+     * @param float $cantidad
+     *
+     * @return Producto
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return float
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
     }
 }
