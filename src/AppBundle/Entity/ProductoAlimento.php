@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ProductoAlimento
+ * ProductoAlimento.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ProductoAlimento
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -38,11 +38,10 @@ class ProductoAlimento
      */
     private $alimento;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -50,7 +49,7 @@ class ProductoAlimento
     }
 
     /**
-     * Set cantidad
+     * Set cantidad.
      *
      * @param float $cantidad
      *
@@ -64,7 +63,7 @@ class ProductoAlimento
     }
 
     /**
-     * Get cantidad
+     * Get cantidad.
      *
      * @return float
      */
@@ -74,7 +73,7 @@ class ProductoAlimento
     }
 
     /**
-     * Set producto
+     * Set producto.
      *
      * @param \AppBundle\Entity\Producto $producto
      *
@@ -88,7 +87,7 @@ class ProductoAlimento
     }
 
     /**
-     * Get producto
+     * Get producto.
      *
      * @return \AppBundle\Entity\Producto
      */
@@ -98,7 +97,7 @@ class ProductoAlimento
     }
 
     /**
-     * Set alimento
+     * Set alimento.
      *
      * @param \AppBundle\Entity\Alimento $alimento
      *
@@ -112,7 +111,7 @@ class ProductoAlimento
     }
 
     /**
-     * Get alimento
+     * Get alimento.
      *
      * @return \AppBundle\Entity\Alimento
      */

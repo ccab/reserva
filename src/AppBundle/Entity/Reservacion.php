@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Reservacion
+ * Reservacion.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Reservacion
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -43,11 +43,10 @@ class Reservacion
      */
     private $reservacionMenuAlimentos;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -55,7 +54,7 @@ class Reservacion
     }
 
     /**
-     * Set fecha
+     * Set fecha.
      *
      * @param \DateTime $fecha
      *
@@ -69,7 +68,7 @@ class Reservacion
     }
 
     /**
-     * Get fecha
+     * Get fecha.
      *
      * @return \DateTime
      */
@@ -79,7 +78,7 @@ class Reservacion
     }
 
     /**
-     * Set estado
+     * Set estado.
      *
      * @param \AppBundle\Entity\EstadoReservacion $estado
      *
@@ -93,7 +92,7 @@ class Reservacion
     }
 
     /**
-     * Get estado
+     * Get estado.
      *
      * @return \AppBundle\Entity\EstadoReservacion
      */
@@ -102,7 +101,7 @@ class Reservacion
         return $this->estado;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -110,7 +109,7 @@ class Reservacion
     }
 
     /**
-     * Add reservacionMenuAlimento
+     * Add reservacionMenuAlimento.
      *
      * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
      *
@@ -124,7 +123,7 @@ class Reservacion
     }
 
     /**
-     * Remove reservacionMenuAlimento
+     * Remove reservacionMenuAlimento.
      *
      * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
      */
@@ -134,7 +133,7 @@ class Reservacion
     }
 
     /**
-     * Get reservacionMenuAlimentos
+     * Get reservacionMenuAlimentos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -145,11 +144,11 @@ class Reservacion
 
     public function __toString()
     {
-        return (string)$this->id;
+        return (string) $this->id;
     }
 
     /**
-     * Set usuario
+     * Set usuario.
      *
      * @param \AppBundle\Entity\Usuario $usuario
      *
@@ -163,7 +162,7 @@ class Reservacion
     }
 
     /**
-     * Get usuario
+     * Get usuario.
      *
      * @return \AppBundle\Entity\Usuario
      */

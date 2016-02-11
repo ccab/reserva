@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 
 /**
- * Rol
+ * Rol.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
 class Rol implements RoleInterface
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -42,9 +42,9 @@ class Rol implements RoleInterface
     private $usuarios;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -52,7 +52,7 @@ class Rol implements RoleInterface
     }
 
     /**
-     * Set nombre
+     * Set nombre.
      *
      * @param string $nombre
      *
@@ -66,7 +66,7 @@ class Rol implements RoleInterface
     }
 
     /**
-     * Get nombre
+     * Get nombre.
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class Rol implements RoleInterface
     }
 
     /**
-     * Set rol
+     * Set rol.
      *
      * @param string $rol
      *
@@ -90,7 +90,7 @@ class Rol implements RoleInterface
     }
 
     /**
-     * Get rol
+     * Get rol.
      *
      * @return string
      */
@@ -114,7 +114,7 @@ class Rol implements RoleInterface
         return $this->rol;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -122,7 +122,7 @@ class Rol implements RoleInterface
     }
 
     /**
-     * Add usuario
+     * Add usuario.
      *
      * @param \AppBundle\Entity\Usuario $usuario
      *
@@ -136,7 +136,7 @@ class Rol implements RoleInterface
     }
 
     /**
-     * Remove usuario
+     * Remove usuario.
      *
      * @param \AppBundle\Entity\Usuario $usuario
      */
@@ -146,7 +146,7 @@ class Rol implements RoleInterface
     }
 
     /**
-     * Get usuarios
+     * Get usuarios.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

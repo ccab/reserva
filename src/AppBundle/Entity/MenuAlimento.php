@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * MenuAlimento
+ * MenuAlimento.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class MenuAlimento
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -37,9 +37,9 @@ class MenuAlimento
     private $reservacionMenuAlimentos;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -47,7 +47,7 @@ class MenuAlimento
     }
 
     /**
-     * Set alimento
+     * Set alimento.
      *
      * @param \AppBundle\Entity\Alimento $alimento
      *
@@ -61,7 +61,7 @@ class MenuAlimento
     }
 
     /**
-     * Get alimento
+     * Get alimento.
      *
      * @return \AppBundle\Entity\Alimento
      */
@@ -71,7 +71,7 @@ class MenuAlimento
     }
 
     /**
-     * Set menu
+     * Set menu.
      *
      * @param \AppBundle\Entity\Menu $menu
      *
@@ -85,7 +85,7 @@ class MenuAlimento
     }
 
     /**
-     * Get menu
+     * Get menu.
      *
      * @return \AppBundle\Entity\Menu
      */
@@ -94,7 +94,7 @@ class MenuAlimento
         return $this->menu;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -102,7 +102,7 @@ class MenuAlimento
     }
 
     /**
-     * Add reservacionMenuAlimento
+     * Add reservacionMenuAlimento.
      *
      * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
      *
@@ -116,7 +116,7 @@ class MenuAlimento
     }
 
     /**
-     * Remove reservacionMenuAlimento
+     * Remove reservacionMenuAlimento.
      *
      * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
      */
@@ -126,7 +126,7 @@ class MenuAlimento
     }
 
     /**
-     * Get reservacionMenuAlimentos
+     * Get reservacionMenuAlimentos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -137,6 +137,6 @@ class MenuAlimento
 
     public function __toString()
     {
-        return (string)$this->id;
+        return (string) $this->id;
     }
 }

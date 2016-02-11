@@ -10,7 +10,7 @@ class MenuType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,21 +20,21 @@ class MenuType extends AbstractType
             ->add('tipoMenu')
             ->add('menuAlimentos', 'collection', [
                 'type' => new MenuAlimentoType(),
-                'allow_add' => TRUE,
-                'by_reference' => FALSE,
+                'allow_add' => true,
+                'by_reference' => false,
                 'allow_delete' => true,
-                'label' => FALSE
+                'label' => false,
             ])
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Menu'
+            'data_class' => 'AppBundle\Entity\Menu',
         ));
     }
 

@@ -3,21 +3,17 @@
  * Created by PhpStorm.
  * User: carlos
  * Date: 4/Nov
- * Time: 11:45 PM
+ * Time: 11:45 PM.
  */
-
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Reservacion;
 use AppBundle\Form\AlimentoType;
 use AppBundle\Form\MenuType;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 
 class AdminController extends BaseAdminController
 {
-
     // http://symfony.com/doc/current/book/security.html#security-encoding-password
     public function prePersistUsuarioEntity($entity)
     {
@@ -56,7 +52,6 @@ class AdminController extends BaseAdminController
 
             return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
         }
-
 
         return $this->render('easy_admin/Alimento/edit.html.twig', [
             'form' => $editForm->createView(),
@@ -98,7 +93,6 @@ class AdminController extends BaseAdminController
             return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
         }
 
-
         return $this->render('easy_admin/Menu/edit.html.twig', [
             'form' => $editForm->createView(),
             'entity_fields' => $this->entity['edit']['fields'],
@@ -106,5 +100,4 @@ class AdminController extends BaseAdminController
             'delete_form' => $deleteForm->createView(),
         ]);
     }
-
-} 
+}

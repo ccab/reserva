@@ -5,14 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuAlimento;
 use AppBundle\Form\MenuAprobarType;
-use AppBundle\Form\MenuType;
-use AppBundle\Form\ProductoAlimentoType;
 use AppBundle\Form\ProductoEntradaType;
 use AppBundle\Form\ProductoSalidaType;
-use AppBundle\Form\ProductoType;
-use AppBundle\Form\ReservacionMenuAlimentoType;
 use AppBundle\Form\ResetType;
-use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,20 +51,19 @@ class AppController extends Controller
 
         return $this->render('app/reset.html.twig', [
                 'entity' => $entity,
-                'form' => $form->createView()]
+                'form' => $form->createView(), ]
         );
     }
 
     /**
      * @Route("aprobar/dia/{day}", defaults={"day":"monday"}, name="aprobar", options={"expose"=true})
-     *
      */
     public function aprobarAction(Request $request, $day)
     {
         $date = new \DateTime("next $day");
         $entities = $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($date);
         $form = $this->createFormBuilder(null, [
-            'action' => $this->generateUrl('aprobar', ['day' => $day])
+            'action' => $this->generateUrl('aprobar', ['day' => $day]),
         ])->getForm();
 
         foreach ($entities as $key => $entity) {
@@ -99,11 +93,9 @@ class AppController extends Controller
         ]);
     }
 
-
     //@Security("has_role('ROLE_JEFE')")
     /**
      * @Route("aprobar/menu/{day}", defaults={"day":"monday"}, name="aprobar_menu")
-     *
      */
     public function aprobarMenuAction($day)
     {
@@ -114,10 +106,8 @@ class AppController extends Controller
         ]);
     }
 
-
     /**
      * @Route("reservar/dia/{day}", defaults={"day":"monday"}, name="reservar", options={"expose"=true})
-     *
      */
     public function reservarAction(Request $request, $day)
     {
@@ -129,7 +119,7 @@ class AppController extends Controller
         $entities = $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($date);
         $reserMenuAlimIds = $this->getReservMenuAlimIds($date);
         $form = $this->createFormBuilder(null, [
-            'action' => $this->generateUrl('reservar', ['day' => $day])
+            'action' => $this->generateUrl('reservar', ['day' => $day]),
         ])->getForm();
 
         $form->handleRequest($request);
@@ -162,7 +152,6 @@ class AppController extends Controller
 
     /**
      * @Route("reservar/semana/{day}", defaults={"day":"monday"}, name="reservar_semana")
-     *
      */
     public function reservarSemanaAction($day)
     {
@@ -175,7 +164,6 @@ class AppController extends Controller
 
     /**
      * @Route("cancelar/dia/{day}", defaults={"day":"monday"}, name="cancelar", options={"expose"=true})
-     *
      */
     public function cancelarAction(Request $request, $day)
     {
@@ -189,7 +177,7 @@ class AppController extends Controller
         $entities = $reservacion ? $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($date) : null;
         $reserMenuAlimIds = $reservacion ? $this->getReservMenuAlimIds($date) : null;
         $form = $this->createFormBuilder(null, [
-            'action' => $this->generateUrl('cancelar', ['day' => $day])
+            'action' => $this->generateUrl('cancelar', ['day' => $day]),
         ])->getForm();
 
         $form->handleRequest($request);
@@ -218,7 +206,6 @@ class AppController extends Controller
 
     /**
      * @Route("cancelar/semana/{day}", defaults={"day":"monday"}, name="cancelar_semana")
-     *
      */
     public function cancelarSemanaAction($day)
     {
@@ -228,7 +215,6 @@ class AppController extends Controller
             'semana' => $semana,
         ]);
     }
-
 
     /**
      * @Route("/cobrar", name="cobrar")
@@ -248,7 +234,7 @@ class AppController extends Controller
             }
             $matrix[] = [
                 'reservacion' => $entity,
-                'total' => $count
+                'total' => $count,
             ];
         }
 
@@ -256,7 +242,6 @@ class AppController extends Controller
             'matrix' => $matrix,
             //'form' => $form->createView(),
         ]);
-
     }
 
     /**
@@ -275,6 +260,7 @@ class AppController extends Controller
 
             $entity->setEstado($cobrada);
             $entityManager->flush();
+
             return $this->redirectToRoute('cobrar');
         }
 
@@ -304,10 +290,11 @@ class AppController extends Controller
         if ($form->isSubmitted()) {
             $entityManager = $this->getDoctrine()->getManager();
             foreach ($productos as $key => $entity) {
-                $entity->setCantidad($entity->getCantidad() - $form->get($key)->get("cantidadSalida")->getData());
+                $entity->setCantidad($entity->getCantidad() - $form->get($key)->get('cantidadSalida')->getData());
             }
 
             $entityManager->flush();
+
             return $this->redirectToRoute('salida_producto');
         }
 
@@ -315,7 +302,6 @@ class AppController extends Controller
             'form' => $form->createView(),
         ]);
     }
-
 
     /**
      * @Route("/entrada/producto", name="entrada_producto")
@@ -336,10 +322,11 @@ class AppController extends Controller
         if ($form->isSubmitted()) {
             $entityManager = $this->getDoctrine()->getManager();
             foreach ($productos as $key => $entity) {
-                $entity->setCantidad($entity->getCantidad() + $form->get($key)->get("cantidadRecibida")->getData());
+                $entity->setCantidad($entity->getCantidad() + $form->get($key)->get('cantidadRecibida')->getData());
             }
 
             $entityManager->flush();
+
             return $this->redirectToRoute('entrada_producto');
         }
 
@@ -347,7 +334,6 @@ class AppController extends Controller
             'form' => $form->createView(),
         ]);
     }
-
 
     /**
      * @Route("/reporte/cobro/excel/{id}", name="reporte_cobro_excel")
@@ -374,10 +360,10 @@ class AppController extends Controller
         $phpExcelObject = $this->get('phpexcel')->createPHPExcelObject();
         $htmlHelper = $this->get('phpexcel')->createHelperHTML();
 
-        $phpExcelObject->getProperties()->setCreator("Labiofam")
-            ->setTitle("Reservacion")
-            ->setSubject("Reservacion")
-            ->setDescription("Reservacion");
+        $phpExcelObject->getProperties()->setCreator('Labiofam')
+            ->setTitle('Reservacion')
+            ->setSubject('Reservacion')
+            ->setDescription('Reservacion');
 
         $phpExcelObject->setActiveSheetIndex(0)
             //Encabezado
@@ -411,7 +397,6 @@ class AppController extends Controller
             ->setCellValue('A2', $entity->getFecha())
             ->setCellValue('B2', $entity->getUsuario()->getUsuario())
             ->setCellValue('C2', $entity->getEstado());
-
 
         /*
         $current = 3;
@@ -489,12 +474,12 @@ class AppController extends Controller
         return $phpExcelObject;
     }
 
-
     /////////////////////////////////////////////////METODOS AUXILIARES///////////////////////////////////////////////////////////////
 
     /**
      * @param $reservacion
      * @param $menuAlimento
+     *
      * @return ReservacionMenuAlimento
      */
     private function getReservacionMenuAlimento($reservacion, $menuAlimento)
@@ -507,14 +492,16 @@ class AppController extends Controller
             $reservacionMenuAlimento = new ReservacionMenuAlimento();
             $reservacionMenuAlimento->setReservacion($reservacion)
                 ->setMenuAlimento($menuAlimento);
-            return $reservacionMenuAlimento;
 
+            return $reservacionMenuAlimento;
         }
+
         return $reservacionMenuAlimento;
     }
 
     /**
      * @param $date
+     *
      * @return Reservacion
      */
     private function getReservacion($date)
@@ -528,13 +515,16 @@ class AppController extends Controller
             $reservacion->setFecha($date)
                 ->setUsuario($this->getUser())
                 ->setEstado($this->getDoctrine()->getRepository('AppBundle:EstadoReservacion')->findOneByNombre('Creada'));
+
             return $reservacion;
         }
+
         return $reservacion;
     }
 
     /**
      * @param Request $request
+     *
      * @return array
      */
     private function getIds(Request $request)
@@ -546,11 +536,13 @@ class AppController extends Controller
                 $ids[] = $attr;
             }
         }
+
         return $ids;
     }
 
     /**
      * @param $date
+     *
      * @return array
      */
     private function getReservMenuAlimIds($date, $user = null)
@@ -581,6 +573,7 @@ class AppController extends Controller
 
     /**
      * @param $day
+     *
      * @return array
      */
     private function obtenerSemana($day)
@@ -594,7 +587,7 @@ class AppController extends Controller
             'saturday' => ['es' => 'Sabado', 'active' => $day == 'saturday' ? true : false],
             'sunday' => ['es' => 'Domingo', 'active' => $day == 'sunday' ? true : false],
         ];
+
         return $semana;
     }
-
 }

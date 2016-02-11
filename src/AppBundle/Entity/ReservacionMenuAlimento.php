@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ReservacionMenuAlimento
+ * ReservacionMenuAlimento.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class ReservacionMenuAlimento
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -31,11 +31,10 @@ class ReservacionMenuAlimento
      */
     private $menuAlimento;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -43,7 +42,7 @@ class ReservacionMenuAlimento
     }
 
     /**
-     * Set reservacion
+     * Set reservacion.
      *
      * @param \AppBundle\Entity\Reservacion $reservacion
      *
@@ -57,7 +56,7 @@ class ReservacionMenuAlimento
     }
 
     /**
-     * Get reservacion
+     * Get reservacion.
      *
      * @return \AppBundle\Entity\Reservacion
      */
@@ -67,7 +66,7 @@ class ReservacionMenuAlimento
     }
 
     /**
-     * Set menuAlimento
+     * Set menuAlimento.
      *
      * @param \AppBundle\Entity\MenuAlimento $menuAlimento
      *
@@ -81,7 +80,7 @@ class ReservacionMenuAlimento
     }
 
     /**
-     * Get menuAlimento
+     * Get menuAlimento.
      *
      * @return \AppBundle\Entity\MenuAlimento
      */

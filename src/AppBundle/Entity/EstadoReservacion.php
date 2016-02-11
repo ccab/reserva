@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * EstadoReservacion
+ * EstadoReservacion.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class EstadoReservacion
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -40,11 +40,10 @@ class EstadoReservacion
      */
     private $reservaciones;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -52,7 +51,7 @@ class EstadoReservacion
     }
 
     /**
-     * Set nombre
+     * Set nombre.
      *
      * @param string $nombre
      *
@@ -66,7 +65,7 @@ class EstadoReservacion
     }
 
     /**
-     * Get nombre
+     * Get nombre.
      *
      * @return string
      */
@@ -76,7 +75,7 @@ class EstadoReservacion
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
      *
@@ -90,7 +89,7 @@ class EstadoReservacion
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
      * @return string
      */
@@ -99,7 +98,7 @@ class EstadoReservacion
         return $this->descripcion;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -107,7 +106,7 @@ class EstadoReservacion
     }
 
     /**
-     * Add reservacione
+     * Add reservacione.
      *
      * @param \AppBundle\Entity\Reservacion $reservacione
      *
@@ -121,7 +120,7 @@ class EstadoReservacion
     }
 
     /**
-     * Remove reservacione
+     * Remove reservacione.
      *
      * @param \AppBundle\Entity\Reservacion $reservacione
      */
@@ -131,7 +130,7 @@ class EstadoReservacion
     }
 
     /**
-     * Get reservaciones
+     * Get reservaciones.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

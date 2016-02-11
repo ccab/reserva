@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Menu
+ * Menu.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Menu
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -22,7 +22,7 @@ class Menu
     private $id;
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @ORM\Column(name="aprobado", type="boolean")
      */
@@ -46,9 +46,9 @@ class Menu
     private $menuAlimentos;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -56,9 +56,9 @@ class Menu
     }
 
     /**
-     * Set aprobado
+     * Set aprobado.
      *
-     * @param boolean $aprobado
+     * @param bool $aprobado
      *
      * @return Menu
      */
@@ -70,9 +70,9 @@ class Menu
     }
 
     /**
-     * Get aprobado
+     * Get aprobado.
      *
-     * @return boolean
+     * @return bool
      */
     public function getAprobado()
     {
@@ -80,7 +80,7 @@ class Menu
     }
 
     /**
-     * Set fecha
+     * Set fecha.
      *
      * @param \DateTime $fecha
      *
@@ -94,7 +94,7 @@ class Menu
     }
 
     /**
-     * Get fecha
+     * Get fecha.
      *
      * @return \DateTime
      */
@@ -104,7 +104,7 @@ class Menu
     }
 
     /**
-     * Set tipoMenu
+     * Set tipoMenu.
      *
      * @param \AppBundle\Entity\TipoMenu $tipoMenu
      *
@@ -118,7 +118,7 @@ class Menu
     }
 
     /**
-     * Get tipoMenu
+     * Get tipoMenu.
      *
      * @return \AppBundle\Entity\TipoMenu
      */
@@ -128,7 +128,7 @@ class Menu
     }
 
     /**
-     * Add alimento
+     * Add alimento.
      *
      * @param \AppBundle\Entity\Alimento $alimento
      *
@@ -142,7 +142,7 @@ class Menu
     }
 
     /**
-     * Remove alimento
+     * Remove alimento.
      *
      * @param \AppBundle\Entity\Alimento $alimento
      */
@@ -152,7 +152,7 @@ class Menu
     }
 
     /**
-     * Get alimentos
+     * Get alimentos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -162,7 +162,7 @@ class Menu
     }
 
     /**
-     * Add menuAlimento
+     * Add menuAlimento.
      *
      * @param \AppBundle\Entity\MenuAlimento $menuAlimento
      *
@@ -178,7 +178,7 @@ class Menu
     }
 
     /**
-     * Remove menuAlimento
+     * Remove menuAlimento.
      *
      * @param \AppBundle\Entity\MenuAlimento $menuAlimento
      */
@@ -188,7 +188,7 @@ class Menu
     }
 
     /**
-     * Get menuAlimentos
+     * Get menuAlimentos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -197,12 +197,11 @@ class Menu
         return $this->menuAlimentos;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         $this->menuAlimentos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->aprobado = false;
     }
-
 }

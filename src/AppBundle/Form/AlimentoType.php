@@ -10,7 +10,7 @@ class AlimentoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -23,21 +23,21 @@ class AlimentoType extends AbstractType
             ->add('cantidad')
             ->add('productoAlimentos', 'collection', [
                 'type' => new ProductoAlimentoType(),
-                'allow_add' => TRUE,
-                'by_reference' => FALSE,
+                'allow_add' => true,
+                'by_reference' => false,
                 'allow_delete' => true,
-                'label' => FALSE
+                'label' => false,
             ])
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Alimento'
+            'data_class' => 'AppBundle\Entity\Alimento',
         ));
     }
 

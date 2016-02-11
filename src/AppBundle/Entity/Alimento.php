@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Alimento
+ * Alimento.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Alimento
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -71,11 +71,10 @@ class Alimento
      */
     private $menuAlimentos;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -83,7 +82,7 @@ class Alimento
     }
 
     /**
-     * Set codigo
+     * Set codigo.
      *
      * @param string $codigo
      *
@@ -97,7 +96,7 @@ class Alimento
     }
 
     /**
-     * Get codigo
+     * Get codigo.
      *
      * @return string
      */
@@ -107,7 +106,7 @@ class Alimento
     }
 
     /**
-     * Set nombre
+     * Set nombre.
      *
      * @param string $nombre
      *
@@ -121,7 +120,7 @@ class Alimento
     }
 
     /**
-     * Get nombre
+     * Get nombre.
      *
      * @return string
      */
@@ -131,7 +130,7 @@ class Alimento
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
      *
@@ -145,7 +144,7 @@ class Alimento
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
      * @return string
      */
@@ -155,7 +154,7 @@ class Alimento
     }
 
     /**
-     * Set precio
+     * Set precio.
      *
      * @param float $precio
      *
@@ -169,7 +168,7 @@ class Alimento
     }
 
     /**
-     * Get precio
+     * Get precio.
      *
      * @return float
      */
@@ -179,7 +178,7 @@ class Alimento
     }
 
     /**
-     * Set unidadMedida
+     * Set unidadMedida.
      *
      * @param \AppBundle\Entity\UnidadMedida $unidadMedida
      *
@@ -193,7 +192,7 @@ class Alimento
     }
 
     /**
-     * Get unidadMedida
+     * Get unidadMedida.
      *
      * @return \AppBundle\Entity\UnidadMedida
      */
@@ -202,9 +201,8 @@ class Alimento
         return $this->unidadMedida;
     }
 
-
     /**
-     * Add productoAlimento
+     * Add productoAlimento.
      *
      * @param \AppBundle\Entity\ProductoAlimento $productoAlimento
      *
@@ -220,7 +218,7 @@ class Alimento
     }
 
     /**
-     * Remove productoAlimento
+     * Remove productoAlimento.
      *
      * @param \AppBundle\Entity\ProductoAlimento $productoAlimento
      */
@@ -230,7 +228,7 @@ class Alimento
     }
 
     /**
-     * Get productoAlimentos
+     * Get productoAlimentos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -245,7 +243,7 @@ class Alimento
     }
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -254,7 +252,7 @@ class Alimento
     }
 
     /**
-     * Add menuAlimento
+     * Add menuAlimento.
      *
      * @param \AppBundle\Entity\MenuAlimento $menuAlimento
      *
@@ -268,7 +266,7 @@ class Alimento
     }
 
     /**
-     * Remove menuAlimento
+     * Remove menuAlimento.
      *
      * @param \AppBundle\Entity\MenuAlimento $menuAlimento
      */
@@ -278,7 +276,7 @@ class Alimento
     }
 
     /**
-     * Get menuAlimentos
+     * Get menuAlimentos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -288,7 +286,7 @@ class Alimento
     }
 
     /**
-     * Set cantidad
+     * Set cantidad.
      *
      * @param float $cantidad
      *
@@ -302,7 +300,7 @@ class Alimento
     }
 
     /**
-     * Get cantidad
+     * Get cantidad.
      *
      * @return float
      */

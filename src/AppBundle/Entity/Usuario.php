@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Usuario
+ * Usuario.
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\UsuarioRepository")
@@ -25,7 +25,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -39,7 +39,6 @@ class Usuario implements UserInterface, \Serializable
      * @ORM\Column(name="usuario", type="string", length=25, unique=true)
      */
     private $usuario;
-
 
     /**
      * @var string
@@ -59,9 +58,9 @@ class Usuario implements UserInterface, \Serializable
     private $reservaciones;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -69,7 +68,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Set usuario
+     * Set usuario.
      *
      * @param string $usuario
      *
@@ -83,7 +82,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Get usuario
+     * Get usuario.
      *
      * @return string
      */
@@ -93,7 +92,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Set clave
+     * Set clave.
      *
      * @param string $clave
      *
@@ -107,7 +106,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Get clave
+     * Get clave.
      *
      * @return string
      */
@@ -118,8 +117,10 @@ class Usuario implements UserInterface, \Serializable
 
     /**
      * (PHP 5 &gt;= 5.1.0)<br/>
-     * String representation of object
+     * String representation of object.
+     *
      * @link http://php.net/manual/en/serializable.serialize.php
+     *
      * @return string the string representation of the object or null
      */
     public function serialize()
@@ -127,26 +128,26 @@ class Usuario implements UserInterface, \Serializable
         return serialize([
             $this->id,
             $this->usuario,
-            $this->clave
+            $this->clave,
         ]);
     }
 
     /**
      * (PHP 5 &gt;= 5.1.0)<br/>
-     * Constructs the object
+     * Constructs the object.
+     *
      * @link http://php.net/manual/en/serializable.unserialize.php
+     *
      * @param string $serialized <p>
-     * The string representation of the object.
-     * </p>
-     * @return void
+     *                           The string representation of the object.
+     *                           </p>
      */
     public function unserialize($serialized)
     {
-        list (
+        list(
             $this->id,
             $this->usuario,
-            $this->clave,
-            ) = unserialize($serialized);
+            $this->clave) = unserialize($serialized);
     }
 
     /**
@@ -192,7 +193,7 @@ class Usuario implements UserInterface, \Serializable
      */
     public function getSalt()
     {
-        return null;
+        return;
     }
 
     /**
@@ -205,9 +206,8 @@ class Usuario implements UserInterface, \Serializable
     {
     }
 
-
     /**
-     * Add role
+     * Add role.
      *
      * @param \AppBundle\Entity\Rol $role
      *
@@ -221,7 +221,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Remove role
+     * Remove role.
      *
      * @param \AppBundle\Entity\Rol $role
      */
@@ -232,10 +232,10 @@ class Usuario implements UserInterface, \Serializable
 
     public function getClaveAnterior()
     {
-        return null;
+        return;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -244,7 +244,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Add reservacione
+     * Add reservacione.
      *
      * @param \AppBundle\Entity\Reservacion $reservacione
      *
@@ -258,7 +258,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Remove reservacione
+     * Remove reservacione.
      *
      * @param \AppBundle\Entity\Reservacion $reservacione
      */
@@ -268,7 +268,7 @@ class Usuario implements UserInterface, \Serializable
     }
 
     /**
-     * Get reservaciones
+     * Get reservaciones.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

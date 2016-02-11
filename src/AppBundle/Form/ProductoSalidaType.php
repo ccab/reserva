@@ -10,7 +10,7 @@ class ProductoSalidaType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -21,18 +21,18 @@ class ProductoSalidaType extends AbstractType
             ->add('precio')
             ->add('unidadMedida')*/
             ->add('cantidadSalida', null, [
-                'mapped' => false
+                'mapped' => false,
             ])
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Producto'
+            'data_class' => 'AppBundle\Entity\Producto',
         ));
     }
 

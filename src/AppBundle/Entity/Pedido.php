@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Pedido
+ * Pedido.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Pedido
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -28,11 +28,10 @@ class Pedido
      */
     private $fecha;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -40,7 +39,7 @@ class Pedido
     }
 
     /**
-     * Set fecha
+     * Set fecha.
      *
      * @param \DateTime $fecha
      *
@@ -54,7 +53,7 @@ class Pedido
     }
 
     /**
-     * Get fecha
+     * Get fecha.
      *
      * @return \DateTime
      */
@@ -63,4 +62,3 @@ class Pedido
         return $this->fecha;
     }
 }
-

@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TipoMenu
+ * TipoMenu.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class TipoMenu
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -40,11 +40,10 @@ class TipoMenu
      */
     private $menus;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -52,7 +51,7 @@ class TipoMenu
     }
 
     /**
-     * Set nombre
+     * Set nombre.
      *
      * @param string $nombre
      *
@@ -66,7 +65,7 @@ class TipoMenu
     }
 
     /**
-     * Get nombre
+     * Get nombre.
      *
      * @return string
      */
@@ -76,7 +75,7 @@ class TipoMenu
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
      *
@@ -90,7 +89,7 @@ class TipoMenu
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
      * @return string
      */
@@ -99,7 +98,7 @@ class TipoMenu
         return $this->descripcion;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -107,7 +106,7 @@ class TipoMenu
     }
 
     /**
-     * Add menu
+     * Add menu.
      *
      * @param \AppBundle\Entity\Menu $menu
      *
@@ -121,7 +120,7 @@ class TipoMenu
     }
 
     /**
-     * Remove menu
+     * Remove menu.
      *
      * @param \AppBundle\Entity\Menu $menu
      */
@@ -131,7 +130,7 @@ class TipoMenu
     }
 
     /**
-     * Get menus
+     * Get menus.
      *
      * @return \Doctrine\Common\Collections\Collection
      */

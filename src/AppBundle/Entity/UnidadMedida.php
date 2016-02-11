@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * UnidadMedida
+ * UnidadMedida.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class UnidadMedida
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -46,9 +46,9 @@ class UnidadMedida
     protected $alimentos;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -56,7 +56,7 @@ class UnidadMedida
     }
 
     /**
-     * Set nombre
+     * Set nombre.
      *
      * @param string $nombre
      *
@@ -70,7 +70,7 @@ class UnidadMedida
     }
 
     /**
-     * Get nombre
+     * Get nombre.
      *
      * @return string
      */
@@ -80,7 +80,7 @@ class UnidadMedida
     }
 
     /**
-     * Set descripcion
+     * Set descripcion.
      *
      * @param string $descripcion
      *
@@ -94,7 +94,7 @@ class UnidadMedida
     }
 
     /**
-     * Get descripcion
+     * Get descripcion.
      *
      * @return string
      */
@@ -103,7 +103,7 @@ class UnidadMedida
         return $this->descripcion;
     }
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -111,7 +111,7 @@ class UnidadMedida
     }
 
     /**
-     * Add producto
+     * Add producto.
      *
      * @param \AppBundle\Entity\Producto $producto
      *
@@ -125,7 +125,7 @@ class UnidadMedida
     }
 
     /**
-     * Remove producto
+     * Remove producto.
      *
      * @param \AppBundle\Entity\Producto $producto
      */
@@ -135,7 +135,7 @@ class UnidadMedida
     }
 
     /**
-     * Get productos
+     * Get productos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -150,7 +150,7 @@ class UnidadMedida
     }
 
     /**
-     * Add alimento
+     * Add alimento.
      *
      * @param \AppBundle\Entity\Alimento $alimento
      *
@@ -164,7 +164,7 @@ class UnidadMedida
     }
 
     /**
-     * Remove alimento
+     * Remove alimento.
      *
      * @param \AppBundle\Entity\Alimento $alimento
      */
@@ -174,7 +174,7 @@ class UnidadMedida
     }
 
     /**
-     * Get alimentos
+     * Get alimentos.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
