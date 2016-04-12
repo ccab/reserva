@@ -1,0 +1,54 @@
+{% extends ':easy_admin:layout.html.twig' %}
+{% form_theme form with easyadmin_config('design.form_theme') %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-5">
+            <h1 class="title">Reporte Comprobante de Pago</h1>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <td>Inicio</td>
+            <td>Fin</td>
+            <td></td>
+        </tr>
+        <tr>
+            {{ form_start(form) }}
+            <td>{{ form_widget(form.inicio) }}</td>
+            <td>{{ form_widget(form.fin) }}</td>
+            <td>{{ form_widget(form.enviar) }}</td>
+            {{ form_end(form) }}
+        </tr>
+    </table>
+
+    <br>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>No. Comprobante</th>
+            <th>Usuario</th>
+            <th>Importe</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in matrix %}
+            <tr>
+                <td>{{ item.entity.fecha|date('d/m/Y') }}</td>
+                <td>{{ item.entity.numeroComprobante }}</td>
+                <td>{{ item.entity.usuario }}</td>
+                <td>{{ item.total }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No se encontraron resultados</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

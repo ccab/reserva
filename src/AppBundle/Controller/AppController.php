@@ -224,7 +224,6 @@ class AppController extends Controller
         $creada = $this->getDoctrine()->getRepository('AppBundle:EstadoReservacion')->findOneByNombre('Creada');
         $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findByEstado($creada);
         $matrix = [];
-        $form = $this->createFormBuilder()->getForm();
 
         foreach ($entities as $entity) {
             $count = 0;
@@ -240,7 +239,6 @@ class AppController extends Controller
 
         return $this->render('app/cobrar.html.twig', [
             'matrix' => $matrix,
-            //'form' => $form->createView(),
         ]);
     }
 
@@ -259,12 +257,16 @@ class AppController extends Controller
             $cobrada = $this->getDoctrine()->getRepository('AppBundle:EstadoReservacion')->findOneByNombre('Cobrada');
 
             $entity->setEstado($cobrada);
+            //$ultimoNumComp = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findByNumeroComprobante();
+            // TODO obtener ultimo numero de comprobante
+            $entity->setNumeroComprobante(1);
             $entityManager->flush();
 
             return $this->redirectToRoute('cobrar');
         }
-
+        
         return $this->render('app/detalles_cobro.html.twig', [
+            'entity' => $entity,
             'menus' => $menus,
             'ids' => $reserMenuAlimIds,
             'form' => $form->createView(),
@@ -331,6 +333,53 @@ class AppController extends Controller
         }
 
         return $this->render('app/entrada_producto.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/reporte/comprobante/pago", name="reporte_comprobante_pago")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function reporteCompPagoAction(Request $request)
+    {
+        $data = null;
+        $matrix = [];
+
+        if ($request->query->has('search')) {
+            $data = unserialize($request->query->get('search'));
+            $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findPorRangoDeFecha($data);
+        } else {
+            $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findAll();
+        }
+
+        $form = $this->createFormBuilder($data)
+            ->add('inicio', 'date')
+            ->add('fin', 'date')
+            ->add('enviar', 'submit')
+            ->getForm();
+        
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            return $this->redirectToRoute('reporte_comprobante_pago', ['search' => serialize($form->getData())]);
+        }
+        
+        foreach ($entities as $entity) {
+            $count = 0;
+            $reservMenuAlim = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuAlimento')->findByReservacion($entity->getId());
+            foreach ($reservMenuAlim as $rma) {
+                $count += $rma->getMenuAlimento()->getAlimento()->getPrecio();
+            }
+            $matrix[] = [
+                'entity' => $entity,
+                'total' => $count,
+            ];
+        }
+
+        return $this->render('app/reporte_comp_pago.html.twig', [
+            'matrix' => $matrix,
             'form' => $form->createView(),
         ]);
     }

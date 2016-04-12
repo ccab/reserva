@@ -34,7 +34,7 @@
                     <td>{{ menu_alimento.alimento.nombre }}</td>
                     <td>{{ menu_alimento.alimento.cantidad ~ " " ~ menu_alimento.alimento.unidadMedida }}</td>
                     <td>{{ menu_alimento.alimento.precio }}</td>
-                    {% set total =+ menu_alimento.alimento.precio %}
+                    {% set total = total + menu_alimento.alimento.precio %}
                 </tr>
             {% endfor %}
             {% else %}
@@ -55,6 +55,7 @@
         <button type="submit" class="btn">
             <i class="fa fa-save"></i> Guardar cambios
         </button>
+        <a class="btn btn-secondary" href="{{ path('reporte_cobro_excel', {'id':entity.id}) }}">Imprimir</a>
     </div>
     {{ form_end(form) }}
 

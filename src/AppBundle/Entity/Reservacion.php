@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Reservacion.
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\ReservacionRepository")
  */
 class Reservacion
 {
@@ -42,6 +42,11 @@ class Reservacion
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReservacionMenuAlimento", mappedBy="reservacion")
      */
     private $reservacionMenuAlimentos;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $numeroComprobante;
 
     /**
      * Get id.
@@ -169,5 +174,29 @@ class Reservacion
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set numeroComprobante
+     *
+     * @param integer $numeroComprobante
+     *
+     * @return Reservacion
+     */
+    public function setNumeroComprobante($numeroComprobante)
+    {
+        $this->numeroComprobante = $numeroComprobante;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroComprobante
+     *
+     * @return integer
+     */
+    public function getNumeroComprobante()
+    {
+        return $this->numeroComprobante;
     }
 }
