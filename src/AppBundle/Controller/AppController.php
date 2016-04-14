@@ -3,9 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
-use AppBundle\Entity\MenuAlimento;
+use AppBundle\Entity\MenuPlato;
 use AppBundle\Entity\Reservacion;
-use AppBundle\Entity\ReservacionMenuAlimento;
+use AppBundle\Entity\ReservacionMenuPlato;
 use AppBundle\Form\MenuAprobarType;
 use AppBundle\Form\ProductoEntradaType;
 use AppBundle\Form\ProductoSalidaType;
@@ -113,13 +113,13 @@ class AppController extends Controller
      */
     public function reservarAction(Request $request, $day)
     {
-        $date = new \DateTime("next $day");
+        $date = new \DateTime("$day next week");
         $reservacion = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findOneBy([
             'usuario' => $this->getUser(),
             'fecha' => $date,
         ]);
         $entities = $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($date);
-        $reserMenuAlimIds = $this->getReservMenuAlimIds($date);
+        $reserMenuAlimIds = $this->getReservMenuPlatosIds($date);
         $form = $this->createFormBuilder(null, [
             'action' => $this->generateUrl('reservar', ['day' => $day]),
         ])->getForm();
@@ -131,13 +131,13 @@ class AppController extends Controller
             $ids = $this->getIds($request);
 
             foreach ($ids as $id) {
-                //OBTENER ELEMENTOS NECESARIOS PARA CREAR LA RELACION: RESERVACION-MENU-ALIMENTO
+                //OBTENER ELEMENTOS NECESARIOS PARA CREAR LA RELACION: RESERVACION-MENU-PLATO
                 $reservacion = $this->getReservacion($date);
-                $menuAlimento = $this->getDoctrine()->getRepository('AppBundle:MenuAlimento')->find($id);
-                $reservacionMenuAlimento = $this->getReservacionMenuAlimento($reservacion, $menuAlimento);
+                $menuPlato = $this->getDoctrine()->getRepository('AppBundle:MenuPlato')->find($id);
+                $reservacionMenuPlato = $this->getReservacionMenuPlato($reservacion, $menuPlato);
 
                 $entityManager->persist($reservacion);
-                $entityManager->persist($reservacionMenuAlimento);
+                $entityManager->persist($reservacionMenuPlato);
                 $entityManager->flush();
             }
 
@@ -169,15 +169,14 @@ class AppController extends Controller
      */
     public function cancelarAction(Request $request, $day)
     {
-        $date = new \DateTime("next $day");
-        $reservCreada = $this->getDoctrine()->getRepository('AppBundle:EstadoReservacion')->findOneByNombre('Creada');
+        $date = new \DateTime("$day next week");
         $reservacion = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findOneBy([
             'fecha' => $date,
             'usuario' => $this->getUser(),
-            //'estado' => $reservCreada,
         ]);
         $entities = $reservacion ? $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($date) : null;
-        $reserMenuAlimIds = $reservacion ? $this->getReservMenuAlimIds($date) : null;
+        $reserMenuPlatosIds = $reservacion ? $this->getReservMenuPlatosIds($date) : null;
+
         $form = $this->createFormBuilder(null, [
             'action' => $this->generateUrl('cancelar', ['day' => $day]),
         ])->getForm();
@@ -202,7 +201,7 @@ class AppController extends Controller
             'reservacion' => $reservacion ? $reservacion : null,
             'entities' => $entities,
             'form' => $form->createView(),
-            'ids' => $reserMenuAlimIds,
+            'ids' => $reserMenuPlatosIds,
         ]);
     }
 
@@ -229,10 +228,13 @@ class AppController extends Controller
 
         foreach ($entities as $entity) {
             $count = 0;
-            $reservMenuAlim = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuAlimento')->findByReservacion($entity->getId());
-            foreach ($reservMenuAlim as $rma) {
-                $count += $rma->getMenuAlimento()->getAlimento()->getPrecio();
+            $reservMenuPlato = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuPlato')->findByReservacion($entity->getId());
+
+            /** @var ReservacionMenuPlato $rmp */
+            foreach ($reservMenuPlato as $rmp) {
+                $count += $rmp->getMenuPlato()->getPlato()->getPrecio();
             }
+
             $matrix[] = [
                 'reservacion' => $entity,
                 'total' => $count,
@@ -250,7 +252,7 @@ class AppController extends Controller
     public function detallesCobroAction(Request $request, Reservacion $entity)
     {
         $menus = $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($entity->getFecha());
-        $reserMenuAlimIds = $this->getReservMenuAlimIds($entity->getFecha(), $entity->getUsuario());
+        $reserMenuAlimIds = $this->getReservMenuPlatosIds($entity->getFecha(), $entity->getUsuario());
         $form = $this->createFormBuilder()->getForm();
 
         $form->handleRequest($request);
@@ -354,7 +356,8 @@ class AppController extends Controller
             $data = unserialize($request->query->get('search'));
             $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findPorRangoDeFecha($data);
         } else {
-            $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findAll();
+            $cobrada = $this->getDoctrine()->getRepository('AppBundle:EstadoReservacion')->findOneByNombre('Cobrada');
+            $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findByEstado($cobrada);
         }
 
         $form = $this->createFormBuilder($data)
@@ -370,10 +373,13 @@ class AppController extends Controller
         
         foreach ($entities as $entity) {
             $count = 0;
-            $reservMenuAlim = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuAlimento')->findByReservacion($entity->getId());
-            foreach ($reservMenuAlim as $rma) {
-                $count += $rma->getMenuAlimento()->getAlimento()->getPrecio();
+            $reservMenuPlato = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuPlato')->findByReservacion($entity->getId());
+
+            /** @var ReservacionMenuPlato $rmp */
+            foreach ($reservMenuPlato as $rmp) {
+                $count += $rmp->getMenuPlato()->getPlato()->getPrecio();
             }
+
             $matrix[] = [
                 'entity' => $entity,
                 'total' => $count,
@@ -399,11 +405,11 @@ class AppController extends Controller
         for ($date = $first; $date <= $last; $date->add($dateInterval)) {
             $cantPan = $this->getDoctrine()
                 ->getRepository('AppBundle:Reservacion')
-                ->findPorTipoAlimento('Desayuno', 'Pan', $date);
+                ->findPorTipoPlato('Desayuno', 'Pan', $date);
 
             $cantLeche = $this->getDoctrine()
                 ->getRepository('AppBundle:Reservacion')
-                ->findPorTipoAlimento('Desayuno', 'Leche', $date);
+                ->findPorTipoPlato('Desayuno', 'Leche', $date);
 
             $matrix[] = [
                 'fecha' => clone $date,
@@ -561,25 +567,25 @@ class AppController extends Controller
 
     /**
      * @param $reservacion
-     * @param $menuAlimento
+     * @param $menuPlato
      *
-     * @return ReservacionMenuAlimento
+     * @return ReservacionMenuPlato
      */
-    private function getReservacionMenuAlimento($reservacion, $menuAlimento)
+    private function getReservacionMenuPlato($reservacion, $menuPlato)
     {
-        $reservacionMenuAlimento = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuAlimento')->findOneBy([
+        $reservacionMenuPlato = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuPlato')->findOneBy([
             'reservacion' => $reservacion,
-            'menuAlimento' => $menuAlimento,
+            'menuPlato' => $menuPlato,
         ]);
-        if (!$reservacionMenuAlimento) {
-            $reservacionMenuAlimento = new ReservacionMenuAlimento();
-            $reservacionMenuAlimento->setReservacion($reservacion)
-                ->setMenuAlimento($menuAlimento);
+        if (!$reservacionMenuPlato) {
+            $reservacionMenuPlato = new ReservacionMenuPlato();
+            $reservacionMenuPlato->setReservacion($reservacion)
+                ->setMenuPlato($menuPlato);
 
-            return $reservacionMenuAlimento;
+            return $reservacionMenuPlato;
         }
 
-        return $reservacionMenuAlimento;
+        return $reservacionMenuPlato;
     }
 
     /**
@@ -625,33 +631,34 @@ class AppController extends Controller
 
     /**
      * @param $date
+     * @param null $user
      *
      * @return array
      */
-    private function getReservMenuAlimIds($date, $user = null)
+    private function getReservMenuPlatosIds($date, $user = null)
     {
-        $reserMenuAlimIds = [];
+        $reserMenuPlatosIds = [];
         $user = is_null($user) ? $this->getUser() : $user;
 
         //REVISO SI EL USUSARIO TIENE UNA RESERVACION PARA ESA FECHA,
-        //DE SER ASI OBTENGO LOS IDS DE LOS ALIMENTOS DEL MENU DE ESE DIA QUE FUERON RESERVADOS
+        //DE SER ASI OBTENGO LOS IDS DE LOS PLATOS DEL MENU DE ESE DIA QUE FUERON RESERVADOS
         $reservacion = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findOneBy([
             'usuario' => $user,
             'fecha' => $date,
         ]);
         if ($reservacion) {
-            $reservacionMenuAlimentos = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuAlimento')->findBy([
+            $reservacionMenuPlatos = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuPlato')->findBy([
                 'reservacion' => $reservacion,
             ]);
 
-            foreach ($reservacionMenuAlimentos as $reservMenuAlimento) {
-                $reserMenuAlimIds[] = $reservMenuAlimento->getMenuAlimento()->getId();
+            foreach ($reservacionMenuPlatos as $reservacionMenuPlato) {
+                $reserMenuPlatosIds[] = $reservacionMenuPlato->getMenuPlato()->getId();
             }
 
-            return $reserMenuAlimIds;
+            return $reserMenuPlatosIds;
         }
 
-        return $reserMenuAlimIds;
+        return $reserMenuPlatosIds;
     }
 
     /**

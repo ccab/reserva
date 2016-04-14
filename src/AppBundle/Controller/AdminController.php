@@ -7,7 +7,7 @@
  */
 namespace AppBundle\Controller;
 
-use AppBundle\Form\AlimentoType;
+use AppBundle\Form\PlatoType;
 use AppBundle\Form\MenuType;
 use Symfony\Component\HttpFoundation\Request;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
@@ -21,16 +21,16 @@ class AdminController extends BaseAdminController
         $entity->setClave($encoded);
     }
 
-    public function createAlimentoNewForm($entity)
+    public function createPlatoNewForm($entity)
     {
-        return $this->createForm(new AlimentoType(), $entity);
+        return $this->createForm(new PlatoType(), $entity);
     }
 
-    public function editAlimentoAction()
+    public function editPlatoAction()
     {
         $id = $this->request->query->get('id');
         $entity = $this->em->getRepository($this->entity['class'])->find($id);
-        $editForm = $this->createForm(new AlimentoType(), $entity);
+        $editForm = $this->createForm(new PlatoType(), $entity);
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
         $editForm->handleRequest($this->request);
@@ -38,11 +38,11 @@ class AdminController extends BaseAdminController
             $em = $this->getDoctrine()->getManager();
 
             // EXTRAIGO DE LA BD LA RELACION DE ESTE ALIMENTO CON TODOS SUS PRODUCTOS
-            $productosAlimentos = $em->getRepository('AppBundle:ProductoAlimento')->findByAlimento(['alimento' => $entity->getId()]);
+            $productosAlimentos = $em->getRepository('AppBundle:ProductoPlato')->findByPlato($entity->getId());
 
             // SI EN EL FORMULARIO DE EDICION SE ELIMINO DE LA COLECCION ALGUN PRODUCTO DEBO ELIMINARLO EXPLICITAMENTE
             foreach ($productosAlimentos as $value) {
-                if (false === $entity->getProductoAlimentos()->contains($value)) {
+                if (false === $entity->getProductoPlatos()->contains($value)) {
                     $this->em->remove($value);
                 }
             }
@@ -53,7 +53,7 @@ class AdminController extends BaseAdminController
             return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
         }
 
-        return $this->render('easy_admin/Alimento/edit.html.twig', [
+        return $this->render('easy_admin/Plato/edit.html.twig', [
             'form' => $editForm->createView(),
             'entity_fields' => $this->entity['edit']['fields'],
             'entity' => $entity,

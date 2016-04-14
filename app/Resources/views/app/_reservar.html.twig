@@ -21,17 +21,17 @@
         </tr>
         </thead>
         <tbody>
-            {% for menu_alimento in entity.menuAlimentos %}
+            {% for menu_plato in entity.menuPlatos %}
                 <tr>
                     <td></td>
-                    <td><input type="checkbox" class="checkboxes" name="{{ menu_alimento.id }}"
-                               value="{{ menu_alimento.id }}"
-                                {% if menu_alimento.id in ids %} checked="checked" {% endif %}
+                    <td><input type="checkbox" class="checkboxes" name="{{ menu_plato.id }}"
+                               value="{{ menu_plato.id }}"
+                                {% if menu_plato.id in ids %} checked="checked" {% endif %}
                                 {% if reservacion %} disabled="disabled" {% endif %}/>
                     </td>
-                    <td>{{ menu_alimento.alimento.nombre }}</td>
-                    <td>{{ menu_alimento.alimento.cantidad ~ " " ~ menu_alimento.alimento.unidadMedida }}</td>
-                    <td>{{ menu_alimento.alimento.precio }}</td>
+                    <td>{{ menu_plato.plato.nombre }}</td>
+                    <td>{{ menu_plato.plato.cantidad ~ " " ~ menu_plato.plato.unidadMedida }}</td>
+                    <td>{{ menu_plato.plato.precio }}</td>
                 </tr>
             {% endfor %}
         {% else %}

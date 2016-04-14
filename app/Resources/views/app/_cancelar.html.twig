@@ -13,8 +13,9 @@
         </thead>
         <tbody>
             {% if reservacion %}
-                {% if reservacion.estado == 'Creada' %}
+                {% if reservacion.estado.nombre == 'Creada' %}
                     {% for entity in entities %}
+
                         <tr>
                             <td>{{ entity.tipoMenu }}</td>
                             <td></td>
@@ -22,12 +23,12 @@
                             <td></td>
                         </tr>
 
-                        {% for menu_alimento in entity.menuAlimentos if menu_alimento.id in ids %}
+                        {% for menu_plato in entity.menuPlatos if menu_plato.id in ids %}
                             <tr>
                                 <td></td>
-                                <td>{{ menu_alimento.alimento.nombre }}</td>
-                                <td>{{ menu_alimento.alimento.cantidad ~ " " ~ menu_alimento.alimento.unidadMedida }}</td>
-                                <td>{{ menu_alimento.alimento.precio }}</td>
+                                <td>{{ menu_plato.plato.nombre }}</td>
+                                <td>{{ menu_plato.plato.cantidad ~ " " ~ menu_plato.plato.unidadMedida }}</td>
+                                <td>{{ menu_plato.plato.precio }}</td>
                             </tr>
                         {% endfor %}
 
@@ -36,9 +37,13 @@
                             <td colspan="5">No se encontraron resultados</td>
                         </tr>
                     {% endfor %}
-                {% elseif reservacion.estado == 'Cancelada' %}
+                {% elseif reservacion.estado.nombre == 'Cancelada' %}
                     <tr>
                         <td colspan="5">Reservacion Cancelada</td>
+                    </tr>
+                {% elseif reservacion.estado.nombre == 'Cobrada' %}
+                    <tr>
+                        <td colspan="5">Reservacion Cobrada</td>
                     </tr>
                 {% endif %}
             {% else %}

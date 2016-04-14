@@ -41,9 +41,9 @@ class Menu
     private $tipoMenu;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MenuAlimento", mappedBy="menu", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MenuPlato", mappedBy="menu", cascade={"persist", "remove"})
      */
-    private $menuAlimentos;
+    private $menuPlatos;
 
     /**
      * Get id.
@@ -130,11 +130,11 @@ class Menu
     /**
      * Add alimento.
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $alimento
      *
      * @return Menu
      */
-    public function addAlimento(\AppBundle\Entity\Alimento $alimento)
+    public function addAlimento(\AppBundle\Entity\Plato $alimento)
     {
         $this->alimentos[] = $alimento;
 
@@ -144,9 +144,9 @@ class Menu
     /**
      * Remove alimento.
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $alimento
      */
-    public function removeAlimento(\AppBundle\Entity\Alimento $alimento)
+    public function removeAlimento(\AppBundle\Entity\Plato $alimento)
     {
         $this->alimentos->removeElement($alimento);
     }
@@ -164,15 +164,15 @@ class Menu
     /**
      * Add menuAlimento.
      *
-     * @param \AppBundle\Entity\MenuAlimento $menuAlimento
+     * @param \AppBundle\Entity\MenuPlato $menuPlato
      *
      * @return Menu
      */
-    public function addMenuAlimento(\AppBundle\Entity\MenuAlimento $menuAlimento)
+    public function addMenuPlato(\AppBundle\Entity\MenuPlato $menuPlato)
     {
-        $menuAlimento->setMenu($this);
+        $menuPlato->setMenu($this);
 
-        $this->menuAlimentos->add($menuAlimento);
+        $this->menuPlatos->add($menuPlato);
 
         return $this;
     }
@@ -180,11 +180,11 @@ class Menu
     /**
      * Remove menuAlimento.
      *
-     * @param \AppBundle\Entity\MenuAlimento $menuAlimento
+     * @param \AppBundle\Entity\MenuPlato $menuPlato
      */
-    public function removeMenuAlimento(\AppBundle\Entity\MenuAlimento $menuAlimento)
+    public function removeMenuPlato(\AppBundle\Entity\MenuPlato $menuPlato)
     {
-        $this->menuAlimentos->removeElement($menuAlimento);
+        $this->menuPlatos->removeElement($menuPlato);
     }
 
     /**
@@ -192,16 +192,16 @@ class Menu
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getMenuAlimentos()
+    public function getMenuPlatos()
     {
-        return $this->menuAlimentos;
+        return $this->menuPlatos;
     }
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->menuAlimentos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->menuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->aprobado = false;
     }
 }

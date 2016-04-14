@@ -22,13 +22,13 @@
                     <td></td>
                     <td></td>
                 </tr>
-                {% for menu_alimento in entity.menuAlimentos %}
+                {% for menu_plato in entity.menuPlatos %}
                     <tr>
                         <td></td>
                         <td></td>
-                        <td>{{ menu_alimento.alimento.nombre }}</td>
-                        <td>{{ menu_alimento.alimento.unidadMedida }}</td>
-                        <td>{{ menu_alimento.alimento.precio }}</td>
+                        <td>{{ menu_plato.plato.nombre }}</td>
+                        <td>{{ menu_plato.plato.unidadMedida }}</td>
+                        <td>{{ menu_plato.plato.precio }}</td>
                     </tr>
                 {% endfor %}
                 {% else %}
@@ -53,42 +53,3 @@
     {{ form_end(aprobar_form) }}
 
 {% endblock %}
-
-
-    {#<table class="table table-bordered table-striped">
-        <thead>
-        <tr>
-            <th>Aprobar</th>
-            <th>Tipo de Menu</th>
-            <th>Alimento</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-        </tr>
-        {% for entity in entities %}
-        <tr>
-            <th>
-                <input type="checkbox" class="checkboxes" name="{{ entity.id }}" value="{{ entity.id }}"
-                    {% if entity.aprobado%} checked="checked" {% endif %}
-                />
-            </th>
-            <th>{{ entity.tipoMenu }}</th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-
-            {% for menu_alimento in entity.menuAlimentos %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td>{{ menu_alimento.alimento.nombre }}</td>
-                    <td>{{ menu_alimento.alimento.unidadMedida }}</td>
-                    <td>{{ menu_alimento.alimento.precio }}</td>
-                </tr>
-            {% endfor %}
-
-        {% endfor %}
-        </tbody>
-    </table>#}

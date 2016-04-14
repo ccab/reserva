@@ -12,7 +12,7 @@
 
         jQuery(document).ready(function() {
             // Get the div that holds the collection of cuentas
-            $collectionHolder = $('div#appbundle_menu_menuAlimentos');
+            $collectionHolder = $('div#appbundle_menu_menuPlatos');
 
             // add the "add" div
             $collectionHolder.append($addLinkDiv);
@@ -36,7 +36,7 @@
                 var index = $collectionHolder.data('index');
 
                 // Get the child forms number
-                $collectionHolder.data('num', $collectionHolder.find("div[id*='appbundle_menu_menuAlimentos_']").length);
+                $collectionHolder.data('num', $collectionHolder.find("div[id*='appbundle_menu_menuPlatos_']").length);
                 var num = $collectionHolder.data('num') + 1;
 
                 // Set a proper label

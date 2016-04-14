@@ -10,25 +10,28 @@ class ReservacionRepository extends \Doctrine\ORM\EntityRepository
     public function findPorRangoDeFecha($rango)
     {
         $q = $this->createQueryBuilder('r')
+            ->join('r.estado', 'e')
             ->where('r.fecha > :inicio')
             ->andWhere('r.fecha < :fin')
+            ->andWhere('e.nombre = :estado')
             ->setParameter(':inicio', $rango['inicio'])
             ->setParameter(':fin', $rango['fin'])
+            ->setParameter('estado', 'Cobrada')
             ->getQuery();
 
         return $q->getResult();
     }
     
-    public function findPorTipoAlimento($tipoMenu, $categAlimento, $fecha)
+    public function findPorTipoPlato($tipoMenu, $categAlimento, $fecha)
     {
         $q = $this->createQueryBuilder('r')
             ->select('count(r.id)')
-            ->join('r.reservacionMenuAlimentos', 'rma')
-            ->join('rma.menuAlimento', 'ma')
-            ->join('ma.menu', 'm')
+            ->join('r.reservacionMenuPlatos', 'rmp')
+            ->join('rmp.menuPlato', 'mp')
+            ->join('mp.menu', 'm')
             ->join('m.tipoMenu', 't')
-            ->join('ma.alimento', 'a')
-            ->join('a.categoria', 'c')
+            ->join('mp.plato', 'p')
+            ->join('p.categoria', 'c')
             ->where('t.nombre = :tipoMenu')
             ->andWhere('c.nombre = :tipoAlimento')
             ->andWhere('r.fecha = :fecha')

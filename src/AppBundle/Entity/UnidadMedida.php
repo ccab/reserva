@@ -41,7 +41,7 @@ class UnidadMedida
     protected $productos;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Alimento", mappedBy="unidadMedida")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Plato", mappedBy="unidadMedida")
      */
     protected $alimentos;
 
@@ -152,11 +152,11 @@ class UnidadMedida
     /**
      * Add alimento.
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $alimento
      *
      * @return UnidadMedida
      */
-    public function addAlimento(\AppBundle\Entity\Alimento $alimento)
+    public function addAlimento(\AppBundle\Entity\Plato $alimento)
     {
         $this->alimentos[] = $alimento;
 
@@ -166,9 +166,9 @@ class UnidadMedida
     /**
      * Remove alimento.
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $alimento
      */
-    public function removeAlimento(\AppBundle\Entity\Alimento $alimento)
+    public function removeAlimento(\AppBundle\Entity\Plato $alimento)
     {
         $this->alimentos->removeElement($alimento);
     }

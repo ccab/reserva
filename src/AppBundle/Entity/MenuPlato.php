@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class MenuAlimento
+class MenuPlato
 {
     /**
      * @var int
@@ -22,19 +22,19 @@ class MenuAlimento
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Alimento", inversedBy="menuAlimentos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Plato", inversedBy="menuPlatos")
      */
-    private $alimento;
+    private $plato;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Menu", inversedBy="menuAlimentos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Menu", inversedBy="menuPlatos")
      */
     private $menu;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReservacionMenuAlimento", mappedBy="menuAlimento")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReservacionMenuPlato", mappedBy="menuPlato")
      */
-    private $reservacionMenuAlimentos;
+    private $reservacionMenuPlatos;
 
     /**
      * Get id.
@@ -49,13 +49,13 @@ class MenuAlimento
     /**
      * Set alimento.
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $plato
      *
-     * @return MenuAlimento
+     * @return MenuPlato
      */
-    public function setAlimento(\AppBundle\Entity\Alimento $alimento = null)
+    public function setPlato(\AppBundle\Entity\Plato $plato = null)
     {
-        $this->alimento = $alimento;
+        $this->plato = $plato;
 
         return $this;
     }
@@ -63,11 +63,11 @@ class MenuAlimento
     /**
      * Get alimento.
      *
-     * @return \AppBundle\Entity\Alimento
+     * @return \AppBundle\Entity\Plato
      */
-    public function getAlimento()
+    public function getPlato()
     {
-        return $this->alimento;
+        return $this->plato;
     }
 
     /**
@@ -75,7 +75,7 @@ class MenuAlimento
      *
      * @param \AppBundle\Entity\Menu $menu
      *
-     * @return MenuAlimento
+     * @return MenuPlato
      */
     public function setMenu(\AppBundle\Entity\Menu $menu = null)
     {
@@ -98,19 +98,19 @@ class MenuAlimento
      */
     public function __construct()
     {
-        $this->reservacionMenuAlimentos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->reservacionMenuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add reservacionMenuAlimento.
      *
-     * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento
      *
-     * @return MenuAlimento
+     * @return MenuPlato
      */
-    public function addReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento)
+    public function addReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento)
     {
-        $this->reservacionMenuAlimentos[] = $reservacionMenuAlimento;
+        $this->reservacionMenuPlatos[] = $reservacionMenuAlimento;
 
         return $this;
     }
@@ -118,11 +118,11 @@ class MenuAlimento
     /**
      * Remove reservacionMenuAlimento.
      *
-     * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento
      */
-    public function removeReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento)
+    public function removeReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento)
     {
-        $this->reservacionMenuAlimentos->removeElement($reservacionMenuAlimento);
+        $this->reservacionMenuPlatos->removeElement($reservacionMenuAlimento);
     }
 
     /**
@@ -130,9 +130,9 @@ class MenuAlimento
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getReservacionMenuAlimentos()
+    public function getReservacionMenuPlatos()
     {
-        return $this->reservacionMenuAlimentos;
+        return $this->reservacionMenuPlatos;
     }
 
     public function __toString()

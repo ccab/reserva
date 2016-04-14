@@ -18,8 +18,8 @@ class MenuType extends AbstractType
             //->add('aprobado')
             ->add('fecha')
             ->add('tipoMenu')
-            ->add('menuAlimentos', 'collection', [
-                'type' => new MenuAlimentoType(),
+            ->add('menuPlatos', 'collection', [
+                'type' => new MenuPlatoType(),
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,

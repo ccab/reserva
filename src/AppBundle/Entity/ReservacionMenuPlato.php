@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class ReservacionMenuAlimento
+class ReservacionMenuPlato
 {
     /**
      * @var int
@@ -22,14 +22,14 @@ class ReservacionMenuAlimento
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Reservacion", inversedBy="reservacionMenuAlimentos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Reservacion", inversedBy="reservacionMenuPlatos")
      */
     private $reservacion;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MenuAlimento", inversedBy="reservacionMenuAlimentos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MenuPlato", inversedBy="reservacionMenuPlatos")
      */
-    private $menuAlimento;
+    private $menuPlato;
 
     /**
      * Get id.
@@ -46,7 +46,7 @@ class ReservacionMenuAlimento
      *
      * @param \AppBundle\Entity\Reservacion $reservacion
      *
-     * @return ReservacionMenuAlimento
+     * @return ReservacionMenuPlato
      */
     public function setReservacion(\AppBundle\Entity\Reservacion $reservacion = null)
     {
@@ -68,13 +68,13 @@ class ReservacionMenuAlimento
     /**
      * Set menuAlimento.
      *
-     * @param \AppBundle\Entity\MenuAlimento $menuAlimento
+     * @param \AppBundle\Entity\MenuPlato $menuPlato
      *
-     * @return ReservacionMenuAlimento
+     * @return ReservacionMenuPlato
      */
-    public function setMenuAlimento(\AppBundle\Entity\MenuAlimento $menuAlimento = null)
+    public function setMenuPlato(\AppBundle\Entity\MenuPlato $menuPlato = null)
     {
-        $this->menuAlimento = $menuAlimento;
+        $this->menuPlato = $menuPlato;
 
         return $this;
     }
@@ -82,10 +82,10 @@ class ReservacionMenuAlimento
     /**
      * Get menuAlimento.
      *
-     * @return \AppBundle\Entity\MenuAlimento
+     * @return \AppBundle\Entity\MenuPlato
      */
-    public function getMenuAlimento()
+    public function getMenuPlato()
     {
-        return $this->menuAlimento;
+        return $this->menuPlato;
     }
 }

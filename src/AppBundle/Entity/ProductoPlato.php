@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class ProductoAlimento
+class ProductoPlato
 {
     /**
      * @var int
@@ -29,14 +29,14 @@ class ProductoAlimento
     private $cantidad;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto", inversedBy="productoAlimentos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto", inversedBy="productoPlatos")
      */
     private $producto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Alimento", inversedBy="productoAlimentos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Plato", inversedBy="productoPlatos")
      */
-    private $alimento;
+    private $plato;
 
     /**
      * Get id.
@@ -53,7 +53,7 @@ class ProductoAlimento
      *
      * @param float $cantidad
      *
-     * @return ProductoAlimento
+     * @return ProductoPlato
      */
     public function setCantidad($cantidad)
     {
@@ -77,7 +77,7 @@ class ProductoAlimento
      *
      * @param \AppBundle\Entity\Producto $producto
      *
-     * @return ProductoAlimento
+     * @return ProductoPlato
      */
     public function setProducto(\AppBundle\Entity\Producto $producto = null)
     {
@@ -99,13 +99,13 @@ class ProductoAlimento
     /**
      * Set alimento.
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $plato
      *
-     * @return ProductoAlimento
+     * @return ProductoPlato
      */
-    public function setAlimento(\AppBundle\Entity\Alimento $alimento = null)
+    public function setPlato(\AppBundle\Entity\Plato $plato = null)
     {
-        $this->alimento = $alimento;
+        $this->plato = $plato;
 
         return $this;
     }
@@ -113,10 +113,10 @@ class ProductoAlimento
     /**
      * Get alimento.
      *
-     * @return \AppBundle\Entity\Alimento
+     * @return \AppBundle\Entity\Plato
      */
-    public function getAlimento()
+    public function getPlato()
     {
-        return $this->alimento;
+        return $this->plato;
     }
 }

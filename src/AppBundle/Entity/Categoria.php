@@ -29,9 +29,9 @@ class Categoria
     private $nombre;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Alimento", mappedBy="categoria")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Plato", mappedBy="categoria")
      */
-    protected $alimentos;
+    protected $platos;
 
     /**
      * Get id
@@ -71,19 +71,19 @@ class Categoria
      */
     public function __construct()
     {
-        $this->alimentos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->platos = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add alimento
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $alimento
      *
      * @return Categoria
      */
-    public function addAlimento(\AppBundle\Entity\Alimento $alimento)
+    public function addAlimento(\AppBundle\Entity\Plato $alimento)
     {
-        $this->alimentos[] = $alimento;
+        $this->platos[] = $alimento;
 
         return $this;
     }
@@ -91,11 +91,11 @@ class Categoria
     /**
      * Remove alimento
      *
-     * @param \AppBundle\Entity\Alimento $alimento
+     * @param \AppBundle\Entity\Plato $alimento
      */
-    public function removeAlimento(\AppBundle\Entity\Alimento $alimento)
+    public function removeAlimento(\AppBundle\Entity\Plato $alimento)
     {
-        $this->alimentos->removeElement($alimento);
+        $this->platos->removeElement($alimento);
     }
 
     /**
@@ -103,9 +103,9 @@ class Categoria
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAlimentos()
+    public function getPlatos()
     {
-        return $this->alimentos;
+        return $this->platos;
     }
 
     public function __toString()

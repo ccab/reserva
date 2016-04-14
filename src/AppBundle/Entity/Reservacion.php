@@ -39,9 +39,9 @@ class Reservacion
     private $usuario;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReservacionMenuAlimento", mappedBy="reservacion")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReservacionMenuPlato", mappedBy="reservacion")
      */
-    private $reservacionMenuAlimentos;
+    private $reservacionMenuPlatos;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -110,19 +110,19 @@ class Reservacion
      */
     public function __construct()
     {
-        $this->reservacionMenuAlimentos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->reservacionMenuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add reservacionMenuAlimento.
      *
-     * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento
      *
      * @return Reservacion
      */
-    public function addReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento)
+    public function addReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento)
     {
-        $this->reservacionMenuAlimentos[] = $reservacionMenuAlimento;
+        $this->reservacionMenuPlatos[] = $reservacionMenuAlimento;
 
         return $this;
     }
@@ -130,11 +130,11 @@ class Reservacion
     /**
      * Remove reservacionMenuAlimento.
      *
-     * @param \AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento
      */
-    public function removeReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuAlimento $reservacionMenuAlimento)
+    public function removeReservacionMenuAlimento(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuAlimento)
     {
-        $this->reservacionMenuAlimentos->removeElement($reservacionMenuAlimento);
+        $this->reservacionMenuPlatos->removeElement($reservacionMenuAlimento);
     }
 
     /**
@@ -142,9 +142,9 @@ class Reservacion
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getReservacionMenuAlimentos()
+    public function getReservacionMenuPlatos()
     {
-        return $this->reservacionMenuAlimentos;
+        return $this->reservacionMenuPlatos;
     }
 
     public function __toString()

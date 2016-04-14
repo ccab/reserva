@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Alimento.
+ * Plato.
  *
  * @ORM\Table()
  * @ORM\Entity
  */
-class Alimento
+class Plato
 {
     /**
      * @var int
@@ -62,17 +62,17 @@ class Alimento
     private $unidadMedida;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductoAlimento", mappedBy="alimento", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductoPlato", mappedBy="plato", cascade={"persist", "remove"})
      */
-    private $productoAlimentos;
+    private $productoPlatos;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MenuAlimento", mappedBy="alimento", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MenuPlato", mappedBy="plato", cascade={"persist", "remove"})
      */
-    private $menuAlimentos;
+    private $menuPlatos;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Categoria", inversedBy="alimentos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Categoria", inversedBy="platos")
      */
     private $categoria;
 
@@ -91,7 +91,7 @@ class Alimento
      *
      * @param string $codigo
      *
-     * @return Alimento
+     * @return Plato
      */
     public function setCodigo($codigo)
     {
@@ -115,7 +115,7 @@ class Alimento
      *
      * @param string $nombre
      *
-     * @return Alimento
+     * @return Plato
      */
     public function setNombre($nombre)
     {
@@ -139,7 +139,7 @@ class Alimento
      *
      * @param string $descripcion
      *
-     * @return Alimento
+     * @return Plato
      */
     public function setDescripcion($descripcion)
     {
@@ -163,7 +163,7 @@ class Alimento
      *
      * @param float $precio
      *
-     * @return Alimento
+     * @return Plato
      */
     public function setPrecio($precio)
     {
@@ -187,7 +187,7 @@ class Alimento
      *
      * @param \AppBundle\Entity\UnidadMedida $unidadMedida
      *
-     * @return Alimento
+     * @return Plato
      */
     public function setUnidadMedida(\AppBundle\Entity\UnidadMedida $unidadMedida = null)
     {
@@ -209,15 +209,15 @@ class Alimento
     /**
      * Add productoAlimento.
      *
-     * @param \AppBundle\Entity\ProductoAlimento $productoAlimento
+     * @param \AppBundle\Entity\ProductoPlato $productoAlimento
      *
-     * @return Alimento
+     * @return Plato
      */
-    public function addProductoAlimento(\AppBundle\Entity\ProductoAlimento $productoAlimento)
+    public function addProductoPlato(\AppBundle\Entity\ProductoPlato $productoAlimento)
     {
-        $productoAlimento->setAlimento($this);
+        $productoAlimento->setPlato($this);
 
-        $this->productoAlimentos->add($productoAlimento);
+        $this->productoPlatos->add($productoAlimento);
 
         return $this;
     }
@@ -225,11 +225,11 @@ class Alimento
     /**
      * Remove productoAlimento.
      *
-     * @param \AppBundle\Entity\ProductoAlimento $productoAlimento
+     * @param \AppBundle\Entity\ProductoPlato $productoAlimento
      */
-    public function removeProductoAlimento(\AppBundle\Entity\ProductoAlimento $productoAlimento)
+    public function removeProductoPlato(\AppBundle\Entity\ProductoPlato $productoAlimento)
     {
-        $this->productoAlimentos->removeElement($productoAlimento);
+        $this->productoPlatos->removeElement($productoAlimento);
     }
 
     /**
@@ -237,9 +237,9 @@ class Alimento
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProductoAlimentos()
+    public function getProductoPlatos()
     {
-        return $this->productoAlimentos;
+        return $this->productoPlatos;
     }
 
     public function __toString()
@@ -252,20 +252,20 @@ class Alimento
      */
     public function __construct()
     {
-        $this->productoAlimentos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->menuAlimentos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productoPlatos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->menuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add menuAlimento.
      *
-     * @param \AppBundle\Entity\MenuAlimento $menuAlimento
+     * @param \AppBundle\Entity\MenuPlato $menuAlimento
      *
-     * @return Alimento
+     * @return Plato
      */
-    public function addMenuAlimento(\AppBundle\Entity\MenuAlimento $menuAlimento)
+    public function addMenuAlimento(\AppBundle\Entity\MenuPlato $menuAlimento)
     {
-        $this->menuAlimentos[] = $menuAlimento;
+        $this->menuPlatos[] = $menuAlimento;
 
         return $this;
     }
@@ -273,11 +273,11 @@ class Alimento
     /**
      * Remove menuAlimento.
      *
-     * @param \AppBundle\Entity\MenuAlimento $menuAlimento
+     * @param \AppBundle\Entity\MenuPlato $menuAlimento
      */
-    public function removeMenuAlimento(\AppBundle\Entity\MenuAlimento $menuAlimento)
+    public function removeMenuAlimento(\AppBundle\Entity\MenuPlato $menuAlimento)
     {
-        $this->menuAlimentos->removeElement($menuAlimento);
+        $this->menuPlatos->removeElement($menuAlimento);
     }
 
     /**
@@ -285,9 +285,9 @@ class Alimento
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getMenuAlimentos()
+    public function getMenuPlatos()
     {
-        return $this->menuAlimentos;
+        return $this->menuPlatos;
     }
 
     /**
@@ -295,7 +295,7 @@ class Alimento
      *
      * @param float $cantidad
      *
-     * @return Alimento
+     * @return Plato
      */
     public function setCantidad($cantidad)
     {
@@ -319,7 +319,7 @@ class Alimento
      *
      * @param \AppBundle\Entity\Categoria $categoria
      *
-     * @return Alimento
+     * @return Plato
      */
     public function setCategoria(\AppBundle\Entity\Categoria $categoria = null)
     {

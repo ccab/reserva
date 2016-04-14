@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Producto.
+ * Plato.
  *
  * @ORM\Table()
  * @ORM\Entity
@@ -60,9 +60,9 @@ class Producto
     private $unidadMedida;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductoAlimento", mappedBy="producto")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductoPlato", mappedBy="producto")
      */
-    protected $productoAlimentos;
+    protected $productoPlatos;
 
     /**
      * Get id.
@@ -198,19 +198,19 @@ class Producto
      */
     public function __construct()
     {
-        $this->productoAlimentos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productoPlatos = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add productoAlimento.
      *
-     * @param \AppBundle\Entity\ProductoAlimento $productoAlimento
+     * @param \AppBundle\Entity\ProductoPlato $productoAlimento
      *
      * @return Producto
      */
-    public function addProductoAlimento(\AppBundle\Entity\ProductoAlimento $productoAlimento)
+    public function addProductoAlimento(\AppBundle\Entity\ProductoPlato $productoAlimento)
     {
-        $this->productoAlimentos[] = $productoAlimento;
+        $this->productoPlatos[] = $productoAlimento;
 
         return $this;
     }
@@ -218,11 +218,11 @@ class Producto
     /**
      * Remove productoAlimento.
      *
-     * @param \AppBundle\Entity\ProductoAlimento $productoAlimento
+     * @param \AppBundle\Entity\ProductoPlato $productoAlimento
      */
-    public function removeProductoAlimento(\AppBundle\Entity\ProductoAlimento $productoAlimento)
+    public function removeProductoAlimento(\AppBundle\Entity\ProductoPlato $productoAlimento)
     {
-        $this->productoAlimentos->removeElement($productoAlimento);
+        $this->productoPlatos->removeElement($productoAlimento);
     }
 
     /**
@@ -230,9 +230,9 @@ class Producto
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProductoAlimentos()
+    public function getProductoPlatos()
     {
-        return $this->productoAlimentos;
+        return $this->productoPlatos;
     }
 
     public function __toString()

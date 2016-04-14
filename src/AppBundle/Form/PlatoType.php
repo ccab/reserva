@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MenuAlimentoType extends AbstractType
+class PlatoType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -15,8 +15,20 @@ class MenuAlimentoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('alimento')
-            //->add('menu')
+            ->add('codigo')
+            ->add('nombre')
+            ->add('descripcion')
+            ->add('categoria')
+            ->add('precio')
+            ->add('unidadMedida')
+            ->add('cantidad')
+            ->add('productoPlatos', 'collection', [
+                'type' => new ProductoPlatoType(),
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'label' => false,
+            ])
         ;
     }
 
@@ -26,7 +38,7 @@ class MenuAlimentoType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\MenuAlimento',
+            'data_class' => 'AppBundle\Entity\Plato',
         ));
     }
 
@@ -35,6 +47,6 @@ class MenuAlimentoType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_menualimento';
+        return 'appbundle_plato';
     }
 }
