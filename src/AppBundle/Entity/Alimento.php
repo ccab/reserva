@@ -72,6 +72,11 @@ class Alimento
     private $menuAlimentos;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Categoria", inversedBy="alimentos")
+     */
+    private $categoria;
+
+    /**
      * Get id.
      *
      * @return int
@@ -307,5 +312,29 @@ class Alimento
     public function getCantidad()
     {
         return $this->cantidad;
+    }
+
+    /**
+     * Set categoria
+     *
+     * @param \AppBundle\Entity\Categoria $categoria
+     *
+     * @return Alimento
+     */
+    public function setCategoria(\AppBundle\Entity\Categoria $categoria = null)
+    {
+        $this->categoria = $categoria;
+
+        return $this;
+    }
+
+    /**
+     * Get categoria
+     *
+     * @return \AppBundle\Entity\Categoria
+     */
+    public function getCategoria()
+    {
+        return $this->categoria;
     }
 }

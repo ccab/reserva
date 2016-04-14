@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\AppBundle;
+use AppBundle\Entity\MenuAlimento;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuAlimento;
 use AppBundle\Form\MenuAprobarType;
@@ -343,7 +345,7 @@ class AppController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function reporteCompPagoAction(Request $request)
+    public function compPagoAction(Request $request)
     {
         $data = null;
         $matrix = [];
@@ -383,6 +385,38 @@ class AppController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/reporte/solicitud/diaria/desayuno", name="reporte_solicitud_diaria_desayuno")
+     */
+    public function solicDiariaDesayunoAction()
+    {
+        $matrix = [];
+        $first = new \DateTime('monday next week midnight');
+        $last = new \DateTime('sunday next week midnight');
+        $dateInterval = \DateInterval::createFromDateString('1 day');
+
+        for ($date = $first; $date <= $last; $date->add($dateInterval)) {
+            $cantPan = $this->getDoctrine()
+                ->getRepository('AppBundle:Reservacion')
+                ->findPorTipoAlimento('Desayuno', 'Pan', $date);
+
+            $cantLeche = $this->getDoctrine()
+                ->getRepository('AppBundle:Reservacion')
+                ->findPorTipoAlimento('Desayuno', 'Leche', $date);
+
+            $matrix[] = [
+                'fecha' => clone $date,
+                'pan' => $cantPan,
+                'leche' => $cantLeche,
+            ];
+        }
+
+        return $this->render('app/solic_diaria_desayuno.html.twig', [
+            'matrix' => $matrix,
+        ]);
+    }
+
 
     /**
      * @Route("/reporte/cobro/excel/{id}", name="reporte_cobro_excel")

@@ -18,6 +18,7 @@ class AlimentoType extends AbstractType
             ->add('codigo')
             ->add('nombre')
             ->add('descripcion')
+            ->add('categoria')
             ->add('precio')
             ->add('unidadMedida')
             ->add('cantidad')

@@ -64,6 +64,13 @@ easy_admin:
             class: AppBundle\Entity\Producto
         Alimento:
             class: AppBundle\Entity\Alimento
+            list:
+                fields:
+                    - { property: codigo}
+                    - { property: nombre}
+                    - { property: descripcion}
+                    - { property: categoria}
+                    - { property: precio}
         TipoMenu:
             class: AppBundle\Entity\TipoMenu
         Menu:

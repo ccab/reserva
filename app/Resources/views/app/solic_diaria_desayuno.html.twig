@@ -1,0 +1,38 @@
+{% extends ':easy_admin:layout.html.twig' %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-5">
+            <h1 class="title">Reporte Solicitud Diaria Desayuno</h1>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Pan</th>
+            <th>Leche</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in matrix %}
+            <tr>
+                {#Para el trabajo con la localizacion es necesario habilitar la extension
+                 Intl(ver config.yml), dado un objeto DateTime es capaz de localizar y formatear.
+                 Basado en la clase IntlDateFormatter de PHP. Formatos para fecha:
+                 http://userguide.icu-project.org/formatparse/datetime
+                 -Nota: La Zona Horaria debe coincidir con la configurada para el sistema#}
+                <td>{{ item.fecha|date_modify('+1 hour')|localizeddate('none', 'none', 'es_ES','Europe/Berlin','eeee d/MM/Y')|title }}</td>
+                <td>{{ item.pan is defined ? item.pan : '' }}</td>
+                <td>{{ item.leche is defined ? item.leche : '' }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">No se encontraron resultados</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
