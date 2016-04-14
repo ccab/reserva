@@ -56,8 +56,6 @@ easy_admin:
                                   label: 'Repetir Clave'
         Rol:
             class: AppBundle\Entity\Rol
-        Area:
-            class: AppBundle\Entity\Area
         UnidadMedida:
             class: AppBundle\Entity\UnidadMedida
         Producto:
