@@ -97,14 +97,12 @@ class AppController extends Controller
 
     //@Security("has_role('ROLE_JEFE')")
     /**
-     * @Route("aprobar/menu/{day}", defaults={"day":"monday"}, name="aprobar_menu")
+     * @Route("aprobar/menu/{day}", defaults={"day":"Monday"}, name="aprobar_menu")
      */
     public function aprobarMenuAction($day)
     {
-        $semana = $this->obtenerSemana($day);
-
         return $this->render('app/aprobar_menu.html.twig', [
-            'semana' => $semana,
+            'semana' => $this->obtenerSemana($day),
         ]);
     }
 
@@ -153,14 +151,12 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("reservar/semana/{day}", defaults={"day":"monday"}, name="reservar_semana")
+     * @Route("reservar/semana/{day}", defaults={"day":"Monday"}, name="reservar_semana")
      */
     public function reservarSemanaAction($day)
     {
-        $semana = $this->obtenerSemana($day);
-
         return $this->render('app/reservar_semana.html.twig', [
-            'semana' => $semana,
+            'semana' => $this->obtenerSemana($day),
         ]);
     }
 
@@ -206,14 +202,12 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("cancelar/semana/{day}", defaults={"day":"monday"}, name="cancelar_semana")
+     * @Route("cancelar/semana/{day}", defaults={"day":"Monday"}, name="cancelar_semana")
      */
     public function cancelarSemanaAction($day)
     {
-        $semana = $this->obtenerSemana($day);
-
         return $this->render('app/cancelar_semana.html.twig', [
-            'semana' => $semana,
+            'semana' => $this->obtenerSemana($day),
         ]);
     }
 
@@ -661,23 +655,22 @@ class AppController extends Controller
         return $reserMenuPlatosIds;
     }
 
-    /**
-     * @param $day
-     *
-     * @return array
-     */
     private function obtenerSemana($day)
     {
-        $semana = [
-            'monday' => ['es' => 'Lunes', 'active' => $day == 'monday' ? true : false],
-            'tuesday' => ['es' => 'Martes', 'active' => $day == 'tuesday' ? true : false],
-            'wednesday' => ['es' => 'Miercoles', 'active' => $day == 'wednesday' ? true : false],
-            'thursday' => ['es' => 'Jueves', 'active' => $day == 'thursday' ? true : false],
-            'friday' => ['es' => 'Viernes', 'active' => $day == 'friday' ? true : false],
-            'saturday' => ['es' => 'Sabado', 'active' => $day == 'saturday' ? true : false],
-            'sunday' => ['es' => 'Domingo', 'active' => $day == 'sunday' ? true : false],
-        ];
+        $week = [];
+        $first = new \DateTime('monday next week');
+        $last =  new \DateTime('sunday next week');
+        $dateInterval = \DateInterval::createFromDateString('1 day');
 
-        return $semana;
+        for ($date = $first; $date <= $last; $date->add($dateInterval)) {
+            $active = $date->format('l') == $day ? true : false;
+
+            $week[] = [
+                'day' => clone $date,
+                'active' => $active,
+            ];
+        }
+
+        return $week;
     }
 }

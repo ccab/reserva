@@ -7,6 +7,7 @@
  */
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Menu;
 use AppBundle\Form\PlatoType;
 use AppBundle\Form\MenuType;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,21 +70,20 @@ class AdminController extends BaseAdminController
     public function editMenuAction()
     {
         $id = $this->request->query->get('id');
+        /** @var Menu $entity */
         $entity = $this->em->getRepository($this->entity['class'])->find($id);
         $editForm = $this->createForm(new MenuType(), $entity);
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
 
         $editForm->handleRequest($this->request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
             // EXTRAIGO DE LA BD LA RELACION DE ESTE MENU CON TODOS SUS ALIMENTOS
-            $menuAlimentos = $em->getRepository('AppBundle:MenuAlimento')->findByMenu(['menu' => $entity->getId()]);
+            $menuPlatos = $this->getDoctrine()->getRepository('AppBundle:MenuPlato')->findByMenu($entity->getId());
 
             // SI EN EL FORMULARIO DE EDICION SE ELIMINO DE LA COLECCION ALGUN ALIMENTO DEBO ELIMINARLO EXPLICITAMENTE
-            foreach ($menuAlimentos as $value) {
-                if (false === $entity->getMenuAlimentos()->contains($value)) {
-                    $this->em->remove($value);
+            foreach ($menuPlatos as $mp) {
+                if (false === $entity->getMenuPlatos()->contains($mp)) {
+                    $this->em->remove($mp);
                 }
             }
 
