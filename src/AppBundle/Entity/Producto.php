@@ -43,13 +43,6 @@ class Producto
     private $descripcion;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="precio", type="float")
-     */
-    private $precio;
-
-    /**
      * @ORM\Column(name="cantidad", type="float")
      */
     private $cantidad;
@@ -144,30 +137,6 @@ class Producto
     public function getDescripcion()
     {
         return $this->descripcion;
-    }
-
-    /**
-     * Set precio.
-     *
-     * @param float $precio
-     *
-     * @return Producto
-     */
-    public function setPrecio($precio)
-    {
-        $this->precio = $precio;
-
-        return $this;
-    }
-
-    /**
-     * Get precio.
-     *
-     * @return float
-     */
-    public function getPrecio()
-    {
-        return $this->precio;
     }
 
     /**
