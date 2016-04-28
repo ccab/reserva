@@ -232,4 +232,28 @@ class Producto
     {
         return $this->cantidad;
     }
+
+    /**
+     * Add productoPlato
+     *
+     * @param \AppBundle\Entity\ProductoPlato $productoPlato
+     *
+     * @return Producto
+     */
+    public function addProductoPlato(\AppBundle\Entity\ProductoPlato $productoPlato)
+    {
+        $this->productoPlatos[] = $productoPlato;
+
+        return $this;
+    }
+
+    /**
+     * Remove productoPlato
+     *
+     * @param \AppBundle\Entity\ProductoPlato $productoPlato
+     */
+    public function removeProductoPlato(\AppBundle\Entity\ProductoPlato $productoPlato)
+    {
+        $this->productoPlatos->removeElement($productoPlato);
+    }
 }

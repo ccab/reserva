@@ -4,7 +4,7 @@ easy_admin:
     design:
         brand_color: rgb(36, 56, 113)
     formats:
-        number: %d
+        number: '%d'
     list:
         actions:
             - { name: 'show', icon: 'search' }
@@ -16,7 +16,11 @@ easy_admin:
                 actions:
                     - { name: 'reset', type: 'route', label: 'Cambiar Clave', icon: 'key' }
                 fields:
-                    - { property: usuario, label: label.username }
+                    - { property: usuario}
+                    - { property: noSolapin }
+                    - { property: nombre }
+                    - { property: apellido }
+                    - { property: segundoApellido }
                     - { property: roles, label: 'Roles', type: array }
             show:
                 fields:
@@ -25,7 +29,15 @@ easy_admin:
                 fields:
                     usuario:
                         property: usuario
-                        label: label.username
+                    noSolapin:
+                        property: noSolapin
+                        label: Solapin
+                    nombre:
+                        property: nombre
+                    apellido:
+                        property: apellido
+                    seg:
+                        property: segundoApellido
                     roles:
                         property: roles
                         label: 'Roles'
@@ -35,12 +47,26 @@ easy_admin:
                             multiple: true
             new:
                 fields:
+                      noSolapin:
+                          property: noSolapin
+                          label: Solapin
+                          css_class: 'col-sm-4'
+                      nombre:
+                          property: nombre
+                          css_class: 'col-sm-4'
+                      apellido:
+                          property: apellido
+                          css_class: 'col-sm-4'
+                      seg:
+                          property: segundoApellido
+                          css_class: 'col-sm-4'
                       usuario:
                           property: usuario
-                          label: label.username
+                          css_class: 'col-sm-4'
                       roles:
                           property: roles
                           label: 'Roles'
+                          css_class: 'col-sm-4'
                           type: entity
                           type_options:
                               class: AppBundle\Entity\Rol
@@ -48,6 +74,7 @@ easy_admin:
                       clave:
                           property: clave
                           type: repeated
+                          css_class: 'col-sm-4'
                           type_options:
                               type: password
                               first_options:

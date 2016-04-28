@@ -139,4 +139,28 @@ class MenuPlato
     {
         return (string) $this->id;
     }
+
+    /**
+     * Add reservacionMenuPlato
+     *
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato
+     *
+     * @return MenuPlato
+     */
+    public function addReservacionMenuPlato(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato)
+    {
+        $this->reservacionMenuPlatos[] = $reservacionMenuPlato;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservacionMenuPlato
+     *
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato
+     */
+    public function removeReservacionMenuPlato(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato)
+    {
+        $this->reservacionMenuPlatos->removeElement($reservacionMenuPlato);
+    }
 }

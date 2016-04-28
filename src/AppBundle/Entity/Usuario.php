@@ -15,16 +15,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Usuario implements UserInterface, \Serializable
 {
     /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
-    public function getUsername()
-    {
-        return $this->usuario;
-    }
-
-    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -58,6 +48,26 @@ class Usuario implements UserInterface, \Serializable
     private $reservaciones;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $noSolapin;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $nombre;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $apellido;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $segundoApellido;
+
+    /**
      * Get id.
      *
      * @return int
@@ -65,6 +75,16 @@ class Usuario implements UserInterface, \Serializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->usuario;
     }
 
     /**
@@ -280,5 +300,101 @@ class Usuario implements UserInterface, \Serializable
     public function __toString()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set noSolapin
+     *
+     * @param integer $noSolapin
+     *
+     * @return Usuario
+     */
+    public function setNoSolapin($noSolapin)
+    {
+        $this->noSolapin = $noSolapin;
+
+        return $this;
+    }
+
+    /**
+     * Get noSolapin
+     *
+     * @return integer
+     */
+    public function getNoSolapin()
+    {
+        return $this->noSolapin;
+    }
+
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return Usuario
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set apellido
+     *
+     * @param string $apellido
+     *
+     * @return Usuario
+     */
+    public function setApellido($apellido)
+    {
+        $this->apellido = $apellido;
+
+        return $this;
+    }
+
+    /**
+     * Get apellido
+     *
+     * @return string
+     */
+    public function getApellido()
+    {
+        return $this->apellido;
+    }
+
+    /**
+     * Set segundoApellido
+     *
+     * @param string $segundoApellido
+     *
+     * @return Usuario
+     */
+    public function setSegundoApellido($segundoApellido)
+    {
+        $this->segundoApellido = $segundoApellido;
+
+        return $this;
+    }
+
+    /**
+     * Get segundoApellido
+     *
+     * @return string
+     */
+    public function getSegundoApellido()
+    {
+        return $this->segundoApellido;
     }
 }

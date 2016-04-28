@@ -337,4 +337,28 @@ class Plato
     {
         return $this->categoria;
     }
+
+    /**
+     * Add menuPlato
+     *
+     * @param \AppBundle\Entity\MenuPlato $menuPlato
+     *
+     * @return Plato
+     */
+    public function addMenuPlato(\AppBundle\Entity\MenuPlato $menuPlato)
+    {
+        $this->menuPlatos[] = $menuPlato;
+
+        return $this;
+    }
+
+    /**
+     * Remove menuPlato
+     *
+     * @param \AppBundle\Entity\MenuPlato $menuPlato
+     */
+    public function removeMenuPlato(\AppBundle\Entity\MenuPlato $menuPlato)
+    {
+        $this->menuPlatos->removeElement($menuPlato);
+    }
 }

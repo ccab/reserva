@@ -112,4 +112,28 @@ class Categoria
     {
         return $this->nombre;
     }
+
+    /**
+     * Add plato
+     *
+     * @param \AppBundle\Entity\Plato $plato
+     *
+     * @return Categoria
+     */
+    public function addPlato(\AppBundle\Entity\Plato $plato)
+    {
+        $this->platos[] = $plato;
+
+        return $this;
+    }
+
+    /**
+     * Remove plato
+     *
+     * @param \AppBundle\Entity\Plato $plato
+     */
+    public function removePlato(\AppBundle\Entity\Plato $plato)
+    {
+        $this->platos->removeElement($plato);
+    }
 }

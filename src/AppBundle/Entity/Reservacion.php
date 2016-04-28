@@ -199,4 +199,28 @@ class Reservacion
     {
         return $this->numeroComprobante;
     }
+
+    /**
+     * Add reservacionMenuPlato
+     *
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato
+     *
+     * @return Reservacion
+     */
+    public function addReservacionMenuPlato(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato)
+    {
+        $this->reservacionMenuPlatos[] = $reservacionMenuPlato;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservacionMenuPlato
+     *
+     * @param \AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato
+     */
+    public function removeReservacionMenuPlato(\AppBundle\Entity\ReservacionMenuPlato $reservacionMenuPlato)
+    {
+        $this->reservacionMenuPlatos->removeElement($reservacionMenuPlato);
+    }
 }
