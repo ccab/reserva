@@ -1,0 +1,80 @@
+{% extends 'easy_admin/layout.html.twig' %}
+{% form_theme form with easyadmin_config('design.form_theme') %}
+
+{% block main %}
+
+    {{ form_start(form) }}
+    {{ form_row(form.fecha) }}
+    {{ form_row(form.tipoMenu) }}
+    {{ form_row(form.menuPlatos) }}
+
+    <div id="form-actions-row">
+        <button type="submit" class="btn">
+            <i class="fa fa-save"></i> Guardar cambios
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block body_javascript %}
+    {{ parent() }}
+
+    {# CODIGO PERSONALIZADO #}
+    <script type="text/javascript">
+        var $collectionHolder;
+        // setup an "add" link
+        var $addLink = $('<a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar</a>');
+        var $addLinkDiv = $('<div class="add-link"></div>').append($addLink);
+
+        jQuery(document).ready(function() {
+            // Get the div that holds the collection of cuentas
+            $collectionHolder = $('div#appbundle_menu_menuPlatos');
+
+            // add the "add" div
+            $collectionHolder.append($addLinkDiv);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                // add a new form (see next code block)
+                addForm($collectionHolder, $addLinkDiv);
+            });
+
+            function addForm($collectionHolder, $addLinkDiv) {
+                // Get the data-prototype
+                var prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                var index = $collectionHolder.data('index');
+
+                // Get the child forms number
+                $collectionHolder.data('num', $collectionHolder.find("div[id*='appbundle_menu_menuPlatos_']").length);
+                var num = $collectionHolder.data('num') + 1;
+
+                // Set a proper label
+                var newForm = prototype.replace(/__name__label__/g, "# " + num);
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm2 = newForm.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+
+                // Display the form, before the "Add" link div
+                var $newFormDiv = $('<div class="new-form"></div>').append(newForm2);
+                $addLinkDiv.before($newFormDiv);
+
+            }
+
+        });
+
+    </script>
+    {# CODIGO PERSONALIZADO #}
+{% endblock %}

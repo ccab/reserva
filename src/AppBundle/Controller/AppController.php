@@ -3,10 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\AppBundle;
+use AppBundle\Entity\Menu;
 use AppBundle\Entity\MenuPlato;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuPlato;
 use AppBundle\Form\MenuAprobarType;
+use AppBundle\Form\MenuType;
 use AppBundle\Form\ProductoEntradaType;
 use AppBundle\Form\ProductoSalidaType;
 use AppBundle\Form\ResetType;
@@ -414,6 +416,31 @@ class AppController extends Controller
 
         return $this->render('app/solic_diaria_desayuno.html.twig', [
             'matrix' => $matrix,
+        ]);
+    }
+
+
+    /**
+     * @Route("/crear/menu", name="crear_menu")
+     */
+    public function crearMenuAction(Request $request)
+    {
+        $entity = new Menu();
+
+        $form = $this->createForm(new MenuType(), $entity);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($entity);
+            $entityManager->flush();
+            
+            $this->addFlash('success', 'menu creado');
+            return $this->redirectToRoute('admin');
+        }
+        
+        return $this->render('app/crear_menu.html.twig', [
+           'form' => $form->createView(), 
         ]);
     }
 

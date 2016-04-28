@@ -22,11 +22,19 @@ class ProductoPlato
     private $id;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="cantidad", type="float")
+     * @ORM\Column(type="float")
      */
-    private $cantidad;
+    private $pesoBruto;
+    
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $pesoNeto;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UnidadMedida", inversedBy="productoPlatos")
+     */
+    private $unidadMedida;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto", inversedBy="productoPlatos")
@@ -118,5 +126,77 @@ class ProductoPlato
     public function getPlato()
     {
         return $this->plato;
+    }
+
+    /**
+     * Set pesoBruto
+     *
+     * @param float $pesoBruto
+     *
+     * @return ProductoPlato
+     */
+    public function setPesoBruto($pesoBruto)
+    {
+        $this->pesoBruto = $pesoBruto;
+
+        return $this;
+    }
+
+    /**
+     * Get pesoBruto
+     *
+     * @return float
+     */
+    public function getPesoBruto()
+    {
+        return $this->pesoBruto;
+    }
+
+    /**
+     * Set pesoNeto
+     *
+     * @param float $pesoNeto
+     *
+     * @return ProductoPlato
+     */
+    public function setPesoNeto($pesoNeto)
+    {
+        $this->pesoNeto = $pesoNeto;
+
+        return $this;
+    }
+
+    /**
+     * Get pesoNeto
+     *
+     * @return float
+     */
+    public function getPesoNeto()
+    {
+        return $this->pesoNeto;
+    }
+
+    /**
+     * Set unidadMedida
+     *
+     * @param \AppBundle\Entity\UnidadMedida $unidadMedida
+     *
+     * @return ProductoPlato
+     */
+    public function setUnidadMedida(\AppBundle\Entity\UnidadMedida $unidadMedida = null)
+    {
+        $this->unidadMedida = $unidadMedida;
+
+        return $this;
+    }
+
+    /**
+     * Get unidadMedida
+     *
+     * @return \AppBundle\Entity\UnidadMedida
+     */
+    public function getUnidadMedida()
+    {
+        return $this->unidadMedida;
     }
 }

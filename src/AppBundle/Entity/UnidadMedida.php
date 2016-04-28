@@ -41,9 +41,9 @@ class UnidadMedida
     protected $productos;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Plato", mappedBy="unidadMedida")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductoPlato", mappedBy="unidadMedida")
      */
-    protected $alimentos;
+    protected $productoPlatos;
 
     /**
      * Get id.
@@ -150,36 +150,36 @@ class UnidadMedida
     }
 
     /**
-     * Add alimento.
+     * Add productoPlato
      *
-     * @param \AppBundle\Entity\Plato $alimento
+     * @param \AppBundle\Entity\ProductoPlato $productoPlato
      *
      * @return UnidadMedida
      */
-    public function addAlimento(\AppBundle\Entity\Plato $alimento)
+    public function addProductoPlato(\AppBundle\Entity\ProductoPlato $productoPlato)
     {
-        $this->alimentos[] = $alimento;
+        $this->productoPlatos[] = $productoPlato;
 
         return $this;
     }
 
     /**
-     * Remove alimento.
+     * Remove productoPlato
      *
-     * @param \AppBundle\Entity\Plato $alimento
+     * @param \AppBundle\Entity\ProductoPlato $productoPlato
      */
-    public function removeAlimento(\AppBundle\Entity\Plato $alimento)
+    public function removeProductoPlato(\AppBundle\Entity\ProductoPlato $productoPlato)
     {
-        $this->alimentos->removeElement($alimento);
+        $this->productoPlatos->removeElement($productoPlato);
     }
 
     /**
-     * Get alimentos.
+     * Get productoPlatos
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getAlimentos()
+    public function getProductoPlatos()
     {
-        return $this->alimentos;
+        return $this->productoPlatos;
     }
 }

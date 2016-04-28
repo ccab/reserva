@@ -17,7 +17,9 @@ class MenuType extends AbstractType
         $builder
             //->add('aprobado')
             ->add('fecha')
-            ->add('tipoMenu')
+            ->add('tipoMenu', null, [
+                'required' => true,
+            ])
             ->add('menuPlatos', 'collection', [
                 'type' => new MenuPlatoType(),
                 'allow_add' => true,
