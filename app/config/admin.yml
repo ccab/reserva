@@ -102,3 +102,5 @@ easy_admin:
             class: AppBundle\Entity\Menu
         EstadoReservacion:
             class: AppBundle\Entity\EstadoReservacion
+        Categoria:
+            class: AppBundle\Entity\Categoria
