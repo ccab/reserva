@@ -24,7 +24,7 @@ class AdminController extends BaseAdminController
 
     public function createPlatoNewForm($entity)
     {
-        return $this->createForm(new PlatoType(), $entity);
+        return $this->createForm(PlatoType::class, $entity);
     }
 
     public function editPlatoAction()

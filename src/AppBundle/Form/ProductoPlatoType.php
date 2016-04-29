@@ -16,7 +16,9 @@ class ProductoPlatoType extends AbstractType
     {
         $builder
             ->add('producto')
-            ->add('cantidad')
+            ->add('pesoNeto')
+            ->add('pesoBruto')
+            ->add('unidadMedida')
             //->add('alimento')
         ;
     }
@@ -29,13 +31,5 @@ class ProductoPlatoType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\ProductoPlato',
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appbundle_productoplato';
     }
 }

@@ -1,6 +1,6 @@
 # EasyAdmin Configuration
 easy_admin:
-    site_name: '<img src="/reserva/web/logo.jpg" />'
+    site_name: '<img src="../logo.jpg" />'
     design:
         brand_color: rgb(36, 56, 113)
     formats:
@@ -93,7 +93,6 @@ easy_admin:
                 fields:
                     - { property: codigo}
                     - { property: nombre}
-                    - { property: descripcion}
                     - { property: categoria}
                     - { property: precio}
         TipoMenu:

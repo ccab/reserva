@@ -29,12 +29,4 @@ class MenuPlatoType extends AbstractType
             'data_class' => 'AppBundle\Entity\MenuPlato',
         ));
     }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appbundle_menuplato';
-    }
 }

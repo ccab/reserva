@@ -427,7 +427,7 @@ class AppController extends Controller
     {
         $entity = new Menu();
 
-        $form = $this->createForm(new MenuType(), $entity);
+        $form = $this->createForm(MenuType::class, $entity);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

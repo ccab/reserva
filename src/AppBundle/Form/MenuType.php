@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,12 +21,12 @@ class MenuType extends AbstractType
             ->add('tipoMenu', null, [
                 'required' => true,
             ])
-            ->add('menuPlatos', 'collection', [
-                'type' => new MenuPlatoType(),
+            ->add('menuPlatos', CollectionType::class, [
+                'entry_type' => MenuPlatoType::class,
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-                'label' => false,
+                //'label' => false,
             ])
         ;
     }
@@ -38,13 +39,5 @@ class MenuType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Menu',
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appbundle_menu';
     }
 }

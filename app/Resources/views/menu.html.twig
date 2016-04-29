@@ -1,0 +1,98 @@
+{% if app.user and is_granted('ROLE_ADMIN') %}
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Nomencladores <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="{{ path('admin', { entity: 'UnidadMedida', action: 'list' }) }}">
+                    Unidad de Medida
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Producto', action: 'list' }) }}">
+                    Producto
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Categoria', action: 'list' }) }}">
+                    Tipo de Plato
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Gestionar <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
+                    Menu
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Plato', action: 'list' }) }}">
+                    Plato
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('aprobar_menu') }}">
+                    Aprobar Menu
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('salida_producto') }}">
+                    Salida de Producto
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('entrada_producto') }}">
+                    Entrada de Producto
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Reportes <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="{{ path('reporte_comprobante_pago') }}">
+                    Comprobante de Pago
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('reporte_solicitud_diaria_desayuno') }}">
+                    Solicitud Diaria Desayuno
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Reservacion <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+                <a href="{{ path('reservar_semana') }}">
+                    Reservar
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('cancelar_semana') }}">
+                    Cancelar
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('cobrar') }}">
+                    Cobrar
+                </a>
+            </li>
+        </ul>
+    </li>
+{% endif %}

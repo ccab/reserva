@@ -3,6 +3,8 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,17 +19,27 @@ class PlatoType extends AbstractType
         $builder
             ->add('codigo')
             ->add('nombre')
-            ->add('descripcion')
             ->add('categoria')
             ->add('precio')
-            ->add('unidadMedida')
-            ->add('cantidad')
-            ->add('productoPlatos', 'collection', [
-                'type' => new ProductoPlatoType(),
+            ->add('norma')
+            ->add('valorNutricProteina')
+            ->add('valorNutricCarbohidrato')
+            ->add('valorNutricGrasa')
+            ->add('valorNutricEnergia')
+            ->add('temperatura')
+            ->add('tiempo')
+            ->add('observaciones')
+            ->add('preparacion')
+            ->add('coccion')
+            ->add('productoPlatos', CollectionType::class, [
+                'entry_type' => ProductoPlatoType::class,
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-                'label' => false,
+                //'label' => false,
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Guardar Cambios'
             ])
         ;
     }
@@ -40,13 +52,5 @@ class PlatoType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Plato',
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appbundle_plato';
     }
 }

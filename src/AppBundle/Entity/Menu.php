@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Menu.
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @AppAssert\MenuPrecioPlatos
  */
 class Menu
 {

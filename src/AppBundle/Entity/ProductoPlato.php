@@ -199,4 +199,9 @@ class ProductoPlato
     {
         return $this->unidadMedida;
     }
+
+    public function __toString()
+    {
+        return "$this->producto";
+    }
 }
