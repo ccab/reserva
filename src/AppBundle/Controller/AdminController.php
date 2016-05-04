@@ -43,7 +43,7 @@ class AdminController extends BaseAdminController
 
             // SI EN EL FORMULARIO DE EDICION SE ELIMINO DE LA COLECCION ALGUN PRODUCTO DEBO ELIMINARLO EXPLICITAMENTE
             foreach ($productosAlimentos as $value) {
-                if (false === $entity->getProductoPlatos()->contains($value)) {
+                if (false === $entity->getProductosPlato()->contains($value)) {
                     $this->em->remove($value);
                 }
             }
@@ -54,7 +54,7 @@ class AdminController extends BaseAdminController
             return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
         }
 
-        return $this->render('easy_admin/Plato/edit.html.twig', [
+        return $this->render('@EasyAdmin/default/edit.html.twig', [
             'form' => $editForm->createView(),
             'entity_fields' => $this->entity['edit']['fields'],
             'entity' => $entity,

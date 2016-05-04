@@ -31,9 +31,9 @@ class UnidadMedida
     /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="text")
+     * @ORM\Column(type="string", length=5)
      */
-    private $descripcion;
+    private $abreviatura;
 
     /**
      * @ORM\OneToMany(targetEntity="Producto", mappedBy="unidadMedida")
@@ -44,6 +44,16 @@ class UnidadMedida
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductoPlato", mappedBy="unidadMedida")
      */
     protected $productoPlatos;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Conversion", mappedBy="unidadMedidaPlato")
+     */
+    protected $conversionesPlato;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Conversion", mappedBy="unidadMedidaProducto")
+     */
+    protected $conversionesProducto;
 
     /**
      * Get id.
@@ -79,29 +89,7 @@ class UnidadMedida
         return $this->nombre;
     }
 
-    /**
-     * Set descripcion.
-     *
-     * @param string $descripcion
-     *
-     * @return UnidadMedida
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
 
-        return $this;
-    }
-
-    /**
-     * Get descripcion.
-     *
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
     /**
      * Constructor.
      */
@@ -181,5 +169,97 @@ class UnidadMedida
     public function getProductoPlatos()
     {
         return $this->productoPlatos;
+    }
+
+    /**
+     * Add conversionesPlato
+     *
+     * @param \AppBundle\Entity\Conversion $conversionesPlato
+     *
+     * @return UnidadMedida
+     */
+    public function addConversionesPlato(\AppBundle\Entity\Conversion $conversionesPlato)
+    {
+        $this->conversionesPlato[] = $conversionesPlato;
+
+        return $this;
+    }
+
+    /**
+     * Remove conversionesPlato
+     *
+     * @param \AppBundle\Entity\Conversion $conversionesPlato
+     */
+    public function removeConversionesPlato(\AppBundle\Entity\Conversion $conversionesPlato)
+    {
+        $this->conversionesPlato->removeElement($conversionesPlato);
+    }
+
+    /**
+     * Get conversionesPlato
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConversionesPlato()
+    {
+        return $this->conversionesPlato;
+    }
+
+    /**
+     * Add conversionesProducto
+     *
+     * @param \AppBundle\Entity\Conversion $conversionesProducto
+     *
+     * @return UnidadMedida
+     */
+    public function addConversionesProducto(\AppBundle\Entity\Conversion $conversionesProducto)
+    {
+        $this->conversionesProducto[] = $conversionesProducto;
+
+        return $this;
+    }
+
+    /**
+     * Remove conversionesProducto
+     *
+     * @param \AppBundle\Entity\Conversion $conversionesProducto
+     */
+    public function removeConversionesProducto(\AppBundle\Entity\Conversion $conversionesProducto)
+    {
+        $this->conversionesProducto->removeElement($conversionesProducto);
+    }
+
+    /**
+     * Get conversionesProducto
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConversionesProducto()
+    {
+        return $this->conversionesProducto;
+    }
+
+    /**
+     * Set abreviatura
+     *
+     * @param string $abreviatura
+     *
+     * @return UnidadMedida
+     */
+    public function setAbreviatura($abreviatura)
+    {
+        $this->abreviatura = $abreviatura;
+
+        return $this;
+    }
+
+    /**
+     * Get abreviatura
+     *
+     * @return string
+     */
+    public function getAbreviatura()
+    {
+        return $this->abreviatura;
     }
 }

@@ -9,3 +9,9 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
+
+    validator.menu_comprobar_platos:
+        class: AppBundle\Validator\Constraints\MenuComprobarPlatosValidator
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - {name: validator.constraint_validator, alias: menu_comprobar_platos}

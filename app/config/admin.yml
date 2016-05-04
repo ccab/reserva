@@ -1,13 +1,13 @@
 # EasyAdmin Configuration
 easy_admin:
-    site_name: '<img src="../logo.jpg" />'
+    site_name: '<img src="/projects/reserva/web/logo.jpg" />'
     design:
         brand_color: rgb(36, 56, 113)
     formats:
         number: '%d'
     list:
         actions:
-            - { name: 'show', icon: 'search' }
+            #- { name: 'show', icon: 'search' }
             - { name: 'edit', icon: 'pencil' }
     entities:
         Usuario:
@@ -85,8 +85,27 @@ easy_admin:
             class: AppBundle\Entity\Rol
         UnidadMedida:
             class: AppBundle\Entity\UnidadMedida
+        #Este es una entrada para una entidad que sera manejada por EasyAdminBundle
         Producto:
             class: AppBundle\Entity\Producto
+            #Esta es la pagina para listar (tabla)
+            list:
+                fields:
+                    - { property: codigo}
+                    - { property: descripcion }
+            #Esta es la seccion para la pagina de crear (formulario)
+            new:
+                fields:
+                      #Se organizan los campos por linea (la suma de las columnas debe ser 12)
+                      codigo:
+                          property: codigo
+                          css_class: 'col-sm-3'
+                      descripcion:
+                          property: descripcion
+                          css_class: 'col-sm-5'
+                      unidad:
+                          property: unidadMedida
+                          css_class: 'col-sm-4'
         Plato:
             class: AppBundle\Entity\Plato
             list:
@@ -103,3 +122,5 @@ easy_admin:
             class: AppBundle\Entity\EstadoReservacion
         Categoria:
             class: AppBundle\Entity\Categoria
+        Conversion:
+            class: AppBundle\Entity\Conversion

@@ -42,7 +42,7 @@ class ProductoPlato
     private $producto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Plato", inversedBy="productoPlatos")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Plato", inversedBy="productosPlato")
      */
     private $plato;
 

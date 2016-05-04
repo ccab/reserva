@@ -95,7 +95,7 @@ class Plato
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ProductoPlato", mappedBy="plato", cascade={"persist", "remove"})
      */
-    private $productoPlatos;
+    private $productosPlato;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MenuPlato", mappedBy="plato", cascade={"persist", "remove"})
@@ -196,11 +196,11 @@ class Plato
      *
      * @return Plato
      */
-    public function addProductoPlato(\AppBundle\Entity\ProductoPlato $productoAlimento)
+    public function addProductosPlato(\AppBundle\Entity\ProductoPlato $productoAlimento)
     {
         $productoAlimento->setPlato($this);
 
-        $this->productoPlatos->add($productoAlimento);
+        $this->productosPlato->add($productoAlimento);
 
         return $this;
     }
@@ -210,9 +210,9 @@ class Plato
      *
      * @param \AppBundle\Entity\ProductoPlato $productoAlimento
      */
-    public function removeProductoPlato(\AppBundle\Entity\ProductoPlato $productoAlimento)
+    public function removeProductosPlato(\AppBundle\Entity\ProductoPlato $productoAlimento)
     {
-        $this->productoPlatos->removeElement($productoAlimento);
+        $this->productosPlato->removeElement($productoAlimento);
     }
 
     /**
@@ -220,9 +220,9 @@ class Plato
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getProductoPlatos()
+    public function getProductosPlato()
     {
-        return $this->productoPlatos;
+        return $this->productosPlato;
     }
 
     public function __toString()
@@ -235,7 +235,7 @@ class Plato
      */
     public function __construct()
     {
-        $this->productoPlatos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->productosPlato = new \Doctrine\Common\Collections\ArrayCollection();
         $this->menuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
