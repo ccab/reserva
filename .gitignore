@@ -9,6 +9,7 @@
 /composer.phar
 /vendor/
 /web/bundles/
+/web/assets/
 reserva.sql
 .idea
 README.md

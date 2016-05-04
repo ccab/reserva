@@ -31,7 +31,7 @@ class PlatoType extends AbstractType
             ->add('observaciones')
             ->add('preparacion')
             ->add('coccion')
-            ->add('productoPlatos', CollectionType::class, [
+            ->add('productosPlato', CollectionType::class, [
                 'entry_type' => ProductoPlatoType::class,
                 'allow_add' => true,
                 'by_reference' => false,

@@ -10,7 +10,7 @@ use AppBundle\Validator\Constraints as AppAssert;
  *
  * @ORM\Table()
  * @ORM\Entity
- * @AppAssert\MenuPrecioPlatos
+ * @AppAssert\MenuComprobarPlatos()
  */
 class Menu
 {
@@ -205,5 +205,62 @@ class Menu
     {
         $this->menuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->aprobado = false;
+    }
+
+    public function getPrecioPlatos()
+    {
+        $precio = 0;
+
+        /** @var MenuPlato $menuPlato */
+        foreach ($this->menuPlatos as $menuPlato) {
+            $precio += $menuPlato->getPlato()->getPrecio();
+        }
+        
+        return $precio;
+    }
+
+    public function getValoresNutricionales()
+    {
+        $valores = [
+            'proteina'     => 0,
+            'carbohidrato' => 0,
+            'grasa'        => 0,
+            'energia'      => 0,
+        ];
+
+        /** @var MenuPlato $menuPlato */
+        foreach ($this->menuPlatos as $menuPlato) {
+            $valores['proteina'] += $menuPlato->getPlato()->getValorNutricProteina();
+            $valores['carbohidrato'] += $menuPlato->getPlato()->getValorNutricCarbohidrato();
+            $valores['grasa'] += $menuPlato->getPlato()->getValorNutricGrasa();
+            $valores['energia'] += $menuPlato->getPlato()->getValorNutricEnergia();
+        }
+        
+        return $valores;
+    }
+
+    public function getFactorConversion()
+    {
+        $factor = 0;
+        
+        /** @var MenuPlato $menuPlato */
+        foreach ($this->menuPlatos as $menuPlato) {
+            /** @var ProductoPlato $productoPlato */
+            foreach ($menuPlato->getPlato()->getProductosPlato() as $productoPlato) {
+                // Obtener el factor de conversion de la UM del Plato a la UM del Producto
+                // Obtengo las posibles conversiones y busco el factor de la relacion correcta
+                $conversiones = $productoPlato->getUnidadMedida()->getConversionesPlato();
+                $factor = 0;
+                /** @var Conversion $conv */
+                foreach ($conversiones as $conv) {
+                    if ($conv->getUnidadMedidaProducto() == $productoPlato->getProducto()->getUnidadMedida()) {
+                        $factor = $conv->getFactor();
+                    }
+                }
+
+            }
+        }
+        
+        return $factor;
     }
 }
