@@ -1,20 +1,232 @@
 {% extends 'easy_admin/layout.html.twig' %}
-{% form_theme form with easyadmin_config('design.form_theme') %}
+
+{#{% form_theme form with easyadmin_config('design.form_theme') %}#}
+{% use '@EasyAdmin/form/bootstrap_3_layout.html.twig' %}
+{% form_theme form _self %}
+
+{% block body_class %} list list-menu new new-menu {% endblock %}
+
+{% block _menu_menuPlatos_entry_row %}
+    {#<div class="table-responsive" id="div_platos">
+        <table class="table" id="platos">
+            <thead>
+                <tr>
+                    <th>Plato</th>
+                    <th>Norma a servir</th>
+                    <th>Precio</th>
+                </tr>
+            </thead>
+            <tbody>#}
+    {#'onchange':"$(function() { aloha($(this).val());#}
+
+    {#</tbody>
+</table>
+</div>#}
+
+    <tr>
+        <td>
+            {{ form_widget(form.plato, {'attr':{'class':'select_plato'}}) }}
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+{% endblock _menu_menuPlatos_entry_row %}
+
+{% block content_title %}Crear Menu{% endblock %}
 
 {% block main %}
 
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    {{ form_row(form.fecha) }}
-    {{ form_row(form.tipoMenu) }}
-    {{ form_row(form.menuPlatos) }}
+    {{ form_start(form, {'attr':{'class':'form-horizontal new-form'}}) }}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            {{ form_errors(form) }}
+            <br>
+        </div>
 
-    <div id="form-actions-row">
-        <button type="submit" class="btn">
-            <i class="fa fa-save"></i> Guardar cambios
-        </button>
-    </div>
+        <div class="col-sm-6">
+            <div class="form-group  field-text">
+                <label class="col-sm-2 control-label required">Fecha</label>
+                {{ form_widget(form.fecha, {'attr':{'class':'col-sm-10'}}) }}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group  field-entity">
+                <label class="col-sm-2 control-label" for="menu_tipoMenu">Tipo menu</label>
+                <div class="col-sm-10">
+                    {{ form_widget(form.tipoMenu, {'attr':{'class':'col-sm-10'}}) }}
+                </div>
+            </div>
+        </div>
 
-    {{ form_end(form) }}
+        {#<table class="table">
+            <tbody>
+            <tr>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>#}
 
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="table-responsive" id="div_platos">
+                <table class="table" id="platos">
+                    <thead>
+                    <tr>
+                        <th>Plato</th>
+                        <th>Norma a servir</th>
+                        <th>Precio</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for menuPlato in form.menuPlatos %}
+                        <tr>
+                            {% dump(menuPlato.vars) %}
+                            <td>{{ form_widget(menuPlato.plato, {'attr':{'class':'select_plato'}}) }}</td>
+                            <td>{{ menuPlato.vars.value.plato.norma ~ ' g' }}</td>
+                            <td>{{ menuPlato.vars.value.plato.precio }}</td>
+                        </tr>
+                    {% else %}
+                        <tr id="no_records">
+                            <td colspan="3">No se han adicionado platos</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {{ form_row(form.menuPlatos) }}
+        </div>
+
+        <div class="col-xs-12 form-actions">
+            <div class="form-group">
+                <div id="form-actions-row">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Comprobar Menu
+                    </button>
+                </div>
+            </div>
+        </div>
+
+            {#<div id="form-actions-row">
+                <button type="submit" class="btn">
+                    <i class="fa fa-save"></i> Guardar cambios
+                </button>
+            </div>#}
+
+            {{ form_end(form) }}
+        </div>
+
+    <br>
+    <div id="anteriores"></div>
+
+{% endblock %}
+
+
+{% block body_javascript %}
+    <script type="text/javascript">
+
+        var $collectionHolder;
+        // setup an "add" link
+        var $addLink = $('<a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar</a><br><br>');
+        var $addLinkDiv = $('<div class="add-link"></div>').append($addLink);
+
+        jQuery(document).ready(function () {
+
+            $('div.collection-empty').remove();
+            $('a.text-primary').remove();
+
+            $collectionHolder = $('div#menu_menuPlatos');
+            $collectionHolder.append($addLinkDiv);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addLink.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                // add a new form (see next code block)
+                addForm($collectionHolder, $addLinkDiv);
+            });
+
+            function addForm($collectionHolder, $addLinkDiv) {
+                // Get the data-prototype
+                var prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                var index = $collectionHolder.data('index');
+
+                // Get the child forms number
+                $collectionHolder.data('num', $collectionHolder.find("div[id*='menu_menuPlatos_']").length);
+                var num = $collectionHolder.data('num') + 1;
+
+                // Set a proper label
+                var newForm = prototype.replace(/__name__label__/g, "# " + num);
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm2 = newForm.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+
+                // Display the form, before the "Add" link div
+                //var $newFormDiv = $('<div class="new-form"></div>').append(newForm2);
+                $('table#platos tbody #no_records').remove();
+                $('table#platos tbody').append(newForm2);
+                //$addLinkDiv.before($newFormDiv);
+
+                //var a = $("select[id^='menu_menuPlatos_']").last();
+
+                $('.select_plato').change(function () {
+                    getPlato($(this).val(), index);
+                });
+
+            }
+
+        });
+
+        function aloha(val) {
+            alert('aloha!! ' + val);
+        }
+
+        function getPlato(id, index) {
+            $.getJSON(Routing.generate('get_plato', {id: id}),
+                    function (data) {
+                        var child = index + 1;
+                        //alert(child);
+                        //$("#platos td:eq(1)").html(data['codigo']);
+                        //$("#platos td:eq(2)").html(data['precio']);
+                        $('#platos tr:nth-child(' + child + ') td:nth-child(2)').html(data['norma'] + " g");
+                        $('#platos tr:nth-child(' + child + ') td:nth-child(3)').html(data['precio']);
+                        //$('#appbundle_dieta_anticipo_importeEntregadoComidaCUC').val(data['importeEntregadoComidaCUC']);
+                    });
+        }
+
+        function menus() {
+            $.ajax({
+                url: Routing.generate('menus_anteriores', {
+                    dia: $('#menu_fecha_day').val(),
+                    mes: $('#menu_fecha_month').val(),
+                    anno: $('#menu_fecha_year').val()
+                }),
+                success: function (html) {
+                    $("#anteriores").html(html);
+                }
+            });
+        }
+
+        $('#menu_fecha_day').change(function () {
+            menus();
+        });
+
+        $('#menu_fecha_month').change(function () {
+            menus();
+        });
+
+        $('#menu_fecha_year').change(function () {
+            menus();
+        });
+
+    </script>
 {% endblock %}

@@ -16,7 +16,7 @@ class MenuPlatoType extends AbstractType
     {
         $builder
             ->add('plato')
-            //->add('menu')
+            ->add('menu')
         ;
     }
 

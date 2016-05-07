@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\AppBundle;
 use AppBundle\Entity\Menu;
 use AppBundle\Entity\MenuPlato;
+use AppBundle\Entity\Plato;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuPlato;
 use AppBundle\Form\MenuAprobarType;
@@ -15,6 +15,7 @@ use AppBundle\Form\ResetType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class AppController extends Controller
@@ -426,7 +427,7 @@ class AppController extends Controller
     public function crearMenuAction(Request $request)
     {
         $entity = new Menu();
-
+        $entity->setFecha(new \DateTime('today'));
         $form = $this->createForm(MenuType::class, $entity);
 
         $form->handleRequest($request);
@@ -441,6 +442,33 @@ class AppController extends Controller
         
         return $this->render('app/crear_menu.html.twig', [
            'form' => $form->createView(), 
+        ]);
+    }
+
+    /**
+     * @Route("/get/plato/{id}", name="get_plato", options={"expose"=true})
+     */
+    public function getPlatoAction(Plato $entity)
+    {
+        return new JsonResponse([
+            'nombre' => $entity->getNombre(),
+            'norma' => $entity->getNorma(),
+            'precio' => $entity->getPrecio(),
+        ]);
+    }
+
+    /**
+     * @Route("/menus/anteriores/{dia}/{mes}/{anno}", name="menus_anteriores", options={"expose"=true})
+     */
+    public function menusAnterioresAction($dia, $mes, $anno)
+    {
+        $date = \DateTime::createFromFormat('d/m/Y', "$dia/$mes/$anno");
+
+        $entities = $this->getDoctrine()
+            ->getRepository('AppBundle:Menu')->findByFecha($date);
+        
+        return $this->render('app/menus_anteriores.html.twig', [
+            'entities' => $entities,
         ]);
     }
 

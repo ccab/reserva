@@ -2,7 +2,7 @@
 
     {{ form_start(aprobar_form) }}
 
-    <table class="table table-bordered table-striped">
+    <table class="table table-responsive table-bordered table-striped">
         <thead>
             <tr>
                 <th>Aprobar</th>
@@ -27,7 +27,7 @@
                         <td></td>
                         <td></td>
                         <td>{{ menu_plato.plato.nombre }}</td>
-                        <td>{{ menu_plato.plato.unidadMedida }}</td>
+                        <td>{{ menu_plato.plato.norma ~ ' g' }}</td>
                         <td>{{ menu_plato.plato.precio }}</td>
                     </tr>
                 {% endfor %}

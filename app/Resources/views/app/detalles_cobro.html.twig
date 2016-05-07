@@ -1,5 +1,7 @@
 {% extends 'easy_admin/layout.html.twig' %}
 
+{% block body_class %} list list-menu {% endblock %}
+
 {% block main %}
 
     <div class="row">
@@ -32,7 +34,7 @@
                 <tr>
                     <td></td>
                     <td>{{ menu_plato.plato.nombre }}</td>
-                    <td>{{ menu_plato.plato.cantidad ~ " " ~ menu_plato.plato.unidadMedida }}</td>
+                    <td>{{ menu_plato.plato.norma ~ " g" }}</td>
                     <td>{{ menu_plato.plato.precio }}</td>
                     {% set total = total + menu_plato.plato.precio %}
                 </tr>

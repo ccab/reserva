@@ -1,0 +1,36 @@
+{% block main %}
+
+    <table>
+        {% for entity in entities %}
+            <tr>
+                <td><b>Fecha</b></td>
+            </tr>
+            <tr>
+                <td>{{ entity.fecha|localizeddate('none', 'none', 'es_ES','Europe/Berlin','eeee d/MM/Y')|title }}</td>
+            </tr>
+            <tr>
+                <td>.</td>
+            </tr>
+            <tr>
+                <td><b>{{ entity.tipoMenu }}</b></td>
+            </tr>
+            <tr>
+                <td>
+                    {% for menuPlato in entity.menuPlatos %}
+                        {{ menuPlato.plato }}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>.</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td>No se encontraron resultados</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
+

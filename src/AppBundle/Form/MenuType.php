@@ -4,6 +4,7 @@ namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,13 +21,14 @@ class MenuType extends AbstractType
             ->add('fecha')
             ->add('tipoMenu', null, [
                 'required' => true,
+                'label' => 'Tipo de Menú'
             ])
             ->add('menuPlatos', CollectionType::class, [
                 'entry_type' => MenuPlatoType::class,
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-                //'label' => false,
+                'label' => false,
             ])
         ;
     }

@@ -198,6 +198,7 @@ class Menu
     {
         return $this->menuPlatos;
     }
+    
     /**
      * Constructor.
      */
@@ -205,6 +206,11 @@ class Menu
     {
         $this->menuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
         $this->aprobado = false;
+    }
+
+    public function __toString()
+    {
+        return $this->tipoMenu->getNombre();
     }
 
     public function getPrecioPlatos()

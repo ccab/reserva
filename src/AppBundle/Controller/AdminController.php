@@ -62,9 +62,24 @@ class AdminController extends BaseAdminController
         ]);
     }
 
-    public function createMenuNewForm($entity)
+    public function newMenuAction()
     {
-        return $this->createForm(new MenuType(), $entity);
+        $entity = new Menu();
+        $entity->setFecha(new \DateTime('today'));
+        $form = $this->createForm(MenuType::class, $entity);
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($entity);
+            $this->em->flush();
+
+            $this->addFlash('success', 'menu creado');
+            return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
+        }
+
+        return $this->render('app/crear_menu.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     public function editMenuAction()
@@ -93,7 +108,7 @@ class AdminController extends BaseAdminController
             return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
         }
 
-        return $this->render('easy_admin/Menu/edit.html.twig', [
+        return $this->render('@EasyAdmin/default/edit.html.twig', [
             'form' => $editForm->createView(),
             'entity_fields' => $this->entity['edit']['fields'],
             'entity' => $entity,

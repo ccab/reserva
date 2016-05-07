@@ -30,7 +30,7 @@
                                 {% if reservacion %} disabled="disabled" {% endif %}/>
                     </td>
                     <td>{{ menu_plato.plato.nombre }}</td>
-                    <td>{{ menu_plato.plato.cantidad ~ " " ~ menu_plato.plato.unidadMedida }}</td>
+                    <td>{{ menu_plato.plato.norma ~ " g" }}</td>
                     <td>{{ menu_plato.plato.precio }}</td>
                 </tr>
             {% endfor %}
