@@ -36,7 +36,7 @@ class AppController extends Controller
         $id = $request->query->get('id');
         $entity = $this->getDoctrine()->getRepository('AppBundle:Usuario')->find($id);
 
-        $form = $this->createForm(new ResetType(), $entity);
+        $form = $this->createForm(ResetType::class, $entity);
         $form->handleRequest($request);
 
         if ($form->isValid() && $form->isSubmitted()) {

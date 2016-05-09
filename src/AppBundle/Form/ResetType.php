@@ -3,6 +3,8 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,10 +16,17 @@ class ResetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['is_admin'] == false) {
+            $builder
+                ->add('claveActual', PasswordType::class, [
+                    'mapped' => false,
+                ]);
+        }
+
         $builder
-            ->add('clave', 'repeated', [
-                'type' => 'password',
-                'first_options' => ['label' => 'Clave'],
+            ->add('clave', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options' => ['label' => 'Clave Nueva'],
                 'second_options' => ['label' => 'Repetir Clave'],
             ]);
     }
@@ -29,14 +38,7 @@ class ResetType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Usuario',
+            'is_admin' => false,
         ));
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'appbundle_usuario';
     }
 }

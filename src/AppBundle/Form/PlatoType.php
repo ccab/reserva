@@ -36,7 +36,7 @@ class PlatoType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-                //'label' => false,
+                'label' => false,
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Guardar Cambios'

@@ -6,6 +6,7 @@ easy_admin:
     formats:
         number: '%d'
     list:
+        max_results: 10
         actions:
             #- { name: 'show', icon: 'search' }
             - { name: 'edit', icon: 'pencil' }
@@ -38,6 +39,7 @@ easy_admin:
                         property: nombre
                     apellido:
                         property: apellido
+                        label: 'Primer Apellido'
                     seg:
                         property: segundoApellido
                     roles:
@@ -58,6 +60,7 @@ easy_admin:
                           css_class: 'col-sm-4'
                       apellido:
                           property: apellido
+                          label: 'Primer Apellido'
                           css_class: 'col-sm-4'
                       seg:
                           property: segundoApellido
@@ -93,6 +96,14 @@ easy_admin:
                     - { property: abreviatura }
             edit:
                 title: 'Modificar Unidad de Medida'
+            form:
+                fields:
+                    codigo:
+                        property: nombre
+                        css_class: 'col-sm-6'
+                    descripcion:
+                        property: abreviatura
+                        css_class: 'col-sm-6'
         #Este es una entrada para una entidad que sera manejada por EasyAdminBundle
         Producto:
             class: AppBundle\Entity\Producto
@@ -116,16 +127,45 @@ easy_admin:
                           css_class: 'col-sm-4'
             edit:
                 title: 'Modificar Producto'
+                fields:
+                    codigo:
+                        property: codigo
+                        css_class: 'col-sm-3'
+                    descripcion:
+                        property: descripcion
+                        css_class: 'col-sm-5'
+                    unidad:
+                        property: unidadMedida
+                        css_class: 'col-sm-4'
         Plato:
             class: AppBundle\Entity\Plato
             list:
                 fields:
                     - { property: codigo}
                     - { property: nombre}
+                    - { property: norma}
                     - { property: categoria}
                     - { property: precio}
             edit:
                 title: 'Modificar Plato'
+            form:
+                fields:
+                    nombre:
+                        property: nombre
+                        css_class: 'col-sm-3'
+                    norma:
+                        property: norma
+                        label: 'Norma a servir(g)'
+                        css_class: 'col-sm-3'
+                    precio:
+                        property: precio
+                        css_class: 'col-sm-3'
+                    tipo:
+                        property: tipoPlato
+                        label: 'Tipo de Plato'
+                        css_class: 'col-sm-3'
+
+
         TipoMenu:
             class: AppBundle\Entity\TipoMenu
         Menu:
@@ -146,5 +186,13 @@ easy_admin:
                     - { property: nombre}
             edit:
                 title: 'Modificar Categoria'
+            form:
+                fields:
+                    codigo:
+                        property: nombre
+                        css_class: 'col-sm-6'
+                    descripcion:
+                        property: platos
+                        css_class: 'col-sm-6'
         Conversion:
             class: AppBundle\Entity\Conversion
