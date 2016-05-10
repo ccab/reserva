@@ -14,6 +14,7 @@ use AppBundle\Form\ProductoSalidaType;
 use AppBundle\Form\ResetType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -472,6 +473,37 @@ class AppController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/carta/tecnica/{id}", name="carta_tecnica", defaults={"id":0})
+     */
+    public function cartaTecnicaAction(Request $request, $id)
+    {
+        $entity = null;
+        if ($id != 0) {
+            $entity = $this->getDoctrine()->getRepository('AppBundle:Plato')->find($id);   
+        }
+        
+        $form = $this->createFormBuilder()
+            ->add('platos', EntityType::class, [
+                'class' => Plato::class,
+                'data' => $entity,
+            ])
+            ->getForm();
+        
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $entity = $this->getDoctrine()
+                ->getRepository('AppBundle:Plato')
+                ->find($form->get('platos')->getData());
+
+            return $this->redirectToRoute('carta_tecnica', ['id' => $entity->getId()]);
+        }
+
+        return $this->render('app/carta_tecnica.html.twig', [
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ]);
+    }
 
     /**
      * @Route("/reporte/cobro/excel/{id}", name="reporte_cobro_excel")
