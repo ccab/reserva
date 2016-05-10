@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity
  */
-class Producto
+class
+Producto
 {
     /**
      * @var int
@@ -31,7 +32,7 @@ class Producto
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=100)
+     * @ORM\Column(name="nombre", type="string", length=100, nullable=true)
      */
     private $nombre;
 
@@ -43,7 +44,7 @@ class Producto
     private $descripcion;
 
     /**
-     * @ORM\Column(name="cantidad", type="float")
+     * @ORM\Column(name="cantidad", type="float", nullable=true)
      */
     private $cantidad;
 
@@ -206,7 +207,7 @@ class Producto
 
     public function __toString()
     {
-        return $this->nombre;
+        return $this->descripcion;
     }
 
     /**

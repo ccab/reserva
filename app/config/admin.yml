@@ -148,24 +148,18 @@ easy_admin:
                     - { property: precio}
             edit:
                 title: 'Modificar Plato'
-            form:
-                fields:
-                    nombre:
-                        property: nombre
-                        css_class: 'col-sm-3'
-                    norma:
-                        property: norma
-                        label: 'Norma a servir(g)'
-                        css_class: 'col-sm-3'
-                    precio:
-                        property: precio
-                        css_class: 'col-sm-3'
-                    tipo:
-                        property: tipoPlato
-                        label: 'Tipo de Plato'
-                        css_class: 'col-sm-3'
-
-
+#            form:
+#                fields:
+#                    nombre:
+#                        property: nombre
+#                        css_class: 'col-sm-3'
+#                    norma:
+#                        property: norma
+#                        label: 'Norma a servir(g)'
+#                        css_class: 'col-sm-3'
+#                    precio:
+#                        property: precio
+#                        css_class: 'col-sm-3'
         TipoMenu:
             class: AppBundle\Entity\TipoMenu
         Menu:

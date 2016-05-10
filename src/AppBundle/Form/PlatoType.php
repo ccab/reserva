@@ -38,9 +38,6 @@ class PlatoType extends AbstractType
                 'allow_delete' => true,
                 'label' => false,
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Guardar Cambios'
-            ])
         ;
     }
 

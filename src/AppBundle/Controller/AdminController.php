@@ -27,38 +27,36 @@ class AdminController extends BaseAdminController
         return $this->createForm(PlatoType::class, $entity);
     }
 
+    /*public function createPlatoEditForm($entity)
+    {
+        return $this->createForm(PlatoType::class, $entity);
+    }*/
+
     public function editPlatoAction()
     {
         $id = $this->request->query->get('id');
         $entity = $this->em->getRepository($this->entity['class'])->find($id);
-        $editForm = $this->createForm(new PlatoType(), $entity);
-        $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
+        $editForm = $this->createForm(PlatoType::class, $entity);
 
         $editForm->handleRequest($this->request);
         if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
             // EXTRAIGO DE LA BD LA RELACION DE ESTE ALIMENTO CON TODOS SUS PRODUCTOS
-            $productosAlimentos = $em->getRepository('AppBundle:ProductoPlato')->findByPlato($entity->getId());
+            $productosAlimentos = $this->em->getRepository('AppBundle:ProductoPlato')->findByPlato($entity->getId());
 
             // SI EN EL FORMULARIO DE EDICION SE ELIMINO DE LA COLECCION ALGUN PRODUCTO DEBO ELIMINARLO EXPLICITAMENTE
-            foreach ($productosAlimentos as $value) {
-                if (false === $entity->getProductosPlato()->contains($value)) {
-                    $this->em->remove($value);
+            foreach ($productosAlimentos as $productoAlimento) {
+                if (false === $entity->getProductosPlato()->contains($productoAlimento)) {
+                    $this->em->remove($productoAlimento);
                 }
             }
 
             $this->em->persist($entity);
             $this->em->flush();
-
             return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
         }
 
-        return $this->render('@EasyAdmin/default/edit.html.twig', [
+        return $this->render('easy_admin/Plato/new.html.twig', [
             'form' => $editForm->createView(),
-            'entity_fields' => $this->entity['edit']['fields'],
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
         ]);
     }
 
