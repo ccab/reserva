@@ -223,4 +223,15 @@ class Reservacion
     {
         $this->reservacionMenuPlatos->removeElement($reservacionMenuPlato);
     }
+
+    public function getPrecioTotal()
+    {
+        $sum = 0;
+        /** @var ReservacionMenuPlato $reservacionMenuPlato */
+        foreach ($this->reservacionMenuPlatos as $reservacionMenuPlato) {
+            $sum += $reservacionMenuPlato->getMenuPlato()->getPlato()->getPrecio();
+        }
+
+        return $sum;
+    }
 }

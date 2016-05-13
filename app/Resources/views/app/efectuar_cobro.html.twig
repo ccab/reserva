@@ -1,0 +1,81 @@
+{% extends 'easy_admin/layout.html.twig' %}
+
+{% form_theme searchForm '@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block body_class %} list list-menu {% endblock %}
+
+{% block content_title %}Efectuar cobro de reservacion{% endblock %}
+
+{% block main %}
+
+    <div class="row">
+        {{ form_start(searchForm) }}
+        <div class="col-lg-12">
+            <div class="col-lg-3">
+                {{ form_row(searchForm.usuario) }}
+            </div>
+            <div class="col-lg-3">
+                {{ form_row(searchForm.fechaInicial) }}
+            </div>
+            <div class="col-lg-3">
+                {{ form_row(searchForm.fechaFinal) }}
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            {{ form_row(searchForm.tipoMenu) }}
+        </div>
+        <div class="col-lg-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-search"></i> Buscar
+            </button>
+        </div>
+
+        {{ form_end(searchForm) }}
+    </div>
+
+    {{ form_start(selectForm) }}
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Total a pagar</th>
+                <th>Seleccion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set total = 0 %}
+            {% for entity in entities %}
+                <tr>
+                    <td>{{ entity.fecha|localizeddate('none', 'none', 'es_ES','Europe/Berlin','eeee d/MM/Y')|title }}</td>
+                    <td>{{ entity.getPrecioTotal }}</td>
+                    <td>{{ form_widget(attribute(selectForm, entity.id)) }}</td>
+                </tr>
+                {% set total = total + entity.getPrecioTotal %}
+            {% else %}
+                <tr>
+                    <td colspan="4">No se encontraron resultados</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td><b>Total</b></td>
+                <td colspan="2"><b>{{ total }}</b></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="col-lg-2 pull-right">
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-print"></i> Generar comprobante
+        </button>
+    </div>
+
+    {{ form_end(selectForm) }}
+
+{% endblock %}
+
+{% block body_javascript %}
+    <script type="text/javascript">
+        $('.collection-empty').remove();
+    </script>
+{% endblock %}

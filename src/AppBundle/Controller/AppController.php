@@ -7,6 +7,8 @@ use AppBundle\Entity\MenuPlato;
 use AppBundle\Entity\Plato;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuPlato;
+use AppBundle\Entity\TipoMenu;
+use AppBundle\Entity\Usuario;
 use AppBundle\Form\MenuAprobarType;
 use AppBundle\Form\MenuType;
 use AppBundle\Form\ProductoEntradaType;
@@ -16,6 +18,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -241,6 +246,40 @@ class AppController extends Controller
 
         return $this->render('app/cobrar.html.twig', [
             'matrix' => $matrix,
+        ]);
+    }
+
+    /**
+     * @Route("/efectuar/cobro", name="efectuar_cobro")
+     */
+    public function efectuarCobroAction(Request $request)
+    {
+        $entities = $this->getDoctrine()
+            ->getRepository('AppBundle:Reservacion')->findAll();
+
+
+        $selectForm = $this->createSelectForm($entities);
+        $searchForm = $this->createSearchForm();
+
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            $entities = $this->getDoctrine()
+                ->getRepository('AppBundle:Reservacion')
+                ->findEfectuarCobro($searchForm->getData());
+
+            $selectForm = $this->createSelectForm($entities);
+        }
+
+        $selectForm->handleRequest($request);
+        if ($selectForm->isSubmitted() && $selectForm->isValid()) {
+            dump($selectForm->getData());
+        }
+        
+        return $this->render('app/efectuar_cobro.html.twig', [
+
+            'selectForm' => $selectForm->createView(),
+            'searchForm' => $searchForm->createView(),
+            'entities'   => $entities,
         ]);
     }
 
@@ -759,5 +798,50 @@ class AppController extends Controller
         }
 
         return $week;
+    }
+
+    /**
+     * @param $entities
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createSelectForm($entities)
+    {
+        $selectForm = $this->get('form.factory')->createNamedBuilder('selectForm')->getForm();
+
+        foreach ($entities as $entity) {
+            $selectForm->add($entity->getId(), CheckboxType::class, [
+                'value' => $entity->getId(),
+                'required' => false,
+                'label' => false,
+            ]);
+        }
+
+        return $selectForm;
+    }
+
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createSearchForm()
+    {
+        $searchForm = $this->get('form.factory')->createNamedBuilder('searchForm')
+            ->add('usuario', EntityType::class, [
+                'class' => Usuario::class,
+                'choice_label' => 'noSolapin',
+                'required' => false,
+            ])
+            ->add('fechaInicial', DateType::class, [
+                'data' => new \DateTime('monday next week')
+            ])
+            ->add('fechaFinal', DateType::class, [
+                'data' => new \DateTime('sunday next week')
+            ])
+            ->add('tipoMenu', EntityType::class, [
+                'class' => TipoMenu::class,
+                'required' => false,
+            ])
+            ->getForm();
+
+        return $searchForm;
     }
 }

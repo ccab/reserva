@@ -42,7 +42,29 @@ class ReservacionRepository extends \Doctrine\ORM\EntityRepository
 
         return $q->getSingleScalarResult();
     }
-    
-    
+
+    public function findEfectuarCobro($data)
+    {
+        $query = $this->createQueryBuilder('r');
+
+        if (isset($data['usuario'])) {
+            $query->join('r.usuario', 'u')
+                ->where('u.noSolapin = :noSolapin')
+                ->setParameter('noSolapin', $data['usuario']->getNoSolapin());
+        }
+        if (isset($data['fechaInicial'])) {
+            $query->andWhere('r.fecha >= :fechaInicial')
+                ->andWhere('r.fecha <= :fechaFinal')
+                ->setParameter('fechaInicial', $data['fechaInicial'])
+                ->setParameter('fechaFinal', $data['fechaFinal']);
+        }
+        /*if (isset($data['tipoMenu'])) {
+            $query->join('r.', 'u')
+                ->where('u.noSolapin = :noSolapin')
+                ->setParameter('noSolapin', $data['usuario']->getNoSolapin());
+        }*/
+
+        return $query->getQuery()->getResult();
+    }
 
 }
