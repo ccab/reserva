@@ -23,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AppController extends Controller
 {
@@ -62,7 +63,7 @@ class AppController extends Controller
 
         return $this->render('app/reset.html.twig', [
                 'entity' => $entity,
-                'form' => $form->createView(), ]
+                'form' => $form->createView(),]
         );
     }
 
@@ -257,7 +258,6 @@ class AppController extends Controller
         $entities = $this->getDoctrine()
             ->getRepository('AppBundle:Reservacion')->findAll();
 
-
         $selectForm = $this->createSelectForm($entities);
         $searchForm = $this->createSearchForm();
 
@@ -272,14 +272,36 @@ class AppController extends Controller
 
         $selectForm->handleRequest($request);
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
-            dump($selectForm->getData());
-        }
-        
-        return $this->render('app/efectuar_cobro.html.twig', [
+            $entities = [];
+            foreach ($selectForm->getData() as $id => $selected) {
+                if ($selected) {
+                    $entities[] = $this->getDoctrine()
+                        ->getRepository('AppBundle:Reservacion')->find($id);
+                }
+            }
 
+            $html = $this->render('app/comp_pago.html.twig', [
+                'entities' => $entities,
+            ])->getContent();
+
+            return new Response(
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                Response::HTTP_OK,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="file.pdf"'
+                ]
+            );
+
+            /*return $this->render('app/comp_pago.html.twig', [
+                'entities' => $entities,
+            ]);*/
+        }
+
+        return $this->render('app/efectuar_cobro.html.twig', [
             'selectForm' => $selectForm->createView(),
             'searchForm' => $searchForm->createView(),
-            'entities'   => $entities,
+            'entities' => $entities,
         ]);
     }
 
@@ -305,7 +327,7 @@ class AppController extends Controller
 
             return $this->redirectToRoute('cobrar');
         }
-        
+
         return $this->render('app/detalles_cobro.html.twig', [
             'entity' => $entity,
             'menus' => $menus,
@@ -402,12 +424,12 @@ class AppController extends Controller
             ->add('fin', 'date')
             ->add('enviar', 'submit')
             ->getForm();
-        
+
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
             return $this->redirectToRoute('reporte_comprobante_pago', ['search' => serialize($form->getData())]);
         }
-        
+
         foreach ($entities as $entity) {
             $count = 0;
             $reservMenuPlato = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuPlato')->findByReservacion($entity->getId());
@@ -475,13 +497,13 @@ class AppController extends Controller
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($entity);
             $entityManager->flush();
-            
+
             $this->addFlash('success', 'menu creado');
             return $this->redirectToRoute('admin');
         }
-        
+
         return $this->render('app/crear_menu.html.twig', [
-           'form' => $form->createView(), 
+            'form' => $form->createView(),
         ]);
     }
 
@@ -506,7 +528,7 @@ class AppController extends Controller
 
         $entities = $this->getDoctrine()
             ->getRepository('AppBundle:Menu')->findByFecha($date);
-        
+
         return $this->render('app/menus_anteriores.html.twig', [
             'entities' => $entities,
         ]);
@@ -519,18 +541,18 @@ class AppController extends Controller
     {
         $entity = null;
         if ($id != 0) {
-            $entity = $this->getDoctrine()->getRepository('AppBundle:Plato')->find($id);   
+            $entity = $this->getDoctrine()->getRepository('AppBundle:Plato')->find($id);
         }
-        
+
         $form = $this->createFormBuilder()
             ->add('platos', EntityType::class, [
                 'class' => Plato::class,
                 'data' => $entity,
             ])
             ->getForm();
-        
+
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entity = $this->getDoctrine()
                 ->getRepository('AppBundle:Plato')
                 ->find($form->get('platos')->getData());
@@ -540,7 +562,7 @@ class AppController extends Controller
 
         return $this->render('app/carta_tecnica.html.twig', [
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -579,8 +601,7 @@ class AppController extends Controller
             ////$htmlHelper->toRichTextObject('<b>In Bold!</b>')
             ->setCellValue('A1', 'Fecha')
             ->setCellValue('B1', 'Usuario')
-            ->setCellValue('C1', 'Estado')
-            /*->setCellValue('D1', 'Dias')
+            ->setCellValue('C1', 'Estado')/*->setCellValue('D1', 'Dias')
             ->setCellValue('D2', 'Estimado')
             ->setCellValue('E2', 'Real')
             ->setCellValue('F1', 'Fecha')
@@ -600,7 +621,8 @@ class AppController extends Controller
             ->setCellValue('Q1', 'Beneficiario')
             ->setCellValue('Q2', 'Nombre')
             ->setCellValue('R2', 'Area')
-            ->setCellValue('S1', 'Labor a realizar')*/;
+            ->setCellValue('S1', 'Labor a realizar')*/
+        ;
 
         $phpExcelObject->setActiveSheetIndex(0)
             ->setCellValue('A2', $entity->getFecha())
@@ -785,7 +807,7 @@ class AppController extends Controller
     {
         $week = [];
         $first = new \DateTime('monday next week');
-        $last =  new \DateTime('sunday next week');
+        $last = new \DateTime('sunday next week');
         $dateInterval = \DateInterval::createFromDateString('1 day');
 
         for ($date = $first; $date <= $last; $date->add($dateInterval)) {

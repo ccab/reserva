@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -233,5 +234,34 @@ class Reservacion
         }
 
         return $sum;
+    }
+
+    public function getTiposDeMenu()
+    {
+        $tiposMenu = new ArrayCollection();
+
+        /** @var ReservacionMenuPlato $reservacionMenuPlato */
+        foreach ($this->reservacionMenuPlatos as $reservacionMenuPlato) {
+            $tipoMenu = $reservacionMenuPlato->getMenuPlato()->getMenu()->getTipoMenu();
+            if(!$tiposMenu->contains($tipoMenu)) {
+                $tiposMenu->add($tipoMenu);
+            }
+        }
+        
+        return $tiposMenu;
+    }
+
+    public function getPlatosPorTipoMenu(TipoMenu $tipoMenu)
+    {
+        $platos = new ArrayCollection();
+
+        /** @var ReservacionMenuPlato $reservacionMenuPlato */
+        foreach ($this->reservacionMenuPlatos as $reservacionMenuPlato) {
+            if($reservacionMenuPlato->getMenuPlato()->getMenu()->getTipoMenu() == $tipoMenu) {
+                $platos->add($reservacionMenuPlato->getMenuPlato()->getPlato());
+            }
+        }
+        
+        return $platos;
     }
 }

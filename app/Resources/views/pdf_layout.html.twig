@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Bienvenido{% endblock %}</title>
+    {% block stylesheets %}
+        <!-- Bootstrap core CSS -->
+        <link href="{{ absolute_url(asset('bundles/easyadmin/stylesheet/bootstrap.min.css')) }}" rel="stylesheet"
+              type="text/css">
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ absolute_url(asset('favicon.ico')) }}"/>
+</head>
+<body>
+<section class="content-header">
+    {% block content_header %}
+        <h3 class="title">{% block content_title %}{% endblock %}</h3>
+    {% endblock content_header %}
+</section>
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
