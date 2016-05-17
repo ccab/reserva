@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Menu;
 use AppBundle\Form\PlatoType;
 use AppBundle\Form\MenuType;
+use AppBundle\Form\UsuarioType;
 use Symfony\Component\HttpFoundation\Request;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 
@@ -26,11 +27,6 @@ class AdminController extends BaseAdminController
     {
         return $this->createForm(PlatoType::class, $entity);
     }
-
-    /*public function createPlatoEditForm($entity)
-    {
-        return $this->createForm(PlatoType::class, $entity);
-    }*/
 
     public function editPlatoAction()
     {
@@ -113,4 +109,10 @@ class AdminController extends BaseAdminController
             'delete_form' => $deleteForm->createView(),
         ]);
     }
+
+    public function createUsuarioEntityForm($entity)
+    {
+        return $this->createForm(UsuarioType::class, $entity);
+    }
+
 }
