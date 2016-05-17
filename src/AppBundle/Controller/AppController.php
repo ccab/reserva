@@ -20,10 +20,13 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 
 class AppController extends Controller
 {
@@ -36,35 +39,50 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("/reset", name="reset")
+     * @Route("/cambiar/clave", name="cambiar_clave")
      */
-    public function resetAction(Request $request)
+    public function cambiarClaveAction(Request $request)
     {
-        $id = $request->query->get('id');
-        $entity = $this->getDoctrine()->getRepository('AppBundle:Usuario')->find($id);
-
-        $form = $this->createForm(ResetType::class, $entity);
+        $form = $this->createChangePasswordForm();
         $form->handleRequest($request);
 
         if ($form->isValid() && $form->isSubmitted()) {
-            $em = $this->getDoctrine()->getManager();
+            $entity = $this->getDoctrine()
+                ->getRepository('AppBundle:Usuario')
+                ->find($request->query->get('id'));
+            $entityManager = $this->getDoctrine()->getManager();
 
-            $encoded = $this->get('security.password_encoder')->encodePassword($entity, $entity->getClave());
+            $encoded = $this->get('security.password_encoder')
+                ->encodePassword($entity, $form->get('claveNueva')->getData());
             $entity->setClave($encoded);
+            $entityManager->persist($entity);
+            $entityManager->flush();
 
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirectToRoute('admin', [
-                'view' => 'list',
-                'entity' => $request->get('entity'),
-            ]);
+            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('app/reset.html.twig', [
-                'entity' => $entity,
                 'form' => $form->createView(),]
         );
+    }
+
+    private function createChangePasswordForm()
+    {
+        $form = $this->createFormBuilder()
+            ->add('claveNueva', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options' => ['label' => 'Clave Nueva'],
+                'second_options' => ['label' => 'Confirmar Clave'],
+            ])
+            ->getForm();
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $form ->add('claveActual', PasswordType::class, [
+                'constraints' => new UserPassword()
+            ]);
+        }
+        
+        return $form;
     }
 
     /**

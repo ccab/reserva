@@ -15,7 +15,7 @@ easy_admin:
             class: AppBundle\Entity\Usuario
             list:
                 actions:
-                    - { name: 'reset', type: 'route', label: 'Cambiar Clave', icon: 'key' }
+                    - { name: 'cambiar_clave', type: 'route', label: 'Cambiar Clave', icon: 'key' }
                 fields:
                     - { property: noSolapin }
                     - { property: usuario}
