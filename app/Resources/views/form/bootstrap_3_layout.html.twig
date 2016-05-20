@@ -1,0 +1,47 @@
+{% extends '@EasyAdmin/form/bootstrap_3_layout.html.twig'%}
+
+{# EasyAdmin form type #}
+{% block easyadmin_widget %}
+    {% set _trans_parameters = { '%entity_name%':  easyadmin.entity.name|trans, '%entity_label%': easyadmin.entity.label|trans } %}
+
+    {% if form.vars.errors|length > 0 %}
+        {{ form_errors(form) }}
+    {% endif %}
+
+    <div class="row">
+        <input type="hidden" name="referer" value="{{ app.request.query.get('referer', '') }}"/>
+
+        {% for field in form.children if 'hidden' not in field.vars.block_prefixes %}
+            <div class="{{ field.vars.easyadmin.field.css_class|default('col-xs-12') }}">
+                {{ form_row(field) }}
+            </div>
+        {% endfor %}
+
+        <div class="col-xs-12 form-actions">
+            <div class="form-group">
+                <div id="form-actions-row">
+                    {% block item_actions %}
+                        {# the 'save' action is hardcoded for the 'edit' and 'new' views #}
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save"></i> Aceptar
+                        </button>
+
+                        {% set _entity_actions = (easyadmin.view == 'new')
+                            ? easyadmin_get_actions_for_new_item(easyadmin.entity.name)
+                            : easyadmin_get_actions_for_edit_item(easyadmin.entity.name) %}
+
+                        {% set _entity_id = (easyadmin.view == 'new')
+                            ? null
+                            : attribute(easyadmin.item, easyadmin.entity.primary_key_field_name) %}
+
+                        {% set _request_parameters = { entity: easyadmin.entity.name, referer: app.request.query.get('referer') } %}
+
+                        <a class="btn btn-danger" href="{{ path('admin', { entity: easyadmin.entity.name, action: 'list' }) }}">
+                            <i class="fa fa-arrow-left"></i> Cancelar
+                        </a>
+                    {% endblock item_actions %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock easyadmin_widget %}

@@ -4,19 +4,37 @@
             Nomencladores <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
+            <li class="dropdown-header text-blue"> Unidad de Medida</li>
+            <li>
+                <a href="{{ path('admin', { entity: 'UnidadMedida', action: 'new' }) }}">
+                    Adicionar
+                </a>
+            </li>
             <li>
                 <a href="{{ path('admin', { entity: 'UnidadMedida', action: 'list' }) }}">
-                    Unidad de Medida
+                    Listar
+                </a>
+            </li>
+            <li class="dropdown-header text-blue"> Producto</li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Producto', action: 'new' }) }}">
+                    Adicionar
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Producto', action: 'list' }) }}">
-                    Producto
+                    Listar
+                </a>
+            </li>
+            <li class="dropdown-header text-blue"> Categoria de plato</li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Categoria', action: 'new' }) }}">
+                    Adicionar
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Categoria', action: 'list' }) }}">
-                    Tipo de Plato
+                    Listar
                 </a>
             </li>
         </ul>
@@ -57,11 +75,11 @@
                     Entrada de Producto
                 </a>
             </li>
-            <li>
+            {#<li>
                 <a href="{{ path('carta_tecnica') }}">
                     Carta Tecnica
                 </a>
-            </li>
+            </li>#}
         </ul>
     </li>
 
@@ -75,11 +93,11 @@
                     Comprobante de Pago
                 </a>
             </li>
-            <li>
+            {#<li>
                 <a href="{{ path('reporte_solicitud_diaria_desayuno') }}">
                     Solicitud Diaria Desayuno
                 </a>
-            </li>
+            </li>#}
         </ul>
     </li>
 

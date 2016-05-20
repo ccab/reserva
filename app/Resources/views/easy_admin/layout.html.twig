@@ -80,14 +80,27 @@
                          {{ include('@EasyAdmin/default/flash_messages.html.twig') }}
                      {% endblock flash_messages %}
 
-                     <section class="content-header">
+                     {#<section class="content-header">
                          {% block content_header %}
                              <h1 class="title">{% block content_title %}{% endblock %}</h1>
                          {% endblock content_header %}
-                     </section>
+                     </section>#}
 
+                     <br>
                      <section id="main" class="content">
-                         {% block main %}{% endblock %}
+                         <div class="row">
+                             <div class="col-lg-10 col-lg-offset-1">
+                                 <div class="panel panel-primary">
+                                     <div class="panel-heading">
+                                         <h3 class="panel-title">{% block content_title %}{% endblock %}</h3>
+                                     </div>
+                                     <div class="panel-body">
+                                         {% block content_header %}{% endblock content_header %}
+                                         {% block main %}{% endblock %}
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
                      </section>
                  {% endblock content %}
              </div>
