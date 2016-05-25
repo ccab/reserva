@@ -1,0 +1,59 @@
+{% extends 'pdf_layout.html.twig' %}
+
+{% block content_title %}{% endblock %}
+
+{% block body %}
+     <div class="row">
+            <div class="col-lg-12">
+                <h4>Comprobante de pago</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <b>Grupo Empresarial Labiofam</b>
+            </div>
+        </div><br>
+
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div class="col-md-4">
+                    Fecha: {{ entity.fecha|date('d/m/Y') }}
+                </div>
+                <div class="col-md-4">
+                    Folio: {{ entity.numeroComprobante }}
+                </div>
+            </div>
+            <div class="col-lg-4 col-lg-offset-4">
+                Menu: {{ entity.menu.tipoMenu }} (Visitante)
+            </div>
+        </div>
+        <br>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Plato</th>
+                <th>Norma</th>
+                <th>Precio</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set total = 0 %}
+            {% for menuPlato in entity.menu.menuPlatos %}
+            <tr>
+                <td>{{ menuPlato.plato }}</td>
+                <td>{{ menuPlato.plato.norma }}</td>
+                <td>{{ menuPlato.plato.precio }}</td>
+                {% set total = total + menuPlato.plato.precio %}
+            </tr>
+                {% endfor %}
+            <tr>
+                <td colspan="2"><b>Total</b></td>
+                <td><b>{{ total }}</b></td>
+            </tr>
+            </tbody>
+        </table>
+
+{% endblock %}
+

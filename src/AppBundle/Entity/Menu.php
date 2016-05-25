@@ -46,6 +46,11 @@ class Menu
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MenuPlato", mappedBy="menu", cascade={"persist", "remove"})
      */
     private $menuPlatos;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ReservacionVisitante", mappedBy="menu")
+     */
+    private $reservacionVisitante;
 
     /**
      * Get id.
@@ -199,18 +204,10 @@ class Menu
         return $this->menuPlatos;
     }
     
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->menuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->aprobado = false;
-    }
 
     public function __toString()
     {
-        return $this->tipoMenu->getNombre();
+        return "$this->tipoMenu del $this->fecha";
     }
 
     public function getPrecioPlatos()
@@ -268,5 +265,47 @@ class Menu
         }
         
         return $factor;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->menuPlatos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->reservacionVisitante = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add reservacionVisitante
+     *
+     * @param \AppBundle\Entity\ReservacionVisitante $reservacionVisitante
+     *
+     * @return Menu
+     */
+    public function addReservacionVisitante(\AppBundle\Entity\ReservacionVisitante $reservacionVisitante)
+    {
+        $this->reservacionVisitante[] = $reservacionVisitante;
+
+        return $this;
+    }
+
+    /**
+     * Remove reservacionVisitante
+     *
+     * @param \AppBundle\Entity\ReservacionVisitante $reservacionVisitante
+     */
+    public function removeReservacionVisitante(\AppBundle\Entity\ReservacionVisitante $reservacionVisitante)
+    {
+        $this->reservacionVisitante->removeElement($reservacionVisitante);
+    }
+
+    /**
+     * Get reservacionVisitante
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReservacionVisitante()
+    {
+        return $this->reservacionVisitante;
     }
 }

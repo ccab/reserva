@@ -7,12 +7,14 @@ use AppBundle\Entity\MenuPlato;
 use AppBundle\Entity\Plato;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuPlato;
+use AppBundle\Entity\ReservacionVisitante;
 use AppBundle\Entity\TipoMenu;
 use AppBundle\Entity\Usuario;
 use AppBundle\Form\MenuAprobarType;
 use AppBundle\Form\MenuType;
 use AppBundle\Form\ProductoEntradaType;
 use AppBundle\Form\ProductoSalidaType;
+use AppBundle\Form\ReservacionVisitanteType;
 use AppBundle\Form\ResetType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -581,6 +583,45 @@ class AppController extends Controller
         return $this->render('app/carta_tecnica.html.twig', [
             'entity' => $entity,
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/cobrar/reservacion/visitante", name="cobrar_visitante")
+     */
+    public function cobrarVisitanteAction(Request $request)
+    {
+        $entity = new ReservacionVisitante();
+        $entity->setFecha(new \DateTime('today'));
+        $form = $this->createForm(ReservacionVisitanteType::class, $entity);
+        
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            
+            $entityManager->persist($entity);
+            $entityManager->flush();
+
+            /*return $this->render('app/comp_pago_visitante.html.twig', [
+                'entity' => $entity,
+            ]);*/
+
+            $html = $this->render('app/comp_pago_visitante.html.twig', [
+                'entity' => $entity,
+            ])->getContent();
+
+            return new Response(
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                Response::HTTP_OK,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="file.pdf"'
+                ]
+            );
+        }
+        
+        return $this->render('app/cobrar_visitante.html.twig', [
+           'form' => $form->createView(),
         ]);
     }
 

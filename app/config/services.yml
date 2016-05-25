@@ -15,3 +15,9 @@ services:
         arguments: ['@doctrine.orm.entity_manager']
         tags:
             - {name: validator.constraint_validator, alias: menu_comprobar_platos}
+
+    validator.visitante_verificar_menu:
+        class: AppBundle\Validator\Constraints\VisitanteVerificarMenuValidator
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - {name: validator.constraint_validator, alias: visitante_verificar_menu}

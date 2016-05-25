@@ -83,7 +83,7 @@ swiftmailer:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     /home/gadi/wkhtmltox/bin/wkhtmltopdf
+        binary:     /home/carlos/Desktop/wkhtmltox/bin/wkhtmltopdf
         options:
             - { name: 'viewport-size', value: '1280x1024' } #‘1024x768’ }
             - { name: 'page-size', value: 'A4' }

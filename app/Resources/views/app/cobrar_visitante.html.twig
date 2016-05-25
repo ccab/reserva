@@ -1,0 +1,40 @@
+{% extends 'easy_admin/layout.html.twig' %}
+
+{% form_theme form 'form/bootstrap_3_layout.html.twig' %}
+
+{% block body_class %} new new-visitante {% endblock %}
+
+{% block page_title %} Efectuar cobro de reservacion de visitante{% endblock %}
+
+{% block content_title %} Efectuar cobro de reservacion de visitante{% endblock %}
+
+{% block main %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+
+    <div class="row">
+        <div class="col-lg-3">
+            {{ form_row(form.fecha) }}
+        </div>
+        <div class="col-lg-3">
+            {{ form_row(form.nombre) }}
+        </div>
+        <div class="col-lg-3">
+            {{ form_row(form.apellido) }}
+        </div>
+        <div class="col-lg-3">
+            {{ form_row(form.segundoApellido) }}
+        </div>
+
+        <div class="col-lg-11">
+        <div class="col-lg-2 pull-right">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-print"></i> Generar comprobante
+            </button>
+        </div>
+        </div>
+
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
