@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e2efe4527d9741a1e9934c0adcb22d01",
-    "content-hash": "61e9a8c49505212469529c74a66b086d",
+    "hash": "09f1557bcc25cc167231be8c155ec4dc",
+    "content-hash": "bc1958ef6cb9aa06ed1b48c42972c171",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -780,7 +780,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/71420d045b33584dc280bb05d28bafc0dbe3148b",
-                "reference": null,
+                "reference": "71420d045b33584dc280bb05d28bafc0dbe3148b",
                 "shasum": "221230c5c1ae93fc7ee12e11baef3be35d487908"
             },
             "require": {
@@ -1259,7 +1259,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/liuggio/ExcelBundle/zipball/74b6833c772e3e371a398de8bbcd1856a14286ec",
-                "reference": null,
+                "reference": "74b6833c772e3e371a398de8bbcd1856a14286ec",
                 "shasum": "9d7814504f06ad29dd959770fd98f53ed3dde7f7"
             },
             "require": {
@@ -1512,7 +1512,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
-                "reference": null,
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
                 "shasum": "67baf8ea99d4bc3a0e542b11558f7af86a5df548"
             },
             "require": {
@@ -2510,16 +2510,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.8.4",
+            "version": "v2.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "9e14f9f4869c19188a376eab61d9a1c1f1fee347"
+                "reference": "8408816780215fae055599d100b5385d9a247151"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/9e14f9f4869c19188a376eab61d9a1c1f1fee347",
-                "reference": "9e14f9f4869c19188a376eab61d9a1c1f1fee347",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/8408816780215fae055599d100b5385d9a247151",
+                "reference": "8408816780215fae055599d100b5385d9a247151",
                 "shasum": ""
             },
             "require": {
@@ -2534,7 +2534,7 @@
                 "symfony/polyfill-php56": "~1.0",
                 "symfony/polyfill-php70": "~1.0",
                 "symfony/polyfill-util": "~1.0",
-                "symfony/security-acl": "~2.7",
+                "symfony/security-acl": "~2.7|~3.0.0",
                 "twig/twig": "~1.23|~2.0"
             },
             "conflict": {
@@ -2606,7 +2606,11 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Symfony\\Bridge\\": "src/Symfony/Bridge/",
+                    "Symfony\\Bridge\\Doctrine\\": "src/Symfony/Bridge/Doctrine/",
+                    "Symfony\\Bridge\\Monolog\\": "src/Symfony/Bridge/Monolog/",
+                    "Symfony\\Bridge\\ProxyManager\\": "src/Symfony/Bridge/ProxyManager/",
+                    "Symfony\\Bridge\\Swiftmailer\\": "src/Symfony/Bridge/Swiftmailer/",
+                    "Symfony\\Bridge\\Twig\\": "src/Symfony/Bridge/Twig/",
                     "Symfony\\Bundle\\": "src/Symfony/Bundle/",
                     "Symfony\\Component\\": "src/Symfony/Component/"
                 },
@@ -2636,7 +2640,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2016-03-27 12:57:53"
+            "time": "2016-05-09 21:45:54"
         },
         {
             "name": "twig/extensions",
@@ -2762,7 +2766,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/willdurand/JsonpCallbackValidator/zipball/1a7d388bb521959e612ef50c5c7b1691b097e909",
-                "reference": null,
+                "reference": "1a7d388bb521959e612ef50c5c7b1691b097e909",
                 "shasum": "86eaa54dc4ac54fbf68d4258e87f20aa1ed42172"
             },
             "require": {
