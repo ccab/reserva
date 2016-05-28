@@ -264,4 +264,16 @@ class Reservacion
         
         return $platos;
     }
+
+    public function getPlatos()
+    {
+        $platos = new ArrayCollection();
+
+        /** @var ReservacionMenuPlato $reservacionMenuPlato */
+        foreach ($this->reservacionMenuPlatos as $reservacionMenuPlato) {
+            $platos->add($reservacionMenuPlato->getMenuPlato()->getPlato());
+        }
+
+        return $platos;
+    }
 }

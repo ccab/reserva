@@ -1,10 +1,25 @@
 {% extends 'easy_admin/layout.html.twig' %}
 
-{% block body_class %} list list-menu {% endblock %}
+{% form_theme searchForm '@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block body_class %} list list-salida new new-salida  {% endblock %}
 
 {% block content_title %} Salida de productos{% endblock %}
 
 {% block main %}
+    <div class="row">
+        <div class="col-lg-12">
+            {{ form_start(searchForm) }}
+            <div class="col-lg-4">
+                {{ form_row(searchForm.fecha) }}
+            </div>
+            <div class="col-lg-1">
+                {{ form_row(searchForm.buscar) }}
+            </div>
+            {{ form_end(searchForm) }}
+        </div>
+    </div>
+
     {{ form_start(form) }}
 
     <table class="table table-bordered table-striped">
@@ -17,13 +32,12 @@
         </tr>
         </thead>
         <tbody>
-        {% for item in form if item.vars.name != '_token' %}
-            {% set entity = item.vars.value %}
+        {% for id,salida in salidas %}
             <tr>
-                <td>{{ entity.nombre }}</td>
-                <td>{{ entity.unidadMedida }}</td>
-                <td>{{ entity.cantidad }}</td>
-                <td>{{ form_widget(item.cantidadSalida) }}</td>
+                <td>{{ salida.producto }}</td>
+                <td>{{ salida.producto.unidadMedida }}</td>
+                <td>{{ salida.producto.cantidad }}</td>
+                <td>{{ form_widget(attribute(form, id)) }}</td>
             </tr>
         {% else %}
             <tr>
@@ -33,13 +47,12 @@
         </tbody>
     </table>
 
-    {% if form.count > 1 %}
-        <div id="form-actions-row">
-            <button type="submit" class="btn">
-                <i class="fa fa-save"></i> Guardar cambios
-            </button>
+    <div id="form-actions-row">
+        <div class="pull-right">
+            {{ form_widget(form.aceptar, {'attr': {'class': 'btn'}}) }}
+            {{ form_widget(form.generar, {'attr': {'class': 'btn'}}) }}
         </div>
-    {% endif %}
+    </div>
 
     {{ form_end(form) }}
 

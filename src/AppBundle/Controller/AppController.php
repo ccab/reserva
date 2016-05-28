@@ -2,9 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Conversion;
 use AppBundle\Entity\Menu;
 use AppBundle\Entity\MenuPlato;
 use AppBundle\Entity\Plato;
+use AppBundle\Entity\Producto;
+use AppBundle\Entity\ProductoPlato;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuPlato;
 use AppBundle\Entity\ReservacionVisitante;
@@ -25,6 +28,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,11 +84,11 @@ class AppController extends Controller
             ->getForm();
 
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            $form ->add('claveActual', PasswordType::class, [
+            $form->add('claveActual', PasswordType::class, [
                 'constraints' => new UserPassword()
             ]);
         }
-        
+
         return $form;
     }
 
@@ -361,30 +366,53 @@ class AppController extends Controller
      */
     public function salidaProductoAction(Request $request)
     {
-        $productos = $this->getDoctrine()->getRepository('AppBundle:Producto')->findAll();
-        $form = $this->createFormBuilder()->getForm();
+        $fecha = new \DateTime('today');
+        if ($request->query->has('fecha')) {
+            $fecha = unserialize($request->query->get('fecha'));
+        }
 
-        foreach ($productos as $key => $entity) {
-            $form->add($key, new ProductoSalidaType(), [
-                'data_class' => 'AppBundle\Entity\Producto',
-                'data' => $entity,
+        $searchForm = $this->getSearchFormSalida($fecha);
+        $salidas = $this->getSalidas($fecha);
+        $formSalidas = $this->getFormSalidas($salidas);
+
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
+            return $this->redirectToRoute('salida_producto', [
+                'fecha' => serialize($searchForm->get('fecha')->getData()),
             ]);
         }
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            foreach ($productos as $key => $entity) {
-                $entity->setCantidad($entity->getCantidad() - $form->get($key)->get('cantidadSalida')->getData());
+        $formSalidas->handleRequest($request);
+        if ($formSalidas->isValid() && $formSalidas->isSubmitted()) {
+            if ($formSalidas->get('aceptar')->isClicked()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                foreach ($salidas as $key => $salida) {
+                    $salida['producto']->setCantidad($salida['producto']->getCantidad() - $salida['brutoTotal']);
+                }
+
+                $entityManager->flush();
+                return $this->redirectToRoute('salida_producto');
+            } elseif ($formSalidas->get('generar')->isClicked()) {
+                $html = $this->render('app/vale_entrega.html.twig', [
+                    'salidas' => $salidas,
+                ])->getContent();
+
+                return new Response(
+                    $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                    Response::HTTP_OK,
+                    [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'attachment; filename="file.pdf"'
+                    ]
+                );
             }
 
-            $entityManager->flush();
-
-            return $this->redirectToRoute('salida_producto');
         }
 
         return $this->render('app/salida_producto.html.twig', [
-            'form' => $form->createView(),
+            'form' => $formSalidas->createView(),
+            'searchForm' => $searchForm->createView(),
+            'salidas' => $salidas,
         ]);
     }
 
@@ -594,11 +622,11 @@ class AppController extends Controller
         $entity = new ReservacionVisitante();
         $entity->setFecha(new \DateTime('today'));
         $form = $this->createForm(ReservacionVisitanteType::class, $entity);
-        
+
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
             $entityManager = $this->getDoctrine()->getManager();
-            
+
             $entityManager->persist($entity);
             $entityManager->flush();
 
@@ -619,9 +647,9 @@ class AppController extends Controller
                 ]
             );
         }
-        
+
         return $this->render('app/cobrar_visitante.html.twig', [
-           'form' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -923,6 +951,107 @@ class AppController extends Controller
             ])
             ->getForm();
 
+        return $searchForm;
+    }
+
+    /**
+     * @param $fecha
+     * @return array
+     */
+    private function getSalidas($fecha)
+    {
+        $salidas = [];
+        $fecha = is_null($fecha) ? \DateTime::createFromFormat('d/m/Y', '30/05/2016') : $fecha;
+
+        $reservaciones = $this->getDoctrine()
+            ->getRepository('AppBundle:Reservacion')
+            ->findByFecha($fecha);
+
+        /** @var Reservacion $reservacion */
+        foreach ($reservaciones as $reservacion) {
+            /** @var Plato $plato */
+            foreach ($reservacion->getPlatos() as $plato) {
+                /** @var ProductoPlato $productoPlato */
+                foreach ($plato->getProductosPlato() as $productoPlato) {
+                    $id = $productoPlato->getProducto()->getId();
+                    $conversion = $this->getConversionPesoBruto($productoPlato);
+
+                    // Si existe en el listado debo añadir el Peso Bruto
+                    // de lo contrario lo creo
+                    if (isset($salidas[$id])) {
+                        $conversion += $salidas[$id]['brutoTotal'];
+                    }
+
+                    $salidas[$id] = [
+                        'producto' => $productoPlato->getProducto(),
+                        //'um' => $productoPlato->getUnidadMedida(),
+                        'brutoTotal' => $conversion,
+                    ];
+                }
+            }
+        }
+
+
+        return $salidas;
+    }
+
+    /**
+     * @param ProductoPlato $productoPlato
+     * @return mixed
+     */
+    private function getConversionPesoBruto($productoPlato)
+    {
+        // Obtener el factor de conversion de la UM del Plato a la UM del Producto en almacen
+        // Obtengo las posibles conversiones y busco el factor de la relacion correcta
+        $conversiones = $productoPlato->getUnidadMedida()->getConversionesPlato();
+        $factor = 0;
+        /** @var Conversion $conv */
+        foreach ($conversiones as $conv) {
+            if ($conv->getUnidadMedidaProducto() == $productoPlato->getProducto()->getUnidadMedida()) {
+                $factor = $conv->getFactor();
+            }
+        }
+
+        $conversion = $productoPlato->getPesoBruto() * $factor;
+        return $conversion;
+    }
+
+    /**
+     * @param $salidas
+     * @return Form
+     */
+    private function getFormSalidas($salidas)
+    {
+        $form = $this->createFormBuilder()->getForm();
+
+        foreach ($salidas as $id => $salida) {
+            $form->add($id, TextType::class, [
+                'data' => $salida['brutoTotal'],
+                'read_only' => true,
+            ]);
+        }
+
+        $form->add('aceptar', SubmitType::class)
+            ->add('generar', SubmitType::class, [
+                'label' => 'Generar comprobante'
+            ]);
+
+        return $form;
+    }
+
+    /**
+     * @param $fecha
+     * @return Form
+     */
+    private function getSearchFormSalida($fecha)
+    {
+        $searchForm = $this->createFormBuilder()
+            ->add('fecha', DateType::class, [
+                'required' => false,
+                'data' => $fecha,
+            ])
+            ->add('buscar', SubmitType::class)
+            ->getForm();
         return $searchForm;
     }
 }

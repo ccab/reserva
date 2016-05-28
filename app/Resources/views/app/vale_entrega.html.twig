@@ -1,0 +1,82 @@
+{% extends 'pdf_layout.html.twig' %}
+
+{% block content_title %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Vale de entrega</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <b>Grupo Empresarial Labiofam</b>
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="col-md-4">
+                Organisno: Minag
+            </div>
+            <div class="col-md-4">
+                Empresa: Labiofam EAS
+            </div>
+            <div class="col-md-4">
+                Fecha: {{ date('today')|date('d/m/Y') }}
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Descripcion</th>
+            <th>UM</th>
+            <th>Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for salida in salidas %}
+            <tr>
+                <td>{{ salida.producto.codigo }}</td>
+                <td>{{ salida.producto.descripcion }}</td>
+                <td>{{ salida.producto.unidadMedida }}</td>
+                <td>{{ salida.brutoTotal }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-6">
+            Entregado por:
+        </div>
+        <div class="col-md-6">
+            Recibido por:
+        </div>
+        <div class="col-md-6">
+            Nombre y Apellidos:
+        </div>
+        <div class="col-md-6">
+            Nombre y Apellidos:
+        </div>
+        <div class="col-md-6">
+            Fecha:
+        </div>
+        <div class="col-md-6">
+            Fecha:
+        </div>
+        <div class="col-md-6">
+            Firma:
+        </div>
+        <div class="col-md-6">
+            Firma:
+        </div>
+    </div>
+
+{% endblock %}
+
