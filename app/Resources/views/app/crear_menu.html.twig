@@ -80,7 +80,6 @@
                     <tbody>
                     {% for menuPlato in form.menuPlatos %}
                         <tr>
-                            {% dump(menuPlato.vars) %}
                             <td>{{ form_widget(menuPlato.plato, {'attr':{'class':'select_plato'}}) }}</td>
                             <td>{{ menuPlato.vars.value.plato.norma ~ ' g' }}</td>
                             <td>{{ menuPlato.vars.value.plato.precio }}</td>

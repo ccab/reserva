@@ -44,12 +44,12 @@ class MenuComprobarPlatosValidator extends ConstraintValidator {
 
         // TODO: definir cifras para almuerzo y comida
         //if ($entity->getTipoMenu() == 'Desayuno') {
-            if ($valores['proteina'] < 75 || $valores['carbohidrato'] < 375 || $valores['grasa'] < 50 || $valores['energia'] < 150) {
+          /*  if ($valores['proteina'] < 75 || $valores['carbohidrato'] < 375 || $valores['grasa'] < 50 || $valores['energia'] < 150) {
                 $this->context->buildViolation($constraint->message." Proteinas: $valores[proteina] de 75. 
                 Carbohidratos: $valores[carbohidrato] de 375. Grasa: $valores[grasa] de 50. 
                 Energia: $valores[energia] de 150")
                     ->addViolation();
-            }
+            }*/
         //}
 
 

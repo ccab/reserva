@@ -1,0 +1,174 @@
+{% extends ':easy_admin:layout.html.twig' %}
+
+{% use '@EasyAdmin/form/bootstrap_3_layout.html.twig' %}
+{% form_theme form _self %}
+{% form_theme form.fecha '@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block _recepcion_recepciones_entry_row %}
+    <tr id="recepcion___name__">
+        <td>{{ form_widget(form.producto) }}</td>
+        <td id="recepcion___name___codigo"></td>
+        <td id="recepcion___name___um"></td>
+        <td>{{ form_widget(form.cantidad) }}</td>
+        <td>
+            <a href="#" onclick="
+                    $(function() {
+                        if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+                        var containerDiv = $('#recepcion___name__');
+                        containerDiv.remove();
+                    });
+                " class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+            </a>
+        </td>
+    </tr>
+{% endblock _recepcion_recepciones_entry_row %}
+
+{% block body_class %} list list-menu {% endblock %}
+
+{% block content_title %} Recepcionar productos{% endblock %}
+
+{% block main %}
+    {{ form_start(form) }}
+
+    <div class="col-sm-10 col-sm-offset-1">
+        {{ form_errors(form) }}
+        <br>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-4 pull-right">
+            {{ form_row(form.fecha) }}
+        </div>
+    </div><br>
+
+    <div class="table-responsive" id="div_productos">
+        <table class="table" id="productos">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Código</th>
+                <th>Unidad de Medida</th>
+                <th>Cantidad</th>
+                <th>Acción</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for recepcion in form.recepciones %}
+                <tr id="{{ 'recepcion_' ~ loop.index0 }}">
+                    <td>{{ form_widget(recepcion.producto) }}</td>
+                    <td id="{{ 'recepcion_' ~ loop.index0 ~ '_codigo'}}">{{ recepcion.vars.value.producto.codigo is defined ? recepcion.vars.value.producto.codigo }}</td>
+                    <td id="{{ 'recepcion_' ~ loop.index0 ~ '_um'}}">{{ recepcion.vars.value.producto.unidadMedida.abreviatura is defined ? recepcion.vars.value.producto.unidadMedida.abreviatura }}</td>
+                    <td>{{ form_widget(recepcion.cantidad) }}</td>
+                    <td>
+                        <a href="#" onclick="
+                                $(function() {
+                                    if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+                                    var containerDiv = $('#recepcion___name__');
+                                    containerDiv.remove();
+                                });
+                            " class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr id="no_records">
+                    <td colspan="5">No se han adicionado platos</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% do form.recepciones.setRendered %}
+    {% set dp = form_row(form.recepciones.vars.prototype)  %}
+    <div id="recepcion_recepciones"  data-prototype="{{ dp }}"></div>
+
+    <div id="form-actions-row">
+        <div class="pull-right">
+            {{ form_widget(form.imprimir, {'attr': {'class': 'btn'}}) }}
+            {{ form_widget(form.aceptar, {'attr': {'class': 'btn btn-success'}}) }}
+            <a href="{{ path('homepage') }}" class="btn btn-danger">Cancelar</a>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+    {% block body_javascript %}
+        <script type="text/javascript">
+
+            $('div.collection-empty').remove();
+            $('a.text-primary').remove();
+
+            var $collectionHolder;
+            var $addLink = $('<div class="col-sm-2"><a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar producto</a></div><br><br>');
+            var $addLinkDiv = $('<div class="add-link"></div>').append($addLink);
+
+            jQuery(document).ready(function () {
+                $collectionHolder = $('div#recepcion_recepciones');
+                $collectionHolder.append($addLinkDiv);
+
+                $addLink.on('click', function (e) {
+                    // prevent the link from creating a "#" on the URL
+                    e.preventDefault();
+                    // add a new form (see next code block)
+                    addForm($collectionHolder, $addLinkDiv);
+                });
+
+                function addForm($collectionHolder, $addLinkDiv) {
+                    // Get the data-prototype
+                    var prototype = $collectionHolder.data('prototype');
+
+                    // get the new index
+                    //var index = $collectionHolder.data('index');
+                    if ($('#no_records').length > 0) {
+                        var index = 0;
+                    } else {
+                        var index = $('#productos tr').length - 1;
+                    }
+                    // Get the child forms number
+                    $collectionHolder.data('num', $collectionHolder.find("div[id*='recepcion_']").length);
+                    var num = $collectionHolder.data('num') + 1;
+
+                    // Set a proper label
+                    var newForm = prototype.replace(/__name__label__/g, "# " + num);
+
+                    // Replace '__name__' in the prototype's HTML to
+                    // instead be a number based on how many items we have
+                    var newForm2 = newForm.replace(/__name__/g, index);
+
+                    // increase the index with one for the next item
+                    $collectionHolder.data('index', index + 1);
+
+                    $('table#productos tbody #no_records').remove();
+                    $('table#productos tbody').append(newForm2);
+
+
+                    $('select').change(function () {
+                        /*console.log(this.id);
+                         console.log($(this).find('option:selected').attr('value'));
+                         console.log($(this).closest('tr').prop('id'));*/
+                        getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
+                    });
+                }
+
+                $('select').change(function () {
+                    getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
+                });
+
+            });
+
+            function getPlato(idEntity, idElement) {
+                $.getJSON(Routing.generate('get_producto', {id: idEntity}),
+                        function (data) {
+                            $('#' + idElement + '_codigo').html(data['codigo']);
+                            $('#' + idElement + '_um').html(data['um']);
+                        });
+            }
+
+
+        </script>
+    {% endblock %}

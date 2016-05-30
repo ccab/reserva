@@ -16,6 +16,9 @@
             <div class="col-lg-1">
                 {{ form_row(searchForm.buscar) }}
             </div>
+            <div class="col-lg-1">
+                <a href="{{ path('salida_producto') }}" class="btn btn-default">Limpiar</a>
+            </div>
             {{ form_end(searchForm) }}
         </div>
     </div>
@@ -35,9 +38,9 @@
         {% for id,salida in salidas %}
             <tr>
                 <td>{{ salida.producto }}</td>
-                <td>{{ salida.producto.unidadMedida }}</td>
+                <td>{{ salida.producto.unidadMedida.abreviatura }}</td>
                 <td>{{ salida.producto.cantidad }}</td>
-                <td>{{ form_widget(attribute(form, id)) }}</td>
+                <td><div class="col-lg-3">{{ form_widget(attribute(form, id)) }}</div></td>
             </tr>
         {% else %}
             <tr>
@@ -49,8 +52,9 @@
 
     <div id="form-actions-row">
         <div class="pull-right">
-            {{ form_widget(form.aceptar, {'attr': {'class': 'btn'}}) }}
             {{ form_widget(form.generar, {'attr': {'class': 'btn'}}) }}
+            {{ form_widget(form.aceptar, {'attr': {'class': 'btn btn-success'}}) }}
+            <a href="{{ path('homepage') }}" class="btn btn-danger">Cancelar</a>
         </div>
     </div>
 

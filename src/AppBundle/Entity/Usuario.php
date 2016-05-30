@@ -397,4 +397,9 @@ class Usuario implements UserInterface, \Serializable
     {
         return $this->segundoApellido;
     }
+
+    public function getNombreCompleto()
+    {
+        return "$this->nombre $this->apellido $this->segundoApellido";
+    }
 }

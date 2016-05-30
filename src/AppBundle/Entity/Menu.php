@@ -26,7 +26,7 @@ class Menu
     /**
      * @var bool
      *
-     * @ORM\Column(name="aprobado", type="boolean")
+     * @ORM\Column(name="aprobado", type="boolean", nullable=true)
      */
     private $aprobado;
 
@@ -207,7 +207,7 @@ class Menu
 
     public function __toString()
     {
-        return "$this->tipoMenu del $this->fecha";
+        return "$this->tipoMenu";
     }
 
     public function getPrecioPlatos()

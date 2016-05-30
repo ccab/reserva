@@ -1,0 +1,76 @@
+{% extends 'pdf_layout.html.twig' %}
+
+{% block content_title %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <b>Grupo Empresarial Labiofam</b>
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <div class="col-md-4">
+                Organisno: Minag
+            </div>
+            <div class="col-md-4">
+                Empresa: Labiofam EAS
+            </div>
+            <div class="col-md-4">
+                Fecha: {{ date('today')|date('d/m/Y') }}
+            </div>
+        </div>
+    </div>
+    <br>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Codigo</th>
+            <th>Descripcion</th>
+            <th>UM</th>
+            <th>Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for recepcion in data.recepciones %}
+            <tr>
+                <td>{{ recepcion.producto.codigo }}</td>
+                <td>{{ recepcion.producto.descripcion }}</td>
+                <td>{{ recepcion.producto.unidadMedida }}</td>
+                <td>{{ recepcion.cantidad }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-6">
+            Entregado por:
+        </div>
+        <div class="col-md-6">
+            Recibido por:
+        </div>
+        <div class="col-md-6">
+            Nombre y Apellidos: {{ app.user.getNombreCompleto }}
+        </div>
+        <div class="col-md-6">
+            Nombre y Apellidos:
+        </div>
+        <div class="col-md-6">
+            Fecha: {{ data.fecha|date('d/m/Y') }}
+        </div>
+        <div class="col-md-6">
+            Fecha:
+        </div>
+        <div class="col-md-6">
+            Firma:
+        </div>
+        <div class="col-md-6">
+            Firma:
+        </div>
+    </div>
+
+{% endblock %}
+

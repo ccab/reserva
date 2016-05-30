@@ -17,6 +17,8 @@ use AppBundle\Form\MenuAprobarType;
 use AppBundle\Form\MenuType;
 use AppBundle\Form\ProductoEntradaType;
 use AppBundle\Form\ProductoSalidaType;
+use AppBundle\Form\RecepcionarProductoType;
+use AppBundle\Form\RecepcionType;
 use AppBundle\Form\ReservacionVisitanteType;
 use AppBundle\Form\ResetType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -24,6 +26,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -34,6 +37,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints\Callback;
 
 class AppController extends Controller
 {
@@ -450,6 +454,50 @@ class AppController extends Controller
 
 
     /**
+     * @Route("recepcionar/productos", name="recepcionar_productos")
+     */
+    public function recepcionarProductosAction(Request $request)
+    {
+        $form = $this->createForm(RecepcionType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('aceptar')->isClicked()) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $data = $form->getData();
+
+                foreach ($data['recepciones'] as $recepcion) {
+                    /** @var Producto $producto */
+                    $producto = $recepcion['producto'];
+                    $producto->setCantidad($producto->getCantidad() + $recepcion['cantidad']);
+                }
+
+                $entityManager->flush();
+                $this->addFlash('success', 'Recepcion realizada con exito');
+                return $this->redirectToRoute('recepcionar_productos');
+            } elseif ($form->get('imprimir')->isClicked()) {
+                $html = $this->render('app/informe_recepcion.html.twig', [
+                    'data' => $form->getData(),
+                ])->getContent();
+
+                return new Response(
+                    $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                    Response::HTTP_OK,
+                    [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'attachment; filename="file.pdf"'
+                    ]
+                );
+            }
+        }
+
+        return $this->render('app/recepcionar_producto.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
      * @Route("/reporte/comprobante/pago", name="reporte_comprobante_pago")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -564,6 +612,17 @@ class AppController extends Controller
             'nombre' => $entity->getNombre(),
             'norma' => $entity->getNorma(),
             'precio' => $entity->getPrecio(),
+        ]);
+    }
+
+    /**
+     * @Route("/get/producto/{id}", name="get_producto", options={"expose"=true})
+     */
+    public function getProductoAction(Producto $entity)
+    {
+        return new JsonResponse([
+            'codigo' => $entity->getCodigo(),
+            'um' => $entity->getUnidadMedida()->getAbreviatura(),
         ]);
     }
 
