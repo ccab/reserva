@@ -1,0 +1,59 @@
+{% extends 'easy_admin/layout.html.twig' %}
+
+{% block body_class %} list list-menu {% endblock %}
+
+{% block content_title %}Existencia de productos en almacen{% endblock %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            Organismo: Minagri
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+            Empresa: 131012144 Emp Aseguramiento y serv Labiofam
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            Fecha: {{ date()|date('d/m/Y') }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+            <b>Existencia de productos en Almacén</b>
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-lg-offset-1">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>UM</th>
+                    <th>Cantidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.codigo }}</td>
+                        <td>{{ entity.descripcion }}</td>
+                        <td>{{ entity.unidadMedida.abreviatura }}</td>
+                        <td>{{ entity.cantidad }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="pull-right">
+        <a href="{{ path('reporte_existencia_almacen', {'imprimir': true}) }}" class="btn btn-default"> Imprimir</a>
+    </div>
+
+{% endblock %}

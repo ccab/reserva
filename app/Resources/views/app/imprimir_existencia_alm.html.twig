@@ -1,0 +1,54 @@
+{% extends 'pdf_layout.html.twig' %}
+
+{% block content_title %}{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-lg-4">
+            Organismo: Minagri
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            Empresa: 131012144 Emp Aseguramiento y serv Labiofam
+        </div>
+        <div class="col-lg-4">
+            Fecha: {{ date()|date('d/m/Y') }}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+            <b>Existencia de productos en Almacén</b>
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 col-lg-offset-1">
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Descripción</th>
+                    <th>UM</th>
+                    <th>Cantidad</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.codigo }}</td>
+                        <td>{{ entity.descripcion }}</td>
+                        <td>{{ entity.unidadMedida.abreviatura }}</td>
+                        <td>{{ entity.cantidad }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+

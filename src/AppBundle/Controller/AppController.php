@@ -713,6 +713,39 @@ class AppController extends Controller
     }
 
     /**
+     * @Route("existencia/almacen", name="reporte_existencia_almacen")
+     */
+    public function existenciaAlmacenAction(Request $request)
+    {
+        $entities = $this->getDoctrine()->getRepository('AppBundle:Producto')->findAll();
+
+        if ($request->query->has('imprimir')) {
+            /*return $this->render('app/imprimir_existencia_alm.html.twig', [
+                'entities' => $entities,
+            ]);*/
+
+            $html = $this->render('app/imprimir_existencia_alm.html.twig', [
+                'entities' => $entities,
+            ])->getContent();
+
+            return new Response(
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                Response::HTTP_OK,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="file.pdf"'
+                ]
+            );
+        } else {
+            return $this->render('app/existencia_almacen.html.twig', [
+                'entities' => $entities,
+            ]);
+        }
+
+
+    }
+
+    /**
      * @Route("/reporte/cobro/excel/{id}", name="reporte_cobro_excel")
      */
     public function crearExcelAction(Reservacion $entity)
