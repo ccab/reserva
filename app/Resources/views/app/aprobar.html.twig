@@ -7,7 +7,7 @@
             <tr>
                 <th>Aprobar</th>
                 <th>Tipo de Menu</th>
-                <th>Alimento</th>
+                <th>Plato</th>
                 <th>Cantidad</th>
                 <th>Precio</th>
             </tr>
@@ -22,6 +22,7 @@
                     <td></td>
                     <td></td>
                 </tr>
+                {% set total = 0 %}
                 {% for menu_plato in entity.menuPlatos %}
                     <tr>
                         <td></td>
@@ -29,8 +30,13 @@
                         <td>{{ menu_plato.plato.nombre }}</td>
                         <td>{{ menu_plato.plato.norma ~ ' g' }}</td>
                         <td>{{ menu_plato.plato.precio }}</td>
+                        {% set total = total + menu_plato.plato.precio %}
                     </tr>
                 {% endfor %}
+                <tr>
+                    <td colspan="4"><b>Total</b></td>
+                    <td>{{ total }}</td>
+                </tr>
                 {% else %}
                     <tr>
                         <td colspan="5">No se encontraron resultados</td>
@@ -41,12 +47,10 @@
 
     {% if aprobar_form.count > 1 %}
         <div id="form-actions-row">
-            <button type="submit" class="btn">
-                <i class="fa fa-save"></i> Guardar cambios
-            </button>
-{#            <a class="btn btn-secondary" href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
-                Volver al listado
-            </a>#}
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">Aceptar</button>
+                <a href="{{ path('homepage') }}" class="btn btn-danger">Cancelar</a>
+            </div>
         </div>
     {% endif %}
 

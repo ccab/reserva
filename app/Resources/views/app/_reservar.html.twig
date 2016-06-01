@@ -7,7 +7,7 @@
         <tr>
             <th>Tipo de Menu</th>
             <th>Reservar</th>
-            <th>Alimento</th>
+            <th>Plato</th>
             <th>Cantidad</th>
             <th>Precio</th>
         </tr>
@@ -21,19 +21,25 @@
         </tr>
         </thead>
         <tbody>
-            {% for menu_plato in entity.menuPlatos %}
-                <tr>
-                    <td></td>
-                    <td><input type="checkbox" class="checkboxes" name="{{ menu_plato.id }}"
-                               value="{{ menu_plato.id }}"
-                                {% if menu_plato.id in ids %} checked="checked" {% endif %}
-                                {% if reservacion %} disabled="disabled" {% endif %}/>
-                    </td>
-                    <td>{{ menu_plato.plato.nombre }}</td>
-                    <td>{{ menu_plato.plato.norma ~ " g" }}</td>
-                    <td>{{ menu_plato.plato.precio }}</td>
-                </tr>
-            {% endfor %}
+        {% set total = 0 %}
+        {% for menu_plato in entity.menuPlatos %}
+            <tr>
+                <td></td>
+                <td><input type="checkbox" class="checkboxes" name="{{ menu_plato.id }}"
+                           value="{{ menu_plato.id }}"
+                            {% if menu_plato.id in ids %} checked="checked" {% endif %}
+                            {% if reservacion %} disabled="disabled" {% endif %}/>
+                </td>
+                <td>{{ menu_plato.plato.nombre }}</td>
+                <td>{{ menu_plato.plato.norma ~ " g" }}</td>
+                <td>{{ menu_plato.plato.precio }}</td>
+                {% set total = total + menu_plato.plato.precio %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4"><b>Total</b></td>
+            <td>{{ total }}</td>
+        </tr>
         {% else %}
             <tr>
                 <td colspan="5">No existe un menu disponible para este dia</td>
@@ -44,9 +50,10 @@
 
     {% if reservacion is null and entities %}
         <div id="form-actions-row">
-            <button type="submit" class="btn">
-                <i class="fa fa-save"></i> Guardar cambios
-            </button>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">Aceptar</button>
+                <a href="{{ path('homepage') }}" class="btn btn-danger">Cancelar</a>
+            </div>
         </div>
     {% endif %}
 

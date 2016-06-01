@@ -6,7 +6,7 @@
         <thead>
         <tr>
             <th>Tipo de Menu</th>
-            <th>Alimento</th>
+            <th>Plato</th>
             <th>Cantidad</th>
             <th>Precio</th>
         </tr>
@@ -56,9 +56,10 @@
 
     {% if reservacion and reservacion.estado == 'Creada' %}
         <div id="form-actions-row">
-            <button type="submit" class="btn">
-                <i class="fa fa-save"></i> Cancelar
-            </button>
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">Aceptar</button>
+                <a href="{{ path('homepage') }}" class="btn btn-danger">Cancelar</a>
+            </div>
         </div>
     {% endif %}
 
