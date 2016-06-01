@@ -1,0 +1,246 @@
+{% extends 'easy_admin/layout.html.twig' %}
+
+{#{% form_theme form with easyadmin_config('design.form_theme') %}#}
+{% use '@EasyAdmin/form/bootstrap_3_layout.html.twig' %}
+{% form_theme form _self %}
+
+{% block body_class %} list list-menu new new-menu {% endblock %}
+
+{% block _menu_menuPlatos_entry_row %}
+    <tr id="plato___name__">
+        <td>{{ form_widget(form.plato, {'attr':{'class':'select_plato'}}) }}</td>
+        <td id="plato___name___norma"></td>
+        <td id="plato___name___precio"></td>
+        <td>
+            <a href="#" onclick="
+                    $(function() {
+                        if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+                        var containerDiv = $('#plato___name__');
+                        containerDiv.remove();
+                    });
+                " class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+            </a>
+        </td>
+    </tr>
+{% endblock _menu_menuPlatos_entry_row %}
+
+{% block content_title %}Modificar Menú{% endblock %}
+
+{% block main %}
+
+    {{ form_start(form, {'attr':{'class':'form-horizontal new-form'}}) }}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            {{ form_errors(form) }}
+            <br>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="form-group  field-text">
+                <label class="col-sm-2 control-label required">Fecha</label>
+                {{ form_widget(form.fecha, {'attr':{'class':'col-lg-8'}}) }}
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group  field-entity">
+                <label class="col-lg-4 control-label" for="menu_tipoMenu">Tipo de menú</label>
+                <div class="col-lg-6">
+                    {{ form_widget(form.tipoMenu, {'attr':{'class':'col-lg-10'}}) }}
+                </div>
+            </div>
+        </div>
+        <br>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                <b>Platos:</b>
+            </div>
+        </div>
+        <br>
+
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="table-responsive" id="div_platos">
+                <table class="table" id="platos">
+                    <thead>
+                    <tr>
+                        <th>Plato</th>
+                        <th>Norma a servir</th>
+                        <th>Precio</th>
+                        <th>Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for menuPlato in form.menuPlatos %}
+                        <tr id="{{ 'plato_' ~ loop.index0 }}">
+                            <td>{{ form_widget(menuPlato.plato, {'attr':{'class':'select_plato'}}) }}</td>
+                            <td id="{{ 'plato_' ~ loop.index0 ~ '_norma'}}">{{ menuPlato.vars.value.plato.norma ~ ' g' }}</td>
+                            <td id="{{ 'plato_' ~ loop.index0 ~ '_precio'}}">{{ menuPlato.vars.value.plato.precio }}</td>
+                            <td>
+                                <a href="#" onclick="
+                                $(function() {
+                                    if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+                                    var containerDiv = $('#plato_{{ loop.index0 }}');
+                                    containerDiv.remove();
+                                });
+                            " class="btn btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr id="no_records">
+                            <td colspan="3">No se han adicionado platos</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {#{{ form_row(form.menuPlatos) }}#}
+            {% do form.menuPlatos.setRendered %}
+            {% set dp = form_row(form.menuPlatos.vars.prototype)  %}
+            <div id="menu_menuPlatos"  data-prototype="{{ dp }}"></div>
+
+        </div>
+
+        <div id="form-actions-row">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success"> Aceptar</button>
+                <a href="{{ path('admin', {'entity':'Menu', 'action':'list'}) }}" class="btn btn-danger">Cancelar</a>
+            </div>
+        </div>
+
+            {{ form_end(form) }}
+        </div>
+
+    <br>
+    <div class="row">
+    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+    		Menú de la semana
+    	</div>
+    </div><br>
+
+    {{ render(controller('AppBundle:App:getMenuSemanal')) }}
+
+{% endblock %}
+
+
+{% block body_javascript %}
+    <script type="text/javascript">
+
+        var $collectionHolder;
+        var $addLink = $('<a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar plato</a><br><br>');
+        var $addLinkDiv = $('<div class="add-link"></div>').append($addLink);
+
+        jQuery(document).ready(function () {
+
+            $('div.collection-empty').remove();
+            $('a.text-primary').remove();
+
+            $collectionHolder = $('div#menu_menuPlatos');
+            $collectionHolder.append($addLinkDiv);
+
+            $addLink.on('click', function (e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                // add a new form (see next code block)
+                addForm($collectionHolder, $addLinkDiv);
+            });
+
+            function addForm($collectionHolder, $addLinkDiv) {
+                // Get the data-prototype
+                var prototype = $collectionHolder.data('prototype');
+
+                // get the new index
+                if ($('#no_records').length > 0) {
+                    var index = 0;
+                } else {
+                    var index = $('#platos tr').length - 1;
+                }
+
+                // Get the child forms number
+                $collectionHolder.data('num', $collectionHolder.find("div[id*='menu_menuPlatos_']").length);
+                var num = $collectionHolder.data('num') + 1;
+
+                // Set a proper label
+                var newForm = prototype.replace(/__name__label__/g, "# " + num);
+
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm2 = newForm.replace(/__name__/g, index);
+
+                // increase the index with one for the next item
+                $collectionHolder.data('index', index + 1);
+
+                // Display the form, before the "Add" link div
+                //var $newFormDiv = $('<div class="new-form"></div>').append(newForm2);
+                $('table#platos tbody #no_records').remove();
+                $('table#platos tbody').append(newForm2);
+
+                /*$('.select_plato').change(function () {
+                    getPlato($(this).val(), index);
+                });*/
+
+                $('select').change(function () {
+                    getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
+                });
+
+            }
+
+            $('select').change(function () {
+                getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
+            });
+
+        });
+
+        function getPlato(idEntity, idElement) {
+            $.getJSON(Routing.generate('get_plato', {id: idEntity}),
+                    function (data) {
+                        $('#' + idElement + '_norma').html(data['norma']);
+                        $('#' + idElement + '_precio').html(data['precio']);
+                    });
+        }
+
+        /*function getPlato(id, index) {
+            $.getJSON(Routing.generate('get_plato', {id: id}),
+                    function (data) {
+                        var child = index + 1;
+                        //alert(child);
+                        //$("#platos td:eq(1)").html(data['codigo']);
+                        //$("#platos td:eq(2)").html(data['precio']);
+                        $('#platos tr:nth-child(' + child + ') td:nth-child(2)').html(data['norma'] + " g");
+                        $('#platos tr:nth-child(' + child + ') td:nth-child(3)').html(data['precio']);
+                        //$('#appbundle_dieta_anticipo_importeEntregadoComidaCUC').val(data['importeEntregadoComidaCUC']);
+                    });
+        }*/
+
+
+/*
+        function menus() {
+            $.ajax({
+                url: Routing.generate('menus_anteriores', {
+                    dia: $('#menu_fecha_day').val(),
+                    mes: $('#menu_fecha_month').val(),
+                    anno: $('#menu_fecha_year').val()
+                }),
+                success: function (html) {
+                    $("#anteriores").html(html);
+                }
+            });
+        }
+
+        $('#menu_fecha_day').change(function () {
+            menus();
+        });
+
+        $('#menu_fecha_month').change(function () {
+            menus();
+        });
+
+        $('#menu_fecha_year').change(function () {
+            menus();
+        });*/
+
+    </script>
+{% endblock %}

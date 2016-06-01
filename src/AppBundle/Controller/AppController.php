@@ -101,7 +101,7 @@ class AppController extends Controller
      */
     public function aprobarAction(Request $request, $day)
     {
-        $date = new \DateTime("next $day");
+        $date = new \DateTime("$day next week");
         $entities = $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($date);
         $form = $this->createFormBuilder(null, [
             'action' => $this->generateUrl('aprobar', ['day' => $day]),
@@ -582,7 +582,7 @@ class AppController extends Controller
     /**
      * @Route("/crear/menu", name="crear_menu")
      */
-    public function crearMenuAction(Request $request)
+    /*public function crearMenuAction(Request $request)
     {
         $entity = new Menu();
         $entity->setFecha(new \DateTime('today'));
@@ -601,7 +601,7 @@ class AppController extends Controller
         return $this->render('app/crear_menu.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
+    }*/
 
     /**
      * @Route("/get/plato/{id}", name="get_plato", options={"expose"=true})
@@ -743,6 +743,33 @@ class AppController extends Controller
         }
 
 
+    }
+
+    /**
+     * @Route("/menu/semanal", name="menu_semanal")
+     */
+    public function getMenuSemanalAction()
+    {
+        $semana = [];
+        $first = new \DateTime('monday next week');
+        $last = new \DateTime('sunday next week');
+        $dateInterval = \DateInterval::createFromDateString('1 day');
+
+        for ($date = $first; $date <= $last; $date->add($dateInterval)) {
+            //$active = $date->format('l') == $day ? true : false;
+            $menus = $this->getDoctrine()
+                ->getRepository('AppBundle:Menu')
+                ->findByFecha($date);
+
+            $semana[] = [
+                'day' => clone $date,
+                'menus' => $menus,
+            ];
+        }
+
+        return $this->render('app/menu_semanal.html.twig', [
+            'semana' => $semana,
+        ]);
     }
 
     /**

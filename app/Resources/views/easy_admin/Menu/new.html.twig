@@ -7,32 +7,25 @@
 {% block body_class %} list list-menu new new-menu {% endblock %}
 
 {% block _menu_menuPlatos_entry_row %}
-    {#<div class="table-responsive" id="div_platos">
-        <table class="table" id="platos">
-            <thead>
-                <tr>
-                    <th>Plato</th>
-                    <th>Norma a servir</th>
-                    <th>Precio</th>
-                </tr>
-            </thead>
-            <tbody>#}
-    {#'onchange':"$(function() { aloha($(this).val());#}
-
-    {#</tbody>
-</table>
-</div>#}
-
-    <tr>
+    <tr id="plato___name__">
+        <td>{{ form_widget(form.plato, {'attr':{'class':'select_plato'}}) }}</td>
+        <td id="plato___name___norma"></td>
+        <td id="plato___name___precio"></td>
         <td>
-            {{ form_widget(form.plato, {'attr':{'class':'select_plato'}}) }}
+            <a href="#" onclick="
+                    $(function() {
+                        if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+                        var containerDiv = $('#plato___name__');
+                        containerDiv.remove();
+                    });
+                " class="btn btn-danger">
+                <i class="fa fa-trash"></i>
+            </a>
         </td>
-        <td></td>
-        <td></td>
     </tr>
 {% endblock _menu_menuPlatos_entry_row %}
 
-{% block content_title %}Crear Menu{% endblock %}
+{% block content_title %}Nuevo Menú{% endblock %}
 
 {% block main %}
 
@@ -46,26 +39,25 @@
         <div class="col-sm-6">
             <div class="form-group  field-text">
                 <label class="col-sm-2 control-label required">Fecha</label>
-                {{ form_widget(form.fecha, {'attr':{'class':'col-sm-10'}}) }}
+                {{ form_widget(form.fecha, {'attr':{'class':'col-lg-8'}}) }}
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group  field-entity">
-                <label class="col-sm-2 control-label" for="menu_tipoMenu">Tipo menu</label>
-                <div class="col-sm-10">
-                    {{ form_widget(form.tipoMenu, {'attr':{'class':'col-sm-10'}}) }}
+                <label class="col-lg-4 control-label" for="menu_tipoMenu">Tipo de menú</label>
+                <div class="col-lg-6">
+                    {{ form_widget(form.tipoMenu, {'attr':{'class':'col-lg-10'}}) }}
                 </div>
             </div>
         </div>
+        <br>
 
-        {#<table class="table">
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>#}
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                <b>Platos:</b>
+            </div>
+        </div>
+        <br>
 
         <div class="col-sm-10 col-sm-offset-1">
             <div class="table-responsive" id="div_platos">
@@ -75,14 +67,26 @@
                         <th>Plato</th>
                         <th>Norma a servir</th>
                         <th>Precio</th>
+                        <th>Acción</th>
                     </tr>
                     </thead>
                     <tbody>
                     {% for menuPlato in form.menuPlatos %}
-                        <tr>
+                        <tr id="{{ 'plato_' ~ loop.index0 }}">
                             <td>{{ form_widget(menuPlato.plato, {'attr':{'class':'select_plato'}}) }}</td>
-                            <td>{{ menuPlato.vars.value.plato.norma ~ ' g' }}</td>
-                            <td>{{ menuPlato.vars.value.plato.precio }}</td>
+                            <td id="{{ 'plato_' ~ loop.index0 ~ '_norma'}}">{{ menuPlato.vars.value.plato.norma is defined ? menuPlato.vars.value.plato.norma ~ ' g' }}</td>
+                            <td id="{{ 'plato_' ~ loop.index0 ~ '_precio'}}">{{ menuPlato.vars.value.plato.precio is defined ? menuPlato.vars.value.plato.precio }}</td>
+                            <td>
+                                <a href="#" onclick="
+                                $(function() {
+                                    if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+                                    var containerDiv = $('#plato_{{ loop.index0 }}');
+                                    containerDiv.remove();
+                                });
+                            " class="btn btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
                         </tr>
                     {% else %}
                         <tr id="no_records">
@@ -93,30 +97,31 @@
                 </table>
             </div>
 
-            {{ form_row(form.menuPlatos) }}
+            {#{{ form_row(form.menuPlatos) }}#}
+            {% do form.menuPlatos.setRendered %}
+            {% set dp = form_row(form.menuPlatos.vars.prototype)  %}
+            <div id="menu_menuPlatos"  data-prototype="{{ dp }}"></div>
+
         </div>
 
-        <div class="col-xs-12 form-actions">
-            <div class="form-group">
-                <div id="form-actions-row">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Comprobar Menu
-                    </button>
-                </div>
+        <div id="form-actions-row">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success"> Aceptar</button>
+                <a href="{{ path('admin', {'entity':'Menu', 'action':'list'}) }}" class="btn btn-danger">Cancelar</a>
             </div>
         </div>
-
-            {#<div id="form-actions-row">
-                <button type="submit" class="btn">
-                    <i class="fa fa-save"></i> Guardar cambios
-                </button>
-            </div>#}
 
             {{ form_end(form) }}
         </div>
 
     <br>
-    <div id="anteriores"></div>
+    <div class="row">
+    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+    		Menú de la semana
+    	</div>
+    </div><br>
+
+    {{ render(controller('AppBundle:App:getMenuSemanal')) }}
 
 {% endblock %}
 
@@ -125,8 +130,7 @@
     <script type="text/javascript">
 
         var $collectionHolder;
-        // setup an "add" link
-        var $addLink = $('<a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar</a><br><br>');
+        var $addLink = $('<a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar plato</a><br><br>');
         var $addLinkDiv = $('<div class="add-link"></div>').append($addLink);
 
         jQuery(document).ready(function () {
@@ -136,10 +140,6 @@
 
             $collectionHolder = $('div#menu_menuPlatos');
             $collectionHolder.append($addLinkDiv);
-
-            // count the current form inputs we have (e.g. 2), use that as the new
-            // index when inserting a new item (e.g. 2)
-            $collectionHolder.data('index', $collectionHolder.find(':input').length);
 
             $addLink.on('click', function (e) {
                 // prevent the link from creating a "#" on the URL
@@ -153,7 +153,11 @@
                 var prototype = $collectionHolder.data('prototype');
 
                 // get the new index
-                var index = $collectionHolder.data('index');
+                if ($('#no_records').length > 0) {
+                    var index = 0;
+                } else {
+                    var index = $('#platos tr').length - 1;
+                }
 
                 // Get the child forms number
                 $collectionHolder.data('num', $collectionHolder.find("div[id*='menu_menuPlatos_']").length);
@@ -173,23 +177,32 @@
                 //var $newFormDiv = $('<div class="new-form"></div>').append(newForm2);
                 $('table#platos tbody #no_records').remove();
                 $('table#platos tbody').append(newForm2);
-                //$addLinkDiv.before($newFormDiv);
 
-                //var a = $("select[id^='menu_menuPlatos_']").last();
-
-                $('.select_plato').change(function () {
+                /*$('.select_plato').change(function () {
                     getPlato($(this).val(), index);
+                });*/
+
+                $('select').change(function () {
+                    getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
                 });
 
             }
 
+            $('select').change(function () {
+                getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
+            });
+
         });
 
-        function aloha(val) {
-            alert('aloha!! ' + val);
+        function getPlato(idEntity, idElement) {
+            $.getJSON(Routing.generate('get_plato', {id: idEntity}),
+                    function (data) {
+                        $('#' + idElement + '_norma').html(data['norma']);
+                        $('#' + idElement + '_precio').html(data['precio']);
+                    });
         }
 
-        function getPlato(id, index) {
+        /*function getPlato(id, index) {
             $.getJSON(Routing.generate('get_plato', {id: id}),
                     function (data) {
                         var child = index + 1;
@@ -200,8 +213,10 @@
                         $('#platos tr:nth-child(' + child + ') td:nth-child(3)').html(data['precio']);
                         //$('#appbundle_dieta_anticipo_importeEntregadoComidaCUC').val(data['importeEntregadoComidaCUC']);
                     });
-        }
+        }*/
 
+
+/*
         function menus() {
             $.ajax({
                 url: Routing.generate('menus_anteriores', {
@@ -225,7 +240,7 @@
 
         $('#menu_fecha_year').change(function () {
             menus();
-        });
+        });*/
 
     </script>
 {% endblock %}

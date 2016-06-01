@@ -104,7 +104,7 @@ easy_admin:
             class: AppBundle\Entity\Menu
             list:
                 fields:
-                    - { property: aprobado}
+                    - { property: aprobado, type: boolean}
                     - { property: fecha}
                     - { property: tipoMenu, label: 'Tipo de Menu'}
             edit:

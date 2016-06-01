@@ -50,11 +50,20 @@
         </tbody>
     </table>
 
-    <div id="form-actions-row">
-        <div class="pull-right">
-            {{ form_widget(form.generar, {'attr': {'class': 'btn'}}) }}
-            {{ form_widget(form.aceptar, {'attr': {'class': 'btn btn-success'}}) }}
-            <a href="{{ path('homepage') }}" class="btn btn-danger">Cancelar</a>
+    <div class="row">
+        <div id="form-actions-row">
+            <div class="pull-right">
+                {{ form_widget(form.generar, {'attr': {'class': 'btn'}}) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div id="form-actions-row">
+            <div class="pull-right">
+                {{ form_widget(form.aceptar, {'attr': {'class': 'btn btn-success'}}) }}
+                <a href="{{ path('homepage') }}" class="btn btn-danger">Cancelar</a>
+            </div>
         </div>
     </div>
 

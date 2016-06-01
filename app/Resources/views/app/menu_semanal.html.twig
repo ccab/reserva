@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            {% for dia in semana %}
+                <th>{{ dia.day|date('d/m/Y') }}</th>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="7" align="center"><b>Desayuno</b></td>
+        </tr>
+        <tr>
+            {% for dia in semana %}
+                <td>
+                    {% for menu in dia.menus if menu.tipoMenu == 'Desayuno' %}
+                        {% for menuPlato in menu.menuPlatos %}
+                            {{ menuPlato.plato }}<br>
+
+                        {% endfor %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="7" align="center"><b>Almuerzo</b></td>
+        </tr>
+        <tr>
+            {% for dia in semana %}
+                <td>
+                    {% for menu in dia.menus if menu.tipoMenu == 'Almuerzo' %}
+                        {% for menuPlato in menu.menuPlatos %}
+                            {{ menuPlato.plato }}<br>
+                        {% endfor %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td colspan="7" align="center"><b>Comida</b></td>
+        </tr>
+        <tr>
+            {% for dia in semana %}
+                <td>
+                    {% for menu in dia.menus if menu.tipoMenu == 'Comida' %}
+                        {% for menuPlato in menu.menuPlatos %}
+                            {{ menuPlato.plato }}<br>
+                        {% endfor %}
+                    {% endfor %}
+                </td>
+            {% endfor %}
+        </tr>
+    </table>
+
+{% endblock %}

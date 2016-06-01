@@ -216,7 +216,9 @@ class Menu
 
         /** @var MenuPlato $menuPlato */
         foreach ($this->menuPlatos as $menuPlato) {
-            $precio += $menuPlato->getPlato()->getPrecio();
+            if (!is_null($menuPlato->getPlato())) {
+                $precio += $menuPlato->getPlato()->getPrecio();
+            }
         }
         
         return $precio;
@@ -233,10 +235,12 @@ class Menu
 
         /** @var MenuPlato $menuPlato */
         foreach ($this->menuPlatos as $menuPlato) {
-            $valores['proteina'] += $menuPlato->getPlato()->getValorNutricProteina();
-            $valores['carbohidrato'] += $menuPlato->getPlato()->getValorNutricCarbohidrato();
-            $valores['grasa'] += $menuPlato->getPlato()->getValorNutricGrasa();
-            $valores['energia'] += $menuPlato->getPlato()->getValorNutricEnergia();
+            if (!is_null($menuPlato->getPlato())) {
+                $valores['proteina'] += $menuPlato->getPlato()->getValorNutricProteina();
+                $valores['carbohidrato'] += $menuPlato->getPlato()->getValorNutricCarbohidrato();
+                $valores['grasa'] += $menuPlato->getPlato()->getValorNutricGrasa();
+                $valores['energia'] += $menuPlato->getPlato()->getValorNutricEnergia();
+            }
         }
         
         return $valores;

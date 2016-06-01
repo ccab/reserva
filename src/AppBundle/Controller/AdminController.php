@@ -68,10 +68,10 @@ class AdminController extends BaseAdminController
             $this->em->flush();
 
             $this->addFlash('success', 'menu creado');
-            return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
+            return $this->redirectToRoute('admin', ['action' => 'new', 'entity' => $this->entity['name']]);
         }
 
-        return $this->render('app/crear_menu.html.twig', [
+        return $this->render('easy_admin/Menu/new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -80,6 +80,37 @@ class AdminController extends BaseAdminController
     {
         $id = $this->request->query->get('id');
         /** @var Menu $entity */
+        $entity = $this->em->getRepository($this->entity['class'])->find($id);
+        $form = $this->createForm(MenuType::class, $entity);
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // EXTRAIGO DE LA BD LA RELACION DE ESTE MENU CON TODOS SUS ALIMENTOS
+            $menuPlatos = $this->getDoctrine()->getRepository('AppBundle:MenuPlato')->findByMenu($entity->getId());
+
+            // SI EN EL FORMULARIO DE EDICION SE ELIMINO DE LA COLECCION ALGUN ALIMENTO DEBO ELIMINARLO EXPLICITAMENTE
+            foreach ($menuPlatos as $mp) {
+                if (false === $entity->getMenuPlatos()->contains($mp)) {
+                    $this->em->remove($mp);
+                }
+            }
+
+            $this->em->persist($entity);
+            $this->em->flush();
+
+            //$this->addFlash('success', 'menu creado');
+            return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
+        }
+
+        return $this->render('easy_admin/Menu/edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+/*public function editMenuAction()
+    {
+        $id = $this->request->query->get('id');
+        /** @var Menu $entity */ /*
         $entity = $this->em->getRepository($this->entity['class'])->find($id);
         $editForm = $this->createForm(new MenuType(), $entity);
         $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
@@ -108,7 +139,7 @@ class AdminController extends BaseAdminController
             'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         ]);
-    }
+    }*/
 
     public function createUsuarioEntityForm($entity)
     {

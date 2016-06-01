@@ -5,7 +5,7 @@
 {% block content_title %}Bienvenido{% endblock %}
 
 {% block main %}
-    <h5>
+    {#<h5>
         Bienvenido al sitio para la reservación de la alimentación. Usted podrá hacer la reservación
         una vez que los menús hayan sido confeccionados por el jefe de servicio, aprobados por el jefe
         de la entidad y habilitados para realizar su reservación. Los menús disponibles para realizar
@@ -13,5 +13,7 @@
         reservaciones para los menús de la próxima semana o los correspondientes al día. Recuerde que
         para poder acceder al comedor debe realizar el pago de sus reservaciones en el área de economía
         y presentar el vale que respalde su pago. Esperamos que el sitio sea de su agrado.!BON APPÉTIT!
-    </h5>
+    </h5>#}
+    <h4>Menú de la próxima semana</h4>
+    {{ render(controller('AppBundle:App:getMenuSemanal')) }}
 {% endblock %}

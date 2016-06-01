@@ -64,7 +64,7 @@
                         <a href="#" onclick="
                                 $(function() {
                                     if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
-                                    var containerDiv = $('#recepcion___name__');
+                                    var containerDiv = $('#recepcion_{{ loop.index0 }}');
                                     containerDiv.remove();
                                 });
                             " class="btn btn-danger">
@@ -151,17 +151,17 @@
                         /*console.log(this.id);
                          console.log($(this).find('option:selected').attr('value'));
                          console.log($(this).closest('tr').prop('id'));*/
-                        getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
+                        getProducto($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
                     });
                 }
 
                 $('select').change(function () {
-                    getPlato($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
+                    getProducto($(this).find('option:selected').attr('value'), $(this).closest('tr').prop('id'));
                 });
 
             });
 
-            function getPlato(idEntity, idElement) {
+            function getProducto(idEntity, idElement) {
                 $.getJSON(Routing.generate('get_producto', {id: idEntity}),
                         function (data) {
                             $('#' + idElement + '_codigo').html(data['codigo']);

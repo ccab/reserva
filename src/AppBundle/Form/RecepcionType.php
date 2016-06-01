@@ -43,14 +43,14 @@ class RecepcionType extends AbstractType
     {
         $tmp = [];
 
-        foreach ($value['recepciones'] as $key => $recepcion) {
+        foreach ($value['recepciones'] as $recepcion) {
             if (!isset($recepcion['producto'])) {
                 $context->buildViolation('Debe seleccionar un producto')
                     ->addViolation();
             }
         }
 
-        foreach ($value['recepciones'] as $key => $recepcion) {
+        foreach ($value['recepciones'] as $recepcion) {
             if (!in_array($recepcion['producto'], $tmp)) {
                 $tmp[] = $recepcion['producto'];
             } else {

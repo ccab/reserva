@@ -37,6 +37,17 @@
                     Listar
                 </a>
             </li>
+            <li class="dropdown-header text-blue"> Rol</li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Rol', action: 'new' }) }}">
+                    Adicionar
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Rol', action: 'list' }) }}">
+                    Listar
+                </a>
+            </li>
         </ul>
     </li>
 
@@ -45,21 +56,40 @@
             Gestionar <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
+            <li class="dropdown-header text-blue"> Usuario</li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Usuario', action: 'new' }) }}">
+                    Adicionar
+                </a>
+            </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Usuario', action: 'list' }) }}">
-                    Usuario
+                    Listar
+                </a>
+            </li>
+            <li class="dropdown-header text-blue"> Menu</li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Menu', action: 'new' }) }}">
+                    Adicionar
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
-                    Menu
+                    Listar
+                </a>
+            </li>
+            <li class="dropdown-header text-blue"> Plato</li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Plato', action: 'new' }) }}">
+                    Adicionar
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Plato', action: 'list' }) }}">
-                    Plato
+                    Listar
                 </a>
             </li>
+            <li class="divider"></li>
             <li>
                 <a href="{{ path('aprobar_menu') }}">
                     Aprobar Menu
