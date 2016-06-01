@@ -23,7 +23,7 @@ class UsuarioType extends AbstractType
             ->add('nombre')
             ->add('apellido')
             ->add('segundoApellido')
-            ->add('roles');
+            ->add('rol');
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $entity = $event->getData();

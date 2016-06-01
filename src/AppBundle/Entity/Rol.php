@@ -37,7 +37,7 @@ class Rol implements RoleInterface
     private $nombre;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Usuario", mappedBy="roles")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Usuario", mappedBy="rol")
      */
     private $usuarios;
 

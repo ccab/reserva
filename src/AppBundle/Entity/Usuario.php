@@ -38,9 +38,9 @@ class Usuario implements UserInterface, \Serializable
     private $clave;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Rol", inversedBy="usuarios")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Rol", inversedBy="usuarios")
      */
-    private $roles;
+    private $rol;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Reservacion", mappedBy="usuario")
@@ -188,7 +188,7 @@ class Usuario implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return $this->roles->toArray();
+        return $this->rol;
     }
 
     /**
@@ -226,30 +226,6 @@ class Usuario implements UserInterface, \Serializable
     {
     }
 
-    /**
-     * Add role.
-     *
-     * @param \AppBundle\Entity\Rol $role
-     *
-     * @return Usuario
-     */
-    public function addRole(\AppBundle\Entity\Rol $role)
-    {
-        $this->roles[] = $role;
-
-        return $this;
-    }
-
-    /**
-     * Remove role.
-     *
-     * @param \AppBundle\Entity\Rol $role
-     */
-    public function removeRole(\AppBundle\Entity\Rol $role)
-    {
-        $this->roles->removeElement($role);
-    }
-
     public function getClaveAnterior()
     {
         return;
@@ -259,7 +235,6 @@ class Usuario implements UserInterface, \Serializable
      */
     public function __construct()
     {
-        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
         $this->reservaciones = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -401,5 +376,29 @@ class Usuario implements UserInterface, \Serializable
     public function getNombreCompleto()
     {
         return "$this->nombre $this->apellido $this->segundoApellido";
+    }
+
+    /**
+     * Set rol
+     *
+     * @param \AppBundle\Entity\Rol $rol
+     *
+     * @return Usuario
+     */
+    public function setRol(\AppBundle\Entity\Rol $rol = null)
+    {
+        $this->rol = $rol;
+
+        return $this;
+    }
+
+    /**
+     * Get rol
+     *
+     * @return \AppBundle\Entity\Rol
+     */
+    public function getRol()
+    {
+        return $this->rol;
     }
 }

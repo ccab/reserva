@@ -23,7 +23,7 @@ easy_admin:
                     - { property: nombre }
                     - { property: apellido, label: 'Primer Apellido' }
                     - { property: segundoApellido }
-                    - { property: roles, label: 'Roles', type: array }
+                    - { property: rol }
         Rol:
             class: AppBundle\Entity\Rol
         UnidadMedida:

@@ -10,7 +10,7 @@
         {% for fecha in semana %}
             <li class="list  {{ fecha.active ? 'active' }}">
                 <a class="{{ fecha.active ? 'search' }}" data-toggle="tab" href="#{{ fecha.day|date('l') }}" id="{{ fecha.day|date('l') }}">
-                    {{ fecha.day|localizeddate('none', 'none', 'es_ES','Europe/Berlin','eeee d/MM/Y')|title }}
+                    {{ fecha.day|localizeddate('none', 'none', 'es_ES','Europe/Berlin','eeee d')|title }}
                 </a>
             </li>
         {% endfor %}
