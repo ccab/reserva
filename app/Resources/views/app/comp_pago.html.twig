@@ -40,7 +40,6 @@
             <thead>
             <tr>
                 <th>Plato</th>
-                <th>Norma</th>
                 <th>Precio</th>
             </tr>
             </thead>
@@ -49,13 +48,12 @@
             {% for plato in entity.getPlatosPorTipoMenu(tipoMenu) %}
             <tr>
                 <td>{{ plato }}</td>
-                <td>{{ plato.norma }}</td>
                 <td>{{ plato.precio }}</td>
                 {% set total = total + plato.precio %}
             </tr>
                 {% endfor %}
             <tr>
-                <td colspan="2"><b>Total</b></td>
+                <td><b>Total</b></td>
                 <td><b>{{ total }}</b></td>
             </tr>
             </tbody>

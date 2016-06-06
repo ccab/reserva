@@ -284,8 +284,7 @@ class AppController extends Controller
      */
     public function efectuarCobroAction(Request $request)
     {
-        $entities = $this->getDoctrine()
-            ->getRepository('AppBundle:Reservacion')->findAll();
+        $entities = null;
 
         $selectForm = $this->createSelectForm($entities);
         $searchForm = $this->createSearchForm();
@@ -302,6 +301,8 @@ class AppController extends Controller
         $selectForm->handleRequest($request);
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
             $entities = [];
+
+
             foreach ($selectForm->getData() as $id => $selected) {
                 if ($selected) {
                     $entities[] = $this->getDoctrine()
@@ -321,10 +322,6 @@ class AppController extends Controller
                     'Content-Disposition' => 'attachment; filename="file.pdf"'
                 ]
             );
-
-            /*return $this->render('app/comp_pago.html.twig', [
-                'entities' => $entities,
-            ]);*/
         }
 
         return $this->render('app/efectuar_cobro.html.twig', [
@@ -1036,12 +1033,14 @@ class AppController extends Controller
     {
         $selectForm = $this->get('form.factory')->createNamedBuilder('selectForm')->getForm();
 
-        foreach ($entities as $entity) {
-            $selectForm->add($entity->getId(), CheckboxType::class, [
-                'value' => $entity->getId(),
-                'required' => false,
-                'label' => false,
-            ]);
+        if (!is_null($entities)) {
+            foreach ($entities as $entity) {
+                $selectForm->add($entity->getId(), CheckboxType::class, [
+                    'value' => $entity->getId(),
+                    'required' => false,
+                    'label' => false,
+                ]);
+            }
         }
 
         return $selectForm;
@@ -1056,16 +1055,6 @@ class AppController extends Controller
             ->add('usuario', EntityType::class, [
                 'class' => Usuario::class,
                 'choice_label' => 'noSolapin',
-                'required' => false,
-            ])
-            ->add('fechaInicial', DateType::class, [
-                'data' => new \DateTime('monday next week')
-            ])
-            ->add('fechaFinal', DateType::class, [
-                'data' => new \DateTime('sunday next week')
-            ])
-            ->add('tipoMenu', EntityType::class, [
-                'class' => TipoMenu::class,
                 'required' => false,
             ])
             ->getForm();

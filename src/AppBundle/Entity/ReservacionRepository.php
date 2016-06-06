@@ -7,7 +7,7 @@ use Doctrine\ORM\Query\Expr;
 
 class ReservacionRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findPorRangoDeFecha($rango)
+    public function findPorRangoDeFecha($rango, $estado = 'Cobrada')
     {
         $q = $this->createQueryBuilder('r')
             ->join('r.estado', 'e')
@@ -16,7 +16,7 @@ class ReservacionRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('e.nombre = :estado')
             ->setParameter(':inicio', $rango['inicio'])
             ->setParameter(':fin', $rango['fin'])
-            ->setParameter('estado', 'Cobrada')
+            ->setParameter('estado', $estado)
             ->getQuery();
 
         return $q->getResult();
@@ -45,25 +45,19 @@ class ReservacionRepository extends \Doctrine\ORM\EntityRepository
 
     public function findEfectuarCobro($data)
     {
-        $query = $this->createQueryBuilder('r');
-
-        if (isset($data['usuario'])) {
-            $query->join('r.usuario', 'u')
+        $query = $this->createQueryBuilder('r')
+                ->join('r.usuario', 'u')
+                ->join('r.estado', 'e')
                 ->where('u.noSolapin = :noSolapin')
-                ->setParameter('noSolapin', $data['usuario']->getNoSolapin());
-        }
-        if (isset($data['fechaInicial'])) {
-            $query->andWhere('r.fecha >= :fechaInicial')
+                ->andWhere('e.nombre = :estado')
+                ->andWhere('r.fecha >= :fechaInicial')
                 ->andWhere('r.fecha <= :fechaFinal')
-                ->setParameter('fechaInicial', $data['fechaInicial'])
-                ->setParameter('fechaFinal', $data['fechaFinal']);
-        }
-        /*if (isset($data['tipoMenu'])) {
-            $query->join('r.', 'u')
-                ->where('u.noSolapin = :noSolapin')
-                ->setParameter('noSolapin', $data['usuario']->getNoSolapin());
-        }*/
-
+                ->setParameter('noSolapin', $data['usuario']->getNoSolapin())
+                ->setParameter('fechaInicial', new \DateTime('Monday next week'))
+                ->setParameter('fechaFinal', new \DateTime('Sunday next week'))
+                ->setParameter('estado', 'Creada')
+                ->orderBy('r.fecha');
+        
         return $query->getQuery()->getResult();
     }
 
