@@ -15,7 +15,7 @@ class ReservacionVisitanteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fecha')
+            //->add('fecha')
             ->add('nombre')
             ->add('apellido')
             ->add('segundoApellido')

@@ -23,9 +23,9 @@
                 <div class="col-md-4">
                     Folio: {{ entity.numeroComprobante }}
                 </div>
-            </div>
-            <div class="col-lg-4 col-lg-offset-4">
-                Menu: {{ entity.menu.tipoMenu }} (Visitante)
+                <div class="col-lg-4">
+                    Menu: {{ entity.menu.tipoMenu }} (Visitante)
+                </div>
             </div>
         </div>
         <br>
@@ -34,7 +34,6 @@
             <thead>
             <tr>
                 <th>Plato</th>
-                <th>Norma</th>
                 <th>Precio</th>
             </tr>
             </thead>
@@ -43,13 +42,12 @@
             {% for menuPlato in entity.menu.menuPlatos %}
             <tr>
                 <td>{{ menuPlato.plato }}</td>
-                <td>{{ menuPlato.plato.norma }}</td>
                 <td>{{ menuPlato.plato.precio }}</td>
                 {% set total = total + menuPlato.plato.precio %}
             </tr>
                 {% endfor %}
             <tr>
-                <td colspan="2"><b>Total</b></td>
+                <td><b>Total</b></td>
                 <td><b>{{ total }}</b></td>
             </tr>
             </tbody>

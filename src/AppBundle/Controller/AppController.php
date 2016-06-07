@@ -496,8 +496,6 @@ class AppController extends Controller
 
     /**
      * @Route("/reporte/comprobante/pago", name="reporte_comprobante_pago")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function compPagoAction(Request $request)
     {
@@ -676,8 +674,19 @@ class AppController extends Controller
     public function cobrarVisitanteAction(Request $request)
     {
         $entity = new ReservacionVisitante();
-        $entity->setFecha(new \DateTime('today'));
+        //$entity->setFecha(new \DateTime('today'));
+        $entity->setFecha(\DateTime::createFromFormat('d/m/Y', '16/6/2016'));
         $form = $this->createForm(ReservacionVisitanteType::class, $entity);
+        $almuerzo = $this->getDoctrine()
+            ->getRepository('AppBundle:TipoMenu')
+            ->findOneByNombre('Almuerzo');
+        /** @var Menu $menu */
+        $menu = $this->getDoctrine()
+            ->getRepository('AppBundle:Menu')->findOneBy([
+                //'fecha' => new \DateTime('today'),
+                'fecha' => \DateTime::createFromFormat('d/m/Y', '16/6/2016'),
+                'tipoMenu' => $almuerzo,
+            ]); 
 
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
@@ -685,11 +694,7 @@ class AppController extends Controller
 
             $entityManager->persist($entity);
             $entityManager->flush();
-
-            /*return $this->render('app/comp_pago_visitante.html.twig', [
-                'entity' => $entity,
-            ]);*/
-
+            
             $html = $this->render('app/comp_pago_visitante.html.twig', [
                 'entity' => $entity,
             ])->getContent();
@@ -706,6 +711,7 @@ class AppController extends Controller
 
         return $this->render('app/cobrar_visitante.html.twig', [
             'form' => $form->createView(),
+            'importe' => is_null($menu) ? 0 : $menu->getPrecioPlatos(),
         ]);
     }
 
