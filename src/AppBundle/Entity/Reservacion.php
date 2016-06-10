@@ -45,9 +45,14 @@ class Reservacion
     private $reservacionMenuPlatos;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $numeroComprobante;
+    private $numerosComprobante;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $fechaCobrada;
 
     /**
      * Get id.
@@ -275,5 +280,53 @@ class Reservacion
         }
 
         return $platos;
+    }
+
+    /**
+     * Set fechaCobrada
+     *
+     * @param \DateTime $fechaCobrada
+     *
+     * @return Reservacion
+     */
+    public function setFechaCobrada($fechaCobrada)
+    {
+        $this->fechaCobrada = $fechaCobrada;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCobrada
+     *
+     * @return \DateTime
+     */
+    public function getFechaCobrada()
+    {
+        return $this->fechaCobrada;
+    }
+
+    /**
+     * Set numerosComprobante
+     *
+     * @param array $numerosComprobante
+     *
+     * @return Reservacion
+     */
+    public function setNumerosComprobante($numerosComprobante)
+    {
+        $this->numerosComprobante = $numerosComprobante;
+
+        return $this;
+    }
+
+    /**
+     * Get numerosComprobante
+     *
+     * @return array
+     */
+    public function getNumerosComprobante()
+    {
+        return $this->numerosComprobante;
     }
 }

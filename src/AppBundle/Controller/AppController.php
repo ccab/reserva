@@ -21,6 +21,7 @@ use AppBundle\Form\RecepcionarProductoType;
 use AppBundle\Form\RecepcionType;
 use AppBundle\Form\ReservacionVisitanteType;
 use AppBundle\Form\ResetType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -284,7 +285,15 @@ class AppController extends Controller
      */
     public function efectuarCobroAction(Request $request)
     {
-        $entities = null;
+        $entities =  null;
+
+        if ($request->query->has('entities')) {
+            $ids = unserialize($request->query->get('entities'));
+            foreach ($ids as $id) {
+                $entities[] = $this->getDoctrine()
+                    ->getRepository('AppBundle:Reservacion')->find($id);
+            }
+        }
 
         $selectForm = $this->createSelectForm($entities);
         $searchForm = $this->createSearchForm();
@@ -293,22 +302,50 @@ class AppController extends Controller
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $entities = $this->getDoctrine()
                 ->getRepository('AppBundle:Reservacion')
-                ->findEfectuarCobro($searchForm->getData());
+                ->findEfectuarCobroIds($searchForm->getData());
 
-            $selectForm = $this->createSelectForm($entities);
+            return $this->redirectToRoute('efectuar_cobro', [
+               'entities' => serialize($entities),
+            ]);
         }
 
         $selectForm->handleRequest($request);
         if ($selectForm->isSubmitted() && $selectForm->isValid()) {
             $entities = [];
-
+            $cobrada = $this->getDoctrine()
+                ->getRepository('AppBundle:EstadoReservacion')
+                ->findOneByNombre('Cobrada');
+            $cobradas = $this->getDoctrine()
+                ->getRepository('AppBundle:Reservacion')
+                ->findByEstado($cobrada);
+            /** @var Reservacion $ultima */
+            $ultima = end($cobradas);
+            $num = $ultima->getNumerosComprobante();
+            $ultimoComprobante = end($num);
 
             foreach ($selectForm->getData() as $id => $selected) {
                 if ($selected) {
-                    $entities[] = $this->getDoctrine()
+                    $entity = $this->getDoctrine()
                         ->getRepository('AppBundle:Reservacion')->find($id);
+                    $entity->setEstado($cobrada)
+                        ->setFechaCobrada(new \DateTime('today'));
+                    $comprobantes = [];
+                    //$ultimoComprobante = 100;
+                    /** @var TipoMenu $tipoMenu */
+                    foreach ($entity->getTiposDeMenu() as $tipoMenu) {
+                        $comprobantes[$tipoMenu->getNombre()] = ++$ultimoComprobante;
+                    }
+                    $entity->setNumerosComprobante($comprobantes);
+                    $entities[] = $entity;
                 }
             }
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            /*return $this->render('app/comp_pago.html.twig', [
+                'entities' => $entities,
+            ]);*/
 
             $html = $this->render('app/comp_pago.html.twig', [
                 'entities' => $entities,
@@ -499,45 +536,23 @@ class AppController extends Controller
      */
     public function compPagoAction(Request $request)
     {
-        $data = null;
-        $matrix = [];
-
-        if ($request->query->has('search')) {
-            $data = unserialize($request->query->get('search'));
-            $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findPorRangoDeFecha($data);
-        } else {
-            $cobrada = $this->getDoctrine()->getRepository('AppBundle:EstadoReservacion')->findOneByNombre('Cobrada');
-            $entities = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findByEstado($cobrada);
-        }
-
-        $form = $this->createFormBuilder($data)
-            ->add('inicio', 'date')
-            ->add('fin', 'date')
-            ->add('enviar', 'submit')
-            ->getForm();
+        $data = $request->query->has('search') ? unserialize($request->query->get('search')) : null;
+        $form = $this->getSearchFormCompPago($data);
+        $entities = $this->getDoctrine()
+            ->getRepository('AppBundle:Reservacion')
+            ->findPorRangoDeFecha($data);
+        $visitantes = $this->getDoctrine()
+            ->getRepository('AppBundle:ReservacionVisitante')
+            ->findPorRangoDeFecha($data);
+        $entities = array_merge($entities, $visitantes);
 
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
             return $this->redirectToRoute('reporte_comprobante_pago', ['search' => serialize($form->getData())]);
         }
 
-        foreach ($entities as $entity) {
-            $count = 0;
-            $reservMenuPlato = $this->getDoctrine()->getRepository('AppBundle:ReservacionMenuPlato')->findByReservacion($entity->getId());
-
-            /** @var ReservacionMenuPlato $rmp */
-            foreach ($reservMenuPlato as $rmp) {
-                $count += $rmp->getMenuPlato()->getPlato()->getPrecio();
-            }
-
-            $matrix[] = [
-                'entity' => $entity,
-                'total' => $count,
-            ];
-        }
-
         return $this->render('app/reporte_comp_pago.html.twig', [
-            'matrix' => $matrix,
+            'entities' => $entities,
             'form' => $form->createView(),
         ]);
     }
@@ -674,8 +689,8 @@ class AppController extends Controller
     public function cobrarVisitanteAction(Request $request)
     {
         $entity = new ReservacionVisitante();
-        //$entity->setFecha(new \DateTime('today'));
-        $entity->setFecha(\DateTime::createFromFormat('d/m/Y', '16/6/2016'));
+        $entity->setFecha(new \DateTime('today'));
+        //$entity->setFecha(\DateTime::createFromFormat('d/m/Y', '16/6/2016'));
         $form = $this->createForm(ReservacionVisitanteType::class, $entity);
         $almuerzo = $this->getDoctrine()
             ->getRepository('AppBundle:TipoMenu')
@@ -683,8 +698,8 @@ class AppController extends Controller
         /** @var Menu $menu */
         $menu = $this->getDoctrine()
             ->getRepository('AppBundle:Menu')->findOneBy([
-                //'fecha' => new \DateTime('today'),
-                'fecha' => \DateTime::createFromFormat('d/m/Y', '16/6/2016'),
+                'fecha' => new \DateTime('today'),
+                //'fecha' => \DateTime::createFromFormat('d/m/Y', '16/6/2016'),
                 'tipoMenu' => $almuerzo,
             ]); 
 
@@ -1058,9 +1073,9 @@ class AppController extends Controller
     private function createSearchForm()
     {
         $searchForm = $this->get('form.factory')->createNamedBuilder('searchForm')
-            ->add('usuario', EntityType::class, [
-                'class' => Usuario::class,
-                'choice_label' => 'noSolapin',
+            ->add('solapin', TextType::class, [
+                //'class' => Usuario::class,
+                //'choice_label' => 'noSolapin',
                 'required' => false,
             ])
             ->getForm();
@@ -1167,5 +1182,24 @@ class AppController extends Controller
             ->add('buscar', SubmitType::class)
             ->getForm();
         return $searchForm;
+    }
+
+    /**
+     * @param $data
+     * @return Form
+     */
+    private function getSearchFormCompPago($data)
+    {
+        $form = $this->createFormBuilder($data)
+            ->add('inicio', DateType::class, [
+                'data' => is_null($data) ? new \DateTime('Monday next week') : $data['inicio'],
+            ])
+            ->add('fin', DateType::class, [
+                'data' => is_null($data) ? new \DateTime('Sunday next week') : $data['fin'],
+            ])
+            ->add('enviar', 'submit')
+            ->getForm();
+
+        return $form;
     }
 }

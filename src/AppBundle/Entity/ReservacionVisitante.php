@@ -217,4 +217,9 @@ class ReservacionVisitante
     {
         return $this->menu;
     }
+
+    public function getPrecioTotal()
+    {
+        return $this->menu->getPrecioPlatos();
+    }
 }

@@ -1,26 +1,30 @@
 {% extends 'easy_admin/layout.html.twig' %}
-{% form_theme form with easyadmin_config('design.form_theme') %}
 
-{% block body_class %} list list-menu {% endblock %}
+{% form_theme form '@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block body_class %} list list-menu new new-pago {% endblock %}
 
 {% block content_title %} Comprobante de pago{% endblock %}
 
 {% block main %}
-    <table>
-        <tr>
-            <td>Inicio</td>
-            <td>Fin</td>
-            <td></td>
-        </tr>
-        <tr>
+    <div class="row">
+        <div class="col-lg-12">
             {{ form_start(form) }}
-            <td>{{ form_widget(form.inicio) }}</td>
-            <td>{{ form_widget(form.fin) }}</td>
-            <td>{{ form_widget(form.enviar) }}</td>
+            <div class="col-lg-4">
+                {{ form_row(form.inicio) }}
+            </div>
+            <div class="col-lg-4">
+                {{ form_row(form.fin) }}
+            </div>
+            <div class="col-lg-1">
+                {{ form_row(form.enviar) }}
+            </div>
+            <div class="col-lg-1">
+                <a href="{{ path('reporte_comprobante_pago') }}" class="btn btn-default">Limpiar</a>
+            </div>
             {{ form_end(form) }}
-        </tr>
-    </table>
-
+        </div>
+    </div>
     <br>
 
     <table class="table table-bordered table-striped">
@@ -28,24 +32,35 @@
         <tr>
             <th>Fecha</th>
             <th>No. Comprobante</th>
-            <th>Usuario</th>
             <th>Importe</th>
         </tr>
         </thead>
         <tbody>
-        {% for item in matrix %}
+        {% set total = 0 %}
+        {% for entity in entities %}
             <tr>
-                <td>{{ item.entity.fecha|date('d/m/Y') }}</td>
-                <td>{{ item.entity.numeroComprobante }}</td>
-                <td>{{ item.entity.usuario }}</td>
-                <td>{{ item.total }}</td>
+                <td>{{ entity.nombre is defined ? entity.fecha|date('d/m/Y') : entity.fechaCobrada|date('d/m/Y') }}</td>
+                <td>
+                    {% if entity.nombre is defined %}
+                        {{ entity.numeroComprobante ~ '(Visitante)' }}
+                    {% else %}
+                        {% for numero in entity.numerosComprobante %}
+                            {{ numero ~ ' ' }}
+                        {% endfor %}
+                    {% endif %}
+                </td>
+                <td>{{ entity.precioTotal }}</td>
             </tr>
+            {% set total = total + entity.precioTotal %}
         {% else %}
             <tr>
-                <td colspan="5">No se encontraron resultados</td>
+                <td colspan="3">No se encontraron resultados</td>
             </tr>
         {% endfor %}
+        <tr>
+            <td colspan="2"><b>Total</b></td>
+            <td><b>{{ total }}</b></td>
+        </tr>
         </tbody>
     </table>
-
 {% endblock %}

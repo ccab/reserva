@@ -9,17 +9,19 @@ class ReservacionRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findPorRangoDeFecha($rango, $estado = 'Cobrada')
     {
-        $q = $this->createQueryBuilder('r')
+        $query = $this->createQueryBuilder('r')
             ->join('r.estado', 'e')
-            ->where('r.fecha > :inicio')
-            ->andWhere('r.fecha < :fin')
             ->andWhere('e.nombre = :estado')
-            ->setParameter(':inicio', $rango['inicio'])
-            ->setParameter(':fin', $rango['fin'])
-            ->setParameter('estado', $estado)
-            ->getQuery();
+            ->setParameter('estado', $estado);
 
-        return $q->getResult();
+        if (!is_null($rango)) {
+            $query->andWhere('r.fechaCobrada >= :inicio')
+                ->andWhere('r.fechaCobrada <= :fin')
+                ->setParameter(':inicio', $rango['inicio'])
+                ->setParameter(':fin', $rango['fin']);
+        }
+
+        return $query->getQuery()->getResult();
     }
     
     public function findPorTipoPlato($tipoMenu, $categAlimento, $fecha)
@@ -46,13 +48,37 @@ class ReservacionRepository extends \Doctrine\ORM\EntityRepository
     public function findEfectuarCobro($data)
     {
         $query = $this->createQueryBuilder('r')
+                ->select('r, rmp, mp, m, t')
+                ->join('r.usuario', 'u')
+                ->join('r.estado', 'e')
+                ->join('r.reservacionMenuPlatos', 'rmp')
+                ->join('rmp.menuPlato', 'mp')
+                ->join('mp.menu', 'm')
+                ->join('m.tipoMenu', 't')
+                ->where('u.noSolapin = :noSolapin')
+                ->andWhere('e.nombre = :estado')
+                ->andWhere('r.fecha >= :fechaInicial')
+                ->andWhere('r.fecha <= :fechaFinal')
+                ->setParameter('noSolapin', $data['usuario']->getNoSolapin())
+                ->setParameter('fechaInicial', new \DateTime('Monday next week'))
+                ->setParameter('fechaFinal', new \DateTime('Sunday next week'))
+                ->setParameter('estado', 'Creada')
+                ->orderBy('r.fecha');
+        
+        return $query->getQuery()->getResult();
+    }
+    
+    public function findEfectuarCobroIds($data)
+    {
+        $query = $this->createQueryBuilder('r')
+                ->select('r.id')
                 ->join('r.usuario', 'u')
                 ->join('r.estado', 'e')
                 ->where('u.noSolapin = :noSolapin')
                 ->andWhere('e.nombre = :estado')
                 ->andWhere('r.fecha >= :fechaInicial')
                 ->andWhere('r.fecha <= :fechaFinal')
-                ->setParameter('noSolapin', $data['usuario']->getNoSolapin())
+                ->setParameter('noSolapin', $data['solapin'])
                 ->setParameter('fechaInicial', new \DateTime('Monday next week'))
                 ->setParameter('fechaFinal', new \DateTime('Sunday next week'))
                 ->setParameter('estado', 'Creada')

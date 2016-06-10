@@ -18,4 +18,18 @@ class ReservacionVisitanteRepository extends \Doctrine\ORM\EntityRepository
         return $query->getSingleScalarResult();
     }
 
+    public function findPorRangoDeFecha($rango)
+    {
+        $query = $this->createQueryBuilder('r');
+
+        if (!is_null($rango)) {
+            $query->andWhere('r.fecha >= :inicio')
+                ->andWhere('r.fecha <= :fin')
+                ->setParameter(':inicio', $rango['inicio'])
+                ->setParameter(':fin', $rango['fin']);
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
 }
