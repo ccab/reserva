@@ -38,6 +38,11 @@ class Menu
     private $fecha;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $observaciones;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TipoMenu", inversedBy="menus")
      */
     private $tipoMenu;
@@ -311,5 +316,29 @@ class Menu
     public function getReservacionVisitante()
     {
         return $this->reservacionVisitante;
+    }
+
+    /**
+     * Set observaciones
+     *
+     * @param string $observaciones
+     *
+     * @return Menu
+     */
+    public function setObservaciones($observaciones)
+    {
+        $this->observaciones = $observaciones;
+
+        return $this;
+    }
+
+    /**
+     * Get observaciones
+     *
+     * @return string
+     */
+    public function getObservaciones()
+    {
+        return $this->observaciones;
     }
 }

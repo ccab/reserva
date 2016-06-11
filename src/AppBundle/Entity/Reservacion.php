@@ -181,31 +181,7 @@ class Reservacion
     {
         return $this->usuario;
     }
-
-    /**
-     * Set numeroComprobante
-     *
-     * @param integer $numeroComprobante
-     *
-     * @return Reservacion
-     */
-    public function setNumeroComprobante($numeroComprobante)
-    {
-        $this->numeroComprobante = $numeroComprobante;
-
-        return $this;
-    }
-
-    /**
-     * Get numeroComprobante
-     *
-     * @return integer
-     */
-    public function getNumeroComprobante()
-    {
-        return $this->numeroComprobante;
-    }
-
+    
     /**
      * Add reservacionMenuPlato
      *

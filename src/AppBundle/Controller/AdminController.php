@@ -67,7 +67,7 @@ class AdminController extends BaseAdminController
             $this->em->persist($entity);
             $this->em->flush();
 
-            $this->addFlash('success', 'menu creado');
+            //$this->addFlash('success', 'menu creado');
             return $this->redirectToRoute('admin', ['action' => 'new', 'entity' => $this->entity['name']]);
         }
 

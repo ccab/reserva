@@ -16,6 +16,9 @@ class MenuAprobarType extends AbstractType
     {
         $builder
             ->add('aprobado')
+            ->add('observaciones', null, [
+                'required' => false,
+            ])
         ;
     }
 

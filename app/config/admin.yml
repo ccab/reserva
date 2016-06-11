@@ -105,9 +105,9 @@ easy_admin:
             class: AppBundle\Entity\Menu
             list:
                 fields:
-                    - { property: aprobado, type: boolean}
-                    - { property: fecha}
-                    - { property: tipoMenu, label: 'Tipo de Menu'}
+                    - { property: fecha, sortable: false}
+                    - { property: aprobado, type: boolean, sortable: false}
+                    - { property: tipoMenu, label: 'Tipo de Menu', sortable: false}
             edit:
                 title: 'Modificar Menu'
         EstadoReservacion:

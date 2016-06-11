@@ -4,6 +4,19 @@
 {% use '@EasyAdmin/form/bootstrap_3_layout.html.twig' %}
 {% form_theme form _self %}
 
+{% block head_stylesheets %}
+    {{ parent() }}
+
+    <style>
+        .btn-success, .btn-success:hover, .btn-success:active, .btn-success:focus, .btn-success:active:hover {
+            background-color: #006B2E; !important;
+            border-color: transparent;
+            color: #FFFFFF;
+        }
+    </style>
+
+{% endblock %}
+
 {% block body_class %} list list-menu new new-menu {% endblock %}
 
 {% block _menu_menuPlatos_entry_row %}
@@ -90,7 +103,7 @@
                         </tr>
                     {% else %}
                         <tr id="no_records">
-                            <td colspan="3">No se han adicionado platos</td>
+                            <td colspan="4">No se han adicionado platos</td>
                         </tr>
                     {% endfor %}
                     </tbody>

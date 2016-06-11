@@ -112,22 +112,14 @@ class AppController extends Controller
 
         foreach ($entities as $key => $entity) {
             $form->add($key, new MenuAprobarType(), [
-                'data_class' => 'AppBundle\Entity\Menu',
                 'data' => $entity,
             ]);
         }
 
         $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-
-            foreach ($entities as $key => $entity) {
-                $entityManager->persist($form->get($key)->getData());
-            }
-
             $entityManager->flush();
-
             return $this->redirectToRoute('aprobar_menu', ['day' => $day]);
         }
 
@@ -154,11 +146,18 @@ class AppController extends Controller
     public function reservarAction(Request $request, $day)
     {
         $date = new \DateTime("$day next week");
-        $reservacion = $this->getDoctrine()->getRepository('AppBundle:Reservacion')->findOneBy([
+        $reservacion = $this->getDoctrine()
+            ->getRepository('AppBundle:Reservacion')
+            ->findOneBy([
             'usuario' => $this->getUser(),
             'fecha' => $date,
         ]);
-        $entities = $this->getDoctrine()->getRepository('AppBundle:Menu')->findByFecha($date);
+        $entities = $this->getDoctrine()
+            ->getRepository('AppBundle:Menu')
+            ->findBy([
+            'fecha' => $date,
+            'aprobado' => true,
+        ]);
         $reserMenuAlimIds = $this->getReservMenuPlatosIds($date);
         $form = $this->createFormBuilder(null, [
             'action' => $this->generateUrl('reservar', ['day' => $day]),
