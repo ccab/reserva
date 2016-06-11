@@ -107,43 +107,31 @@ class AdminController extends BaseAdminController
         ]);
     }
 
-/*public function editMenuAction()
-    {
-        $id = $this->request->query->get('id');
-        /** @var Menu $entity */ /*
-        $entity = $this->em->getRepository($this->entity['class'])->find($id);
-        $editForm = $this->createForm(new MenuType(), $entity);
-        $deleteForm = $this->createDeleteForm($this->entity['name'], $id);
-
-        $editForm->handleRequest($this->request);
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            // EXTRAIGO DE LA BD LA RELACION DE ESTE MENU CON TODOS SUS ALIMENTOS
-            $menuPlatos = $this->getDoctrine()->getRepository('AppBundle:MenuPlato')->findByMenu($entity->getId());
-
-            // SI EN EL FORMULARIO DE EDICION SE ELIMINO DE LA COLECCION ALGUN ALIMENTO DEBO ELIMINARLO EXPLICITAMENTE
-            foreach ($menuPlatos as $mp) {
-                if (false === $entity->getMenuPlatos()->contains($mp)) {
-                    $this->em->remove($mp);
-                }
-            }
-
-            $this->em->persist($entity);
-            $this->em->flush();
-
-            return $this->redirectToRoute('admin', ['action' => 'list', 'entity' => $this->entity['name']]);
-        }
-
-        return $this->render('@EasyAdmin/default/edit.html.twig', [
-            'form' => $editForm->createView(),
-            'entity_fields' => $this->entity['edit']['fields'],
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
-        ]);
-    }*/
-
     public function createUsuarioEntityForm($entity)
     {
         return $this->createForm(UsuarioType::class, $entity);
     }
+
+    /*public function listUsuarioAction()
+    {
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findAll($this->entity['class'], $this->request->query->get('page', 1), $this->config['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'));
+
+        $form = $this->createFormBuilder()
+            ->add('solapin')
+            ->getForm();
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+        
+        return $this->render('easy_admin/Usuario/list.html.twig', array(
+            'paginator' => $paginator,
+            'fields' => $fields,
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+            'form' => $form->createView(),
+        ));
+    }*/
 
 }

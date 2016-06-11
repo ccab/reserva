@@ -83,8 +83,10 @@ class AppController extends Controller
         $form = $this->createFormBuilder()
             ->add('claveNueva', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Clave Nueva'],
-                'second_options' => ['label' => 'Confirmar Clave'],
+                'first_name' => 'clave',
+                'first_options' => ['label' => 'Nueva clave'],
+                'second_name' => 'confirm',
+                'second_options' => ['label' => 'Confirmar clave'],
             ])
             ->getForm();
 
@@ -285,7 +287,7 @@ class AppController extends Controller
      */
     public function efectuarCobroAction(Request $request)
     {
-        $entities =  null;
+        $entities = null;
 
         if ($request->query->has('entities')) {
             $ids = unserialize($request->query->get('entities'));
@@ -305,7 +307,7 @@ class AppController extends Controller
                 ->findEfectuarCobroIds($searchForm->getData());
 
             return $this->redirectToRoute('efectuar_cobro', [
-               'entities' => serialize($entities),
+                'entities' => serialize($entities),
             ]);
         }
 
@@ -701,7 +703,7 @@ class AppController extends Controller
                 'fecha' => new \DateTime('today'),
                 //'fecha' => \DateTime::createFromFormat('d/m/Y', '16/6/2016'),
                 'tipoMenu' => $almuerzo,
-            ]); 
+            ]);
 
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
@@ -709,7 +711,7 @@ class AppController extends Controller
 
             $entityManager->persist($entity);
             $entityManager->flush();
-            
+
             $html = $this->render('app/comp_pago_visitante.html.twig', [
                 'entity' => $entity,
             ])->getContent();

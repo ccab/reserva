@@ -74,7 +74,7 @@
                 </tr>
             {% else %}
                 <tr id="no_records">
-                    <td colspan="5">No se han adicionado platos</td>
+                    <td colspan="5">No se han adicionado productos</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -104,7 +104,7 @@
             $('a.text-primary').remove();
 
             var $collectionHolder;
-            var $addLink = $('<div class="col-sm-2"><a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar producto</a></div><br><br>');
+            var $addLink = $('<div class="col-sm-2"><a href="#" class="btn btn-success" role="button"><span class="fa fa-plus"></span> Agregar</a></div><br><br>');
             var $addLinkDiv = $('<div class="add-link"></div>').append($addLink);
 
             jQuery(document).ready(function () {

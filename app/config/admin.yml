@@ -18,17 +18,18 @@ easy_admin:
                 actions:
                     - { name: 'cambiar_clave', type: 'route', label: 'Cambiar Clave', icon: 'key' }
                 fields:
-                    - { property: noSolapin }
-                    - { property: usuario}
-                    - { property: nombre }
-                    - { property: apellido, label: 'Primer Apellido' }
-                    - { property: segundoApellido }
-                    - { property: rol }
+                    - { property: noSolapin, sortable: false }
+                    - { property: nombre, sortable: false }
+                    - { property: apellido, label: 'Primer Apellido', sortable: false }
+                    - { property: segundoApellido, sortable: false }
+                    - { property: usuario, sortable: false}
+                    - { property: rol, sortable: false }
         Rol:
             class: AppBundle\Entity\Rol
         UnidadMedida:
             class: AppBundle\Entity\UnidadMedida
             list:
+                title: 'Unidad de Medida'
                 fields:
                     - { property: nombre}
                     - { property: abreviatura }

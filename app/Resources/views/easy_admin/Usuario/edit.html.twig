@@ -42,19 +42,16 @@
         </div>
         <div class="col-sm-4">
             <div class="col-sm-10">
-                {{ form_row(form.roles) }}
+                {{ form_row(form.rol) }}
             </div>
         </div>
 
-        <div class="col-sm-10">
+        <div class="col-lg-12">
             <div id="form-actions-row">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa fa-save"></i> Guardar Cambios
-                </button>
-                <a class="btn btn-secondary action-list"
-                   href="{{ path('admin', { entity: 'Usuario', action: 'list' }) }}">
-                    Volver al listado
-                </a>
+                <div class="pull-right">
+                    <button type="submit" class="btn btn-success">Aceptar</button>
+                    <a href="{{ path('admin', {'entity':'Usuario', 'action': 'list'}) }}" class="btn btn-danger">Cancelar</a>
+                </div>
             </div>
         </div>
 
