@@ -35,12 +35,12 @@
         </tr>
         </thead>
         <tbody>
-        {% for id,salida in salidas %}
+        {% for salida in salidas %}
             <tr>
                 <td>{{ salida.producto }}</td>
                 <td>{{ salida.producto.unidadMedida.abreviatura }}</td>
                 <td>{{ salida.producto.cantidad }}</td>
-                <td><div class="col-lg-3">{{ form_widget(attribute(form, id)) }}</div></td>
+                <td><div class="col-lg-3">{{ salida.brutoTotal }}</div></td>
             </tr>
         {% else %}
             <tr>

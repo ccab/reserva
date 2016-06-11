@@ -149,15 +149,15 @@ class AppController extends Controller
         $reservacion = $this->getDoctrine()
             ->getRepository('AppBundle:Reservacion')
             ->findOneBy([
-            'usuario' => $this->getUser(),
-            'fecha' => $date,
-        ]);
+                'usuario' => $this->getUser(),
+                'fecha' => $date,
+            ]);
         $entities = $this->getDoctrine()
             ->getRepository('AppBundle:Menu')
             ->findBy([
-            'fecha' => $date,
-            'aprobado' => true,
-        ]);
+                'fecha' => $date,
+                'aprobado' => true,
+            ]);
         $reserMenuAlimIds = $this->getReservMenuPlatosIds($date);
         $form = $this->createFormBuilder(null, [
             'action' => $this->generateUrl('reservar', ['day' => $day]),
@@ -425,8 +425,11 @@ class AppController extends Controller
         if ($formSalidas->isValid() && $formSalidas->isSubmitted()) {
             if ($formSalidas->get('aceptar')->isClicked()) {
                 $entityManager = $this->getDoctrine()->getManager();
-                foreach ($salidas as $key => $salida) {
-                    $salida['producto']->setCantidad($salida['producto']->getCantidad() - $salida['brutoTotal']);
+
+                foreach ($salidas as $salida) {
+                    /** @var Producto $producto */
+                    $producto = $salida['producto'];
+                    $producto->setCantidad($producto->getCantidad() - $salida['brutoTotal']);
                 }
 
                 $entityManager->flush();
@@ -1114,7 +1117,6 @@ class AppController extends Controller
 
                     $salidas[$id] = [
                         'producto' => $productoPlato->getProducto(),
-                        //'um' => $productoPlato->getUnidadMedida(),
                         'brutoTotal' => $conversion,
                     ];
                 }
@@ -1152,21 +1154,12 @@ class AppController extends Controller
      */
     private function getFormSalidas($salidas)
     {
-        $form = $this->createFormBuilder()->getForm();
-
-        foreach ($salidas as $id => $salida) {
-            $form->add($id, TextType::class, [
-                'data' => $salida['brutoTotal'],
-                'read_only' => true,
-            ]);
-        }
-
-        $form->add('aceptar', SubmitType::class)
+        return $this->createFormBuilder()
+            ->add('aceptar', SubmitType::class)
             ->add('generar', SubmitType::class, [
                 'label' => 'Generar comprobante'
-            ]);
-
-        return $form;
+            ])
+            ->getForm();
     }
 
     /**
