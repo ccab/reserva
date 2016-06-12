@@ -541,7 +541,7 @@ class AppController extends Controller
     public function compPagoAction(Request $request)
     {
         $data = $request->query->has('search') ? unserialize($request->query->get('search')) : null;
-        $form = $this->getSearchFormCompPago($data);
+        $form = $this->getSearchFormRangoFecha($data);
         $entities = $this->getDoctrine()
             ->getRepository('AppBundle:Reservacion')
             ->findPorRangoDeFecha($data);
@@ -749,10 +749,6 @@ class AppController extends Controller
         $entities = $this->getDoctrine()->getRepository('AppBundle:Producto')->findAll();
 
         if ($request->query->has('imprimir')) {
-            /*return $this->render('app/imprimir_existencia_alm.html.twig', [
-                'entities' => $entities,
-            ]);*/
-
             $html = $this->render('app/imprimir_existencia_alm.html.twig', [
                 'entities' => $entities,
             ])->getContent();
@@ -770,8 +766,6 @@ class AppController extends Controller
                 'entities' => $entities,
             ]);
         }
-
-
     }
 
     /**
@@ -798,6 +792,50 @@ class AppController extends Controller
 
         return $this->render('app/menu_semanal.html.twig', [
             'semana' => $semana,
+        ]);
+    }
+
+    /**
+     * @Route("/reporte/platos", name="reporte_platos")
+     */
+    public function reportePlatosAction(Request $request)
+    {
+        $platos = [];
+        $data = $request->query->has('search') ? unserialize($request->query->get('search')) : [
+            'inicio' => new \DateTime('Monday last week'),
+            'fin' => new \DateTime('Friday last week')
+        ];
+        $form = $this->getSearchFormRangoFecha($data);
+        $reservaciones = $this->getDoctrine()
+            ->getRepository('AppBundle:Reservacion')
+            ->findPorRangoDeFecha($data);
+
+        /** @var Reservacion $reservacion */
+        foreach ($reservaciones as $reservacion) {
+            /** @var Plato $plato */
+            foreach ($reservacion->getPlatos() as $plato) {
+                if (!array_key_exists($plato->getId(), $platos)) {
+                    $platos[$plato->getId()] = [
+                        'plato' => $plato,
+                        'aceptacion' => 1,
+                    ];
+                } else {
+                    $platos[$plato->getId()] = [
+                        'plato' => $plato,
+                        'aceptacion' => $platos[$plato->getId()]['aceptacion'] + 1,
+                    ];
+                }
+            }
+        }
+
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            return $this->redirectToRoute('reporte_platos', ['search' => serialize($form->getData())]);
+        }
+
+        return $this->render('app/reporte_platos.html.twig', [
+            'platos' => $platos,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -1189,7 +1227,7 @@ class AppController extends Controller
      * @param $data
      * @return Form
      */
-    private function getSearchFormCompPago($data)
+    private function getSearchFormRangoFecha($data)
     {
         $form = $this->createFormBuilder($data)
             ->add('inicio', DateType::class, [
