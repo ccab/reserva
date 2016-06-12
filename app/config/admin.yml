@@ -5,7 +5,7 @@ easy_admin:
         brand_color: rgb(36, 56, 113)
         form_theme: 'form/bootstrap_3_layout.html.twig'
     formats:
-        number: '%d'
+        number: '%.2f'
     list:
         max_results: 10
         actions:
@@ -43,18 +43,14 @@ easy_admin:
                     descripcion:
                         property: abreviatura
                         css_class: 'col-sm-6'
-        #Este es una entrada para una entidad que sera manejada por EasyAdminBundle
         Producto:
             class: AppBundle\Entity\Producto
-            #Esta es la pagina para listar (tabla)
             list:
                 fields:
                     - { property: codigo}
                     - { property: descripcion }
-            #Esta es la seccion para la pagina de crear (formulario)
             new:
                 fields:
-                      #Se organizan los campos por linea (la suma de las columnas debe ser 12)
                       codigo:
                           property: codigo
                           css_class: 'col-sm-3'
@@ -79,26 +75,15 @@ easy_admin:
         Plato:
             class: AppBundle\Entity\Plato
             list:
+                actions:
+                    - { name: 'carta_tecnica', type: 'route', label: 'Carta Técnica', icon: 'folder' }
                 fields:
-                    - { property: codigo}
-                    - { property: nombre}
-                    - { property: norma}
-                    - { property: categoria}
-                    - { property: precio}
+                    - { property: codigo, label: 'Código', sortable: false }
+                    - { property: nombre, sortable: false }
+                    - { property: categoria, label: 'Categoría' ,sortable: false }
+                    - { property: precio, sortable: false }
             edit:
                 title: 'Modificar Plato'
-#            form:
-#                fields:
-#                    nombre:
-#                        property: nombre
-#                        css_class: 'col-sm-3'
-#                    norma:
-#                        property: norma
-#                        label: 'Norma a servir(g)'
-#                        css_class: 'col-sm-3'
-#                    precio:
-#                        property: precio
-#                        css_class: 'col-sm-3'
         TipoMenu:
             class: AppBundle\Entity\TipoMenu
         Menu:
@@ -107,6 +92,7 @@ easy_admin:
                 fields:
                     - { property: fecha, sortable: false}
                     - { property: aprobado, type: boolean, sortable: false}
+                    - { property: observaciones, sortable: false}
                     - { property: tipoMenu, label: 'Tipo de Menu', sortable: false}
             edit:
                 title: 'Modificar Menu'

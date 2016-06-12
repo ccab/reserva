@@ -29,162 +29,162 @@
 
 {% block main %}
     {{ form_start(form, {'attr':{'class':'form-horizontal new-form'}}) }}
-<div class="row">
-    <div class="col-sm-10 col-sm-offset-1">
-        {{ form_errors(form) }}
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            {{ form_errors(form) }}
+            <br>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="col-sm-10">
+                {{ form_row(form.codigo, {'label': 'Código'}) }}
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="col-sm-10">
+                {{ form_row(form.nombre, {'label':'Nombre del plato'}) }}
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="col-sm-10">
+                {{ form_row(form.norma, {'label': 'Norma a servir(g)'}) }}
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="col-sm-10">
+                {{ form_row(form.precio) }}
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="col-sm-10">
+                {{ form_row(form.categoria, {'label': 'Categoría' }) }}
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <fieldset>
+                <legend> Valor Nutricional</legend>
+
+                <div class="col-sm-3">
+                    <div class="col-sm-10">
+                        {{ form_row(form.valorNutricProteina, {'label': 'Proteínas'}) }}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-10">
+                        {{ form_row(form.valorNutricGrasa, {'label': 'Grasas'}) }}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-10">
+                        {{ form_row(form.valorNutricCarbohidrato, {'label': 'Carbohidratos'}) }}
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="col-sm-10">
+                        {{ form_row(form.valorNutricEnergia, {'label': 'Energías'}) }}
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
+        <div class="col-sm-4">
+            <fieldset>
+                <legend> Parámetros de Cocción</legend>
+
+                <div class="col-sm-6">
+                    <div class="col-sm-10">
+                        {{ form_row(form.temperatura) }}
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="col-sm-10">
+                        {{ form_row(form.tiempo) }}
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+
         <br>
+        <div class="col-sm-4">
+            <div class="col-sm-10">
+                {{ form_row(form.observaciones) }}
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="col-sm-10">
+                {{ form_row(form.preparacion, {'label': 'Preparación'}) }}
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="col-sm-10">
+                {{ form_row(form.coccion, {'label': 'Cocción'}) }}
+            </div>
+        </div>
+
+        <div class="col-sm-10">
+            <fieldset>
+                <legend> Ingredientes que componen el plato</legend>
+                <div class="table-responsive" id="div_productos">
+                    <table class="table" id="productos">
+                        <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Peso Bruto</th>
+                            <th>Peso Neto</th>
+                            <th>Unidad de Medida</th>
+                            <th>Acción</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for producto in form.productosPlato %}
+                            <tr id="{{ 'plato_productosPlato_' ~ loop.index0 }}">
+                                <td>{{ form_widget(producto.producto) }}</td>
+                                <td>{{ form_widget(producto.pesoBruto) }}</td>
+                                <td>{{ form_widget(producto.pesoNeto) }}</td>
+                                <td>{{ form_widget(producto.unidadMedida) }}</td>
+                                <td>
+                                    <a href="#" onclick="
+                                            $(function() {
+                                            if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
+                                            var containerDiv = $('#plato_productosPlato_{{ loop.index0 }}');
+                                            containerDiv.remove();
+                                            });
+                                            " class="btn btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr id="no_records">
+                                <td colspan="5">No se han adicionado productos</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+            </fieldset>
+
+
+        {% set dp = form_row(form.productosPlato.vars.prototype) %}
+        <div id="div_plato_productosPlato" data-prototype="{{ dp }}"></div>
+        {#{{ form_row(form.productosPlato) }}#}
+        </div>
     </div>
 
     <div class="row">
-    <div class="col-sm-3 col-sm-offset-9">
-        <div class="col-sm-10">
-            {{ form_row(form.codigo) }}
-        </div>
-    </div>
-    </div>
-
-    <div class="col-sm-3">
-        <div class="col-sm-10">
-            {{ form_row(form.nombre, {'label':'Nombre del plato'}) }}
-        </div>
-    </div>
-    <div class="col-sm-3">
-        <div class="col-sm-10">
-            {{ form_row(form.norma, {'label': 'Norma a servir(g)'}) }}
-        </div>
-    </div>
-    <div class="col-sm-3">
-        <div class="col-sm-10">
-            {{ form_row(form.precio) }}
-        </div>
-    </div>
-    <div class="col-sm-3">
-        <div class="col-sm-10">
-            {{ form_row(form.categoria) }}
-        </div>
-    </div>
-
-    <div class="col-sm-8">
-        <fieldset>
-            <legend> Valor Nutricional</legend>
-
-            <div class="col-sm-6">
-                <div class="col-sm-10">
-                    {{ form_row(form.valorNutricProteina, {'label': 'Proteinas'}) }}
-                </div>
+        <div id="form-actions-row">
+            <div class="pull-right">
+                <button type="submit" class="btn btn-success">Aceptar</button>
+                <a href="{{ path('admin', {'entity': 'Plato', 'action':'list'}) }}" class="btn btn-danger">Cancelar</a>
             </div>
-            <div class="col-sm-6">
-                <div class="col-sm-10">
-                    {{ form_row(form.valorNutricGrasa, {'label': 'Grasas'}) }}
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="col-sm-10">
-                    {{ form_row(form.valorNutricCarbohidrato, {'label': 'Carbohidratos'}) }}
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="col-sm-10">
-                    {{ form_row(form.valorNutricEnergia, {'label': 'Energias'}) }}
-                </div>
-            </div>
-        </fieldset>
-    </div>
-
-    <div class="col-sm-4">
-        <fieldset>
-            <legend> Parametros de Coccion</legend>
-
-            <div class="col-sm-8">
-                <div class="col-sm-10">
-                    {{ form_row(form.temperatura) }}
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="col-sm-10">
-                    {{ form_row(form.tiempo) }}
-                </div>
-            </div>
-        </fieldset>
-    </div>
-
-    <br>
-    <div class="col-sm-4">
-        <div class="col-sm-10">
-            {{ form_row(form.observaciones) }}
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="col-sm-10">
-            {{ form_row(form.preparacion) }}
-        </div>
-    </div>
-    <div class="col-sm-4">
-        <div class="col-sm-10">
-            {{ form_row(form.coccion) }}
         </div>
     </div>
 
-    <div class="col-sm-10">
-        <div class="table-responsive" id="div_productos">
-            <table class="table" id="productos">
-                <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Peso Bruto</th>
-                    <th>Peso Neto</th>
-                    <th>Unidad de Medida</th>
-                    <th>Eliminar</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for producto in form.productosPlato %}
-                    <tr id="{{ 'plato_productosPlato_' ~ loop.index0 }}">
-                        <td>{{ form_widget(producto.producto) }}</td>
-                        <td>{{ form_widget(producto.pesoBruto) }}</td>
-                        <td>{{ form_widget(producto.pesoNeto) }}</td>
-                        <td>{{ form_widget(producto.unidadMedida) }}</td>
-                        <td>
-                            <a href="#" onclick="
-                                    $(function() {
-                                        if (event.preventDefault) event.preventDefault(); else event.returnValue = false;
-                                        var containerDiv = $('#plato_productosPlato_{{ loop.index0 }}');
-                                        containerDiv.remove();
-                                    });
-                                " class="btn btn-danger">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr id="no_records">
-                        <td colspan="5">No se han adicionado productos</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-
-        {% set dp = form_row(form.productosPlato.vars.prototype)  %}
-        <div id="div_plato_productosPlato"  data-prototype="{{ dp }}"></div>
-        {#{{ form_row(form.productosPlato) }}#}
-
-        <div class="col-sm-10">
-                <div id="form-actions-row">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa fa-save"></i> Aceptar
-                    </button>
-                    <a class="btn btn-danger" href="{{ path('admin', { entity: 'Plato', action: 'list' }) }}">
-                            <i class="fa fa-arrow-left"></i> Cancelar
-                    </a>
-                </div>
-        </div>
-
-        {{ form_end(form) }}
-    </div>
+    {{ form_end(form) }}
 
 
-    {% endblock %}
+{% endblock %}
 
     {% block body_javascript %}
         <script type="text/javascript">

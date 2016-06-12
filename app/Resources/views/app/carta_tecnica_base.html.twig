@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-xs-12 col-sm-5">
+        <h4 class="title"> Nombre del plato: {{ entity }}</h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <fieldset>
+            <legend class="text-center"><h5><b>Valor Nutricional</b></h5></legend>
+            <div class="col-lg-6">
+                <p>Proteína: {{ entity.valorNutricProteina }}</p>
+            </div>
+            <div class="col-lg-6">
+                <p>Grasa: {{ entity.valorNutricGrasa }}</p>
+            </div>
+            <div class="col-lg-6">
+                <p>Carbohidrato: {{ entity.valorNutricCarbohidrato }}</p>
+            </div>
+            <div class="col-lg-6">
+                <p>Energía: {{ entity.valorNutricEnergia }}</p>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-lg-4">
+        <p>No: {{ entity.codigo }}</p>
+    </div>
+    <div class="col-lg-4">
+        <p>Precio: {{ entity.precio }}</p>
+    </div>
+    <div class="col-lg-4">
+        <p>Peso de la porción: {{ entity.norma ~ ' g' }}</p>
+    </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-sm-10">
+        <div class="table-responsive" id="div_productos">
+            <table class="table" id="productos">
+                <thead>
+                <tr>
+                    <th>Ingrediente</th>
+                    <th>Peso Bruto</th>
+                    <th>Peso Neto</th>
+                    <th>Unidad de Medida</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for producto in entity.productosPlato %}
+                    <tr>
+                        <td>{{ producto }}</td>
+                        <td>{{ producto.pesoBruto }}</td>
+                        <td>{{ producto.pesoNeto }}</td>
+                        <td>{{ producto.unidadMedida }}</td>
+                    </tr>
+                {% else %}
+                    <tr id="no_records">
+                        <td colspan="4">No se han adicionado productos</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <p class="text-center">Preparación</p>
+        </div>
+        <div class="col-lg-4">
+            <p>Parámetros de la cocción</p>
+        </div>
+        <div class="col-lg-8">
+            <p class="text-center">{{ entity.preparacion }}</p>
+        </div>
+        <div class="col-lg-4">
+            <p>Temperatura: {{ entity.temperatura ~ ' C' }}</p>
+        </div>
+        <div class="col-lg-8">
+            <p class="text-center">Coccion</p>
+        </div>
+        <div class="col-lg-4">
+            <p>Tiempo: {{ entity.tiempo ~ ' min' }}</p>
+        </div>
+        <div class="col-lg-8">
+            <p class="text-center">{{ entity.coccion }}</p>
+        </div>
+    </div>
+</div>

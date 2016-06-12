@@ -666,19 +666,26 @@ class AppController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('platos', EntityType::class, [
+            /*->add('platos', EntityType::class, [
                 'class' => Plato::class,
                 'data' => $entity,
-            ])
+            ])*/
             ->getForm();
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entity = $this->getDoctrine()
-                ->getRepository('AppBundle:Plato')
-                ->find($form->get('platos')->getData());
+            $html = $this->render('app/carta_tecnica_pdf.html.twig', [
+                'entity' => $entity,
+            ])->getContent();
 
-            return $this->redirectToRoute('carta_tecnica', ['id' => $entity->getId()]);
+            return new Response(
+                $this->get('knp_snappy.pdf')->getOutputFromHtml($html),
+                Response::HTTP_OK,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="file.pdf"'
+                ]
+            );
         }
 
         return $this->render('app/carta_tecnica.html.twig', [
