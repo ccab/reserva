@@ -8,6 +8,8 @@ use AppBundle\Entity\MenuPlato;
 use AppBundle\Entity\Plato;
 use AppBundle\Entity\Producto;
 use AppBundle\Entity\ProductoPlato;
+use AppBundle\Entity\Recepcion;
+use AppBundle\Entity\RecepcionProducto;
 use AppBundle\Entity\Reservacion;
 use AppBundle\Entity\ReservacionMenuPlato;
 use AppBundle\Entity\ReservacionVisitante;
@@ -22,6 +24,7 @@ use AppBundle\Form\RecepcionType;
 use AppBundle\Form\ReservacionVisitanteType;
 use AppBundle\Form\ResetType;
 use Doctrine\Common\Collections\ArrayCollection;
+use Ob\HighchartsBundle\Highcharts\Highchart;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -503,15 +506,23 @@ class AppController extends Controller
             if ($form->get('aceptar')->isClicked()) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $data = $form->getData();
+                $recepcionEntity = new Recepcion();
+                $recepcionEntity->setFecha($data['fecha']);
 
                 foreach ($data['recepciones'] as $recepcion) {
                     /** @var Producto $producto */
                     $producto = $recepcion['producto'];
                     $producto->setCantidad($producto->getCantidad() + $recepcion['cantidad']);
+
+                    $recepcionProducto = new RecepcionProducto();
+                    $recepcionProducto->setProducto($producto)
+                        ->setRecepcion($recepcionEntity)
+                        ->setCantidad($recepcion['cantidad']);
+                    $entityManager->persist($recepcionProducto);
                 }
 
+                $entityManager->persist($recepcionEntity);
                 $entityManager->flush();
-                $this->addFlash('success', 'Recepcion realizada con exito');
                 return $this->redirectToRoute('recepcionar_productos');
             } elseif ($form->get('imprimir')->isClicked()) {
                 $html = $this->render('app/informe_recepcion.html.twig', [
@@ -837,6 +848,54 @@ class AppController extends Controller
             'platos' => $platos,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/reporte/productos", name="reporte_productos")
+     */
+    public function reporteProductosAction(Request $request)
+    {
+        $data = $request->query->has('search') ? unserialize($request->query->get('search')) : [
+            'inicio' => new \DateTime('Monday last week'),
+            'fin' => new \DateTime('Friday last week')
+        ];
+
+        $form = $this->getSearchFormRangoFecha($data);
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            return $this->redirectToRoute('reporte_productos', ['search' => serialize($form->getData())]);
+        }
+
+        $entities = $this->getDoctrine()
+            ->getRepository('AppBundle:RecepcionProducto')
+            ->findPorRangoDeFecha($data);
+
+        return $this->render('app/reporte_productos.html.twig', [
+            'entities' => $entities,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/reporte/grafico/platos", name="reporte_grafico_platos")
+     */
+    public function reporteGraficoPlatosAction(Request $request)
+    {
+        // Chart
+        $series = array(
+            array("name" => "Data Serie Name",    "data" => array(1,2,4,5,6,3,8))
+        );
+
+        $ob = new Highchart();
+        $ob->chart->renderTo('linechart');  // The #id of the div where to render the chart
+        $ob->title->text('Chart Title');
+        $ob->xAxis->title(array('text'  => "Horizontal axis title"));
+        $ob->yAxis->title(array('text'  => "Vertical axis title"));
+        $ob->series($series);
+
+        return $this->render('app/reporte_grafico_platos.html.twig', array(
+            'chart' => $ob
+        ));
     }
 
     /**

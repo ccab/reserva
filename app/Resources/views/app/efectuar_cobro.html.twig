@@ -49,7 +49,6 @@
             <tr>
                 <td>{{ entity.fecha|localizeddate('none', 'none', 'es_ES','Europe/Berlin','eeee d/MM/Y')|title }}</td>
                 <td>
-                    {% dump(entity.getTiposDeMenu) %}
                     {% for tipoMenu in entity.tiposDeMenu %}
                         {{ tipoMenu ~ ' ' }}
                     {% endfor %}

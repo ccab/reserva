@@ -59,6 +59,11 @@ Producto
     protected $productoPlatos;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\RecepcionProducto", mappedBy="producto")
+     */
+    private $recepcion_productos;
+
+    /**
      * Get id.
      *
      * @return int
@@ -256,5 +261,39 @@ Producto
     public function removeProductoPlato(\AppBundle\Entity\ProductoPlato $productoPlato)
     {
         $this->productoPlatos->removeElement($productoPlato);
+    }
+
+    /**
+     * Add recepcionProducto
+     *
+     * @param \AppBundle\Entity\RecepcionProducto $recepcionProducto
+     *
+     * @return Producto
+     */
+    public function addRecepcionProducto(\AppBundle\Entity\RecepcionProducto $recepcionProducto)
+    {
+        $this->recepcion_productos[] = $recepcionProducto;
+
+        return $this;
+    }
+
+    /**
+     * Remove recepcionProducto
+     *
+     * @param \AppBundle\Entity\RecepcionProducto $recepcionProducto
+     */
+    public function removeRecepcionProducto(\AppBundle\Entity\RecepcionProducto $recepcionProducto)
+    {
+        $this->recepcion_productos->removeElement($recepcionProducto);
+    }
+
+    /**
+     * Get recepcionProductos
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecepcionProductos()
+    {
+        return $this->recepcion_productos;
     }
 }
