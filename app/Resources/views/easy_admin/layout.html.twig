@@ -13,9 +13,15 @@
 {% endblock head_stylesheets %}
 
  {% block body %}
-     <body id="{% block body_id %}{% endblock %}" class="skin-blue layout-top-nav fixed {% block body_class %}{% endblock %}">
+     <body id="{% block body_id %}{% endblock %}" class="skin-blue layout-top-nav{% block body_class %}{% endblock %}">
      <div class="wrapper">
          {% block wrapper %}
+
+             <div class="row">
+             	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <img src="{{ asset('banercomida.jpg') }}" alt="" height="90px">
+             	</div>
+             </div>
 
              <header class="main-header">
                  {#<div id="header-logo">
@@ -27,14 +33,14 @@
                      {% endblock header_logo %}
                  </div>#}
 
-                 <nav class="navbar navbar-static-top">
+                 <nav class="navbar">
                      <div class="container-fluid">
-                         <div class="navbar-header">
+                         {#<div class="navbar-header">
                              <a href="{{ path('admin') }}" class="navbar-brand"><b>Admin</b></a>
                              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                                  <i class="fa fa-bars"></i>
                              </button>
-                         </div>
+                         </div>#}
 
                          <!-- Collect the nav links, forms, and other content for toggling -->
                          <div class="collapse navbar-collapse" id="navbar-collapse">
