@@ -1,0 +1,57 @@
+{% extends 'easy_admin/layout.html.twig' %}
+
+{% form_theme form '@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block body_class %} list list-menu {% endblock %}
+
+{% block content_title %}Consultar dinero recaudado{% endblock %}
+
+{% block main %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{ form_start(form) }}
+            <div class="col-lg-4">
+                {{ form_row(form.inicio) }}
+            </div>
+            <div class="col-lg-4">
+                {{ form_row(form.fin) }}
+            </div>
+            <div class="col-lg-1">
+                {{ form_row(form.enviar) }}
+            </div>
+            <div class="col-lg-1">
+                <a href="{{ path('reporte_platos') }}" class="btn btn-default">Limpiar</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <br>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Reservaciones cobradas</th>
+            <th>Importe</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set total = 0 %}
+        {% for key,item in matrix %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>{{ item.importe }}</td>
+                {% set total = total + item.importe %}
+            </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="2"><b>Total</b></td>
+            <td><b>{{ total }}</b></td>
+        </tr>
+        </tbody>
+    </table>
+
+{% endblock %}
+

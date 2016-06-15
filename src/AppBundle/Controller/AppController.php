@@ -573,6 +573,64 @@ class AppController extends Controller
     }
 
     /**
+     * @Route("/reporte/dinero", name="reporte_dinero")
+     */
+    public function reporteDineroAction(Request $request)
+    {
+        $data = $request->query->has('search') ? unserialize($request->query->get('search')) : null;
+        $form = $this->getSearchFormRangoFecha($data);
+        $matrix = [];
+        $entities = $this->getDoctrine()
+            ->getRepository('AppBundle:Reservacion')
+            ->findPorRangoDeFecha($data);
+        $visitantes = $this->getDoctrine()
+            ->getRepository('AppBundle:ReservacionVisitante')
+            ->findPorRangoDeFecha($data);
+
+        /** @var Reservacion $entity */
+        foreach ($entities as $entity) {
+            if (!array_key_exists($entity->getFechaCobrada()->format('d/m/Y'), $matrix)) {
+                $matrix[$entity->getFechaCobrada()->format('d/m/Y')] = [
+                    'cantidad' => 1,
+                    'importe' => $entity->getPrecioTotal(),
+                ];
+            } else {
+                $matrix[$entity->getFechaCobrada()->format('d/m/Y')]['cantidad'] =
+                    $matrix[$entity->getFechaCobrada()->format('d/m/Y')]['cantidad'] + 1;
+                $matrix[$entity->getFechaCobrada()->format('d/m/Y')]['importe'] =
+                    $matrix[$entity->getFechaCobrada()->format('d/m/Y')]['importe'] + $entity->getPrecioTotal();
+            }
+        }
+
+        /** @var ReservacionVisitante $visitante */
+        foreach ($visitantes as $visitante) {
+            if (!array_key_exists($visitante->getFecha()->format('d/m/Y'), $matrix)) {
+                $matrix[$visitante->getFecha()->format('d/m/Y')] = [
+                    'cantidad' => 1,
+                    'importe' => $visitante->getPrecioTotal(),
+                ];
+            } else {
+                $matrix[$visitante->getFecha()->format('d/m/Y')]['cantidad'] =
+                    $matrix[$visitante->getFecha()->format('d/m/Y')]['cantidad'] + 1;
+                $matrix[$visitante->getFecha()->format('d/m/Y')]['importe'] =
+                    $matrix[$visitante->getFecha()->format('d/m/Y')]['importe'] + $visitante->getPrecioTotal();
+            }
+        }
+
+        ksort($matrix);
+
+        $form->handleRequest($request);
+        if ($form->isValid() && $form->isSubmitted()) {
+            return $this->redirectToRoute('reporte_dinero', ['search' => serialize($form->getData())]);
+        }
+
+        return $this->render('app/reporte_dinero.html.twig', [
+            'matrix' => $matrix,
+            'form'   => $form->createView(),
+        ]);
+    }
+
+    /**
      * @Route("/reporte/solicitud/diaria/desayuno", name="reporte_solicitud_diaria_desayuno")
      */
     public function solicDiariaDesayunoAction()
