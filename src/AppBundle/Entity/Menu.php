@@ -38,7 +38,7 @@ class Menu
     private $fecha;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $observaciones;
 

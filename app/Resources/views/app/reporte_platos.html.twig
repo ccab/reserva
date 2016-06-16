@@ -20,6 +20,9 @@
                 {{ form_row(form.enviar) }}
             </div>
             <div class="col-lg-1">
+                {{ form_row(form.graficar) }}
+            </div>
+            <div class="col-lg-1">
                 <a href="{{ path('reporte_platos') }}" class="btn btn-default">Limpiar</a>
             </div>
             {{ form_end(form) }}
@@ -33,6 +36,7 @@
                 <tr>
                     <th>Código</th>
                     <th>Nombre</th>
+                    <th>Reservaciones</th>
                     <th>Aceptación</th>
                 </tr>
                 </thead>
@@ -41,6 +45,7 @@
                     <tr>
                         <td>{{ plato.plato.codigo }}</td>
                         <td>{{ plato.plato }}</td>
+                        <td>{{ reservaciones }}</td>
                         <td>{{ plato.aceptacion }}</td>
                     </tr>
                 {% else %}

@@ -42,6 +42,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 
 class AppController extends Controller
 {
@@ -626,7 +627,7 @@ class AppController extends Controller
 
         return $this->render('app/reporte_dinero.html.twig', [
             'matrix' => $matrix,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
@@ -865,9 +866,9 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("/reporte/platos", name="reporte_platos")
+     * @Route("/reporte/platos/{grafico}", name="reporte_platos", defaults={"grafico":false})
      */
-    public function reportePlatosAction(Request $request)
+    public function reportePlatosAction(Request $request, $grafico)
     {
         $platos = [];
         $data = $request->query->has('search') ? unserialize($request->query->get('search')) : [
@@ -875,6 +876,8 @@ class AppController extends Controller
             'fin' => new \DateTime('Friday last week')
         ];
         $form = $this->getSearchFormRangoFecha($data);
+        $form->add('graficar', SubmitType::class);
+
         $reservaciones = $this->getDoctrine()
             ->getRepository('AppBundle:Reservacion')
             ->findPorRangoDeFecha($data);
@@ -897,13 +900,28 @@ class AppController extends Controller
             }
         }
 
+        /*if ($grafico) {
+            return $this->render('app/reporte_grafico_platos.html.twig', [
+                'data' => serialize($data),
+            ]);
+        }*/
+
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
-            return $this->redirectToRoute('reporte_platos', ['search' => serialize($form->getData())]);
+            if ($form->get('graficar')->isClicked()) {
+                return $this->render('app/reporte_grafico_platos.html.twig', [
+                    'data' => serialize($form->getData()),
+                ]);
+            }
+
+            return $this->redirectToRoute('reporte_platos', [
+                'search' => serialize($form->getData())
+            ]);
         }
 
         return $this->render('app/reporte_platos.html.twig', [
             'platos' => $platos,
+            'reservaciones' => count($reservaciones),
             'form' => $form->createView(),
         ]);
     }
@@ -935,25 +953,49 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("/reporte/grafico/platos", name="reporte_grafico_platos")
+     * @Route("/get/platos", name="get_platos", options={"expose"=true})
      */
-    public function reporteGraficoPlatosAction(Request $request)
+    public function getPlatosAction(Request $request)
     {
-        // Chart
-        $series = array(
-            array("name" => "Data Serie Name",    "data" => array(1,2,4,5,6,3,8))
-        );
+        $platos = [];
+        $aceptacion = [];
 
-        $ob = new Highchart();
-        $ob->chart->renderTo('linechart');  // The #id of the div where to render the chart
-        $ob->title->text('Chart Title');
-        $ob->xAxis->title(array('text'  => "Horizontal axis title"));
-        $ob->yAxis->title(array('text'  => "Vertical axis title"));
-        $ob->series($series);
+        $data = $request->query->has('data') ? unserialize($request->query->get('data')) : [
+            'inicio' => new \DateTime('Monday last week'),
+            'fin' => new \DateTime('Friday last week')
+        ];
 
-        return $this->render('app/reporte_grafico_platos.html.twig', array(
-            'chart' => $ob
-        ));
+        $reservaciones = $this->getDoctrine()
+            ->getRepository('AppBundle:Reservacion')
+            ->findPorRangoDeFecha($data);
+
+        /** @var Reservacion $reservacion */
+        foreach ($reservaciones as $reservacion) {
+            /** @var Plato $plato */
+            foreach ($reservacion->getPlatos() as $plato) {
+                if (!array_key_exists($plato->getId(), $platos)) {
+                    $platos[$plato->getId()] = $plato->getNombre();
+                    $aceptacion[$plato->getId()] = 1;
+                } else {
+                    $aceptacion[$plato->getId()] = $aceptacion[$plato->getId()] + 1;
+                }
+            }
+        }
+
+        $aux = [];
+        foreach ($platos as $plato) {
+            $aux[] = $plato;
+        }
+
+        $aux2 = [];
+        foreach ($aceptacion as $value) {
+            $aux2[] = $value;
+        }
+
+        return new JsonResponse([
+            'platos' => $aux,
+            'aceptacion' => $aux2,
+        ]);
     }
 
     /**
