@@ -26,6 +26,19 @@ easy_admin:
                     - { property: rol, sortable: false }
         Rol:
             class: AppBundle\Entity\Rol
+            list:
+                fields:
+                    - { property: rol, sortable: false }
+                    - { property: nombre, sortable: false }
+            form:
+                fields:
+                    rol:
+                        property: rol
+                        css_class: 'col-sm-6'
+                        help: 'Rol usado por Symfony. Ej: ROLE_USUARIO'
+                    nombre:
+                        property: nombre
+                        css_class: 'col-sm-6'
         UnidadMedida:
             class: AppBundle\Entity\UnidadMedida
             list:
@@ -60,6 +73,7 @@ easy_admin:
                       unidad:
                           property: unidadMedida
                           css_class: 'col-sm-4'
+                          type_options: { required: true }
             edit:
                 title: 'Modificar Producto'
                 fields:
@@ -109,9 +123,6 @@ easy_admin:
                 fields:
                     codigo:
                         property: nombre
-                        css_class: 'col-sm-6'
-                    descripcion:
-                        property: platos
                         css_class: 'col-sm-6'
         Conversion:
             class: AppBundle\Entity\Conversion

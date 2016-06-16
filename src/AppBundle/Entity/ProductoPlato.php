@@ -27,7 +27,7 @@ class ProductoPlato
     private $pesoBruto;
     
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $pesoNeto;
 

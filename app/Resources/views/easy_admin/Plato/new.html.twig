@@ -7,7 +7,7 @@
     <tr id="plato_productosPlato___name__">
         <td>{{ form_widget(form.producto) }}</td>
         <td>{{ form_widget(form.pesoBruto) }}</td>
-        <td>{{ form_widget(form.pesoNeto) }}</td>
+        {#<td>{{ form_widget(form.pesoNeto) }}</td>#}
         <td>{{ form_widget(form.unidadMedida) }}</td>
         <td>
             <a href="#" onclick="
@@ -53,7 +53,7 @@
         </div>
         <div class="col-lg-2">
             <div class="col-sm-10">
-                {{ form_row(form.precio) }}
+                {{ form_row(form.precio, {'label': 'Precio($)'}) }}
             </div>
         </div>
         <div class="col-lg-3">
@@ -64,26 +64,26 @@
 
         <div class="col-sm-8">
             <fieldset>
-                <legend> Valor Nutricional</legend>
+                <legend> <h5><b>Valor Nutricional</b></h5></legend>
 
                 <div class="col-sm-3">
                     <div class="col-sm-10">
-                        {{ form_row(form.valorNutricProteina, {'label': 'Proteínas'}) }}
+                        {{ form_row(form.valorNutricProteina, {'label': 'Proteínas(g)'}) }}
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="col-sm-10">
-                        {{ form_row(form.valorNutricGrasa, {'label': 'Grasas'}) }}
+                        {{ form_row(form.valorNutricGrasa, {'label': 'Grasas(g)'}) }}
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="col-sm-10">
-                        {{ form_row(form.valorNutricCarbohidrato, {'label': 'Carbohidratos'}) }}
+                        {{ form_row(form.valorNutricCarbohidrato, {'label': 'Carbohidratos(g)'}) }}
                     </div>
                 </div>
                 <div class="col-sm-3">
                     <div class="col-sm-10">
-                        {{ form_row(form.valorNutricEnergia, {'label': 'Energías'}) }}
+                        {{ form_row(form.valorNutricEnergia, {'label': 'Energías(kcal)'}) }}
                     </div>
                 </div>
             </fieldset>
@@ -91,7 +91,7 @@
 
         <div class="col-sm-4">
             <fieldset>
-                <legend> Parámetros de Cocción</legend>
+                <legend> <h5><b>Parámetros de Cocción</b></h5></legend>
 
                 <div class="col-sm-6">
                     <div class="col-sm-10">
@@ -125,14 +125,14 @@
 
         <div class="col-sm-10">
             <fieldset>
-                <legend> Ingredientes que componen el plato</legend>
+                <legend> <h5><b>Ingredientes que componen el plato</b></h5></legend>
                 <div class="table-responsive" id="div_productos">
                     <table class="table" id="productos">
                         <thead>
                         <tr>
                             <th>Producto</th>
                             <th>Peso Bruto</th>
-                            <th>Peso Neto</th>
+                            {#<th>Peso Neto</th>#}
                             <th>Unidad de Medida</th>
                             <th>Acción</th>
                         </tr>
@@ -142,7 +142,7 @@
                             <tr id="{{ 'plato_productosPlato_' ~ loop.index0 }}">
                                 <td>{{ form_widget(producto.producto) }}</td>
                                 <td>{{ form_widget(producto.pesoBruto) }}</td>
-                                <td>{{ form_widget(producto.pesoNeto) }}</td>
+                                {#<td>{{ form_widget(producto.pesoNeto) }}</td>#}
                                 <td>{{ form_widget(producto.unidadMedida) }}</td>
                                 <td>
                                     <a href="#" onclick="

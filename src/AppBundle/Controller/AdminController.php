@@ -59,7 +59,7 @@ class AdminController extends BaseAdminController
     public function newMenuAction()
     {
         $entity = new Menu();
-        $entity->setFecha(new \DateTime('today'));
+        $entity->setFecha(new \DateTime('Monday next week'));
         $form = $this->createForm(MenuType::class, $entity);
 
         $form->handleRequest($this->request);

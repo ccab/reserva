@@ -134,7 +134,7 @@ class UnidadMedida
 
     public function __toString()
     {
-        return $this->nombre;
+        return $this->abreviatura;
     }
 
     /**
