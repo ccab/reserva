@@ -17,28 +17,24 @@
             </div>
         {% endfor %}
 
-        <div class="col-xs-12 form-actions">
-            <div class="form-group">
-                <div id="form-actions-row">
+        <div class="col-lg-12">
+            <div id="form-actions-row">
+                <div class="pull-right">
                     {% block item_actions %}
                         {# the 'save' action is hardcoded for the 'edit' and 'new' views #}
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-save"></i> Aceptar
-                        </button>
+                        <button type="submit" class="btn btn-success"> Aceptar</button>
 
                         {% set _entity_actions = (easyadmin.view == 'new')
-                            ? easyadmin_get_actions_for_new_item(easyadmin.entity.name)
-                            : easyadmin_get_actions_for_edit_item(easyadmin.entity.name) %}
+                        ? easyadmin_get_actions_for_new_item(easyadmin.entity.name)
+                        : easyadmin_get_actions_for_edit_item(easyadmin.entity.name) %}
 
                         {% set _entity_id = (easyadmin.view == 'new')
-                            ? null
-                            : attribute(easyadmin.item, easyadmin.entity.primary_key_field_name) %}
+                        ? null
+                        : attribute(easyadmin.item, easyadmin.entity.primary_key_field_name) %}
 
                         {% set _request_parameters = { entity: easyadmin.entity.name, referer: app.request.query.get('referer') } %}
 
-                        <a class="btn btn-danger" href="{{ path('admin', { entity: easyadmin.entity.name, action: 'list' }) }}">
-                            <i class="fa fa-arrow-left"></i> Cancelar
-                        </a>
+                        <a class="btn btn-danger" href="{{ path('admin', { entity: easyadmin.entity.name, action: 'list' }) }}"> Cancelar</a>
                     {% endblock item_actions %}
                 </div>
             </div>

@@ -50,10 +50,10 @@ class MenuComprobarPlatosValidator extends ConstraintValidator
         // Platos duplicados
         /** @var MenuPlato $menuPlato */
         foreach ($entity->getMenuPlatos() as $menuPlato) {
-            if (!in_array($menuPlato->getPlato(), $tmp)) {
-                $tmp[] = $menuPlato->getPlato();
+            if (!in_array($menuPlato->getPlato()->getCategoria(), $tmp)) {
+                $tmp[] = $menuPlato->getPlato()->getCategoria();
             } else {
-                $this->context->buildViolation('Ha seleccionado más de una vez el mismo producto')
+                $this->context->buildViolation('Ha seleccionado más de una vez un plato de la misma categoria')
                     ->addViolation();
                 break;
             }

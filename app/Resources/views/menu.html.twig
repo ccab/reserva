@@ -37,17 +37,6 @@
                     Listar
                 </a>
             </li>
-            <li class="dropdown-header text-blue"> Rol</li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Rol', action: 'new' }) }}">
-                    Adicionar
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Rol', action: 'list' }) }}">
-                    Listar
-                </a>
-            </li>
         </ul>
     </li>
 
@@ -65,6 +54,16 @@
             <li>
                 <a href="{{ path('admin', { entity: 'Usuario', action: 'list' }) }}">
                     Listar
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Rol', action: 'new' }) }}">
+                    Adicionar Rol
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('admin', { entity: 'Rol', action: 'list' }) }}">
+                    Listar Rol
                 </a>
             </li>
             <li class="dropdown-header text-blue"> Menu</li>

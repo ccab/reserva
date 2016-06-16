@@ -11,11 +11,68 @@ use AppBundle\Entity\Menu;
 use AppBundle\Form\PlatoType;
 use AppBundle\Form\MenuType;
 use AppBundle\Form\UsuarioType;
+use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
 use Symfony\Component\HttpFoundation\Request;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
 
 class AdminController extends BaseAdminController
 {
+    private function executeDynamicMethod($methodNamePattern, array $arguments = array())
+    {
+        $methodName = str_replace('<EntityName>', $this->entity['name'], $methodNamePattern);
+        if (!is_callable(array($this, $methodName))) {
+            $methodName = str_replace('<EntityName>', '', $methodNamePattern);
+        }
+
+        return call_user_func_array(array($this, $methodName), $arguments);
+    }
+
+
+    protected function newAction()
+    {
+        $this->dispatch(EasyAdminEvents::PRE_NEW);
+
+        $entity = $this->executeDynamicMethod('createNew<EntityName>Entity');
+
+        $easyadmin = $this->request->attributes->get('easyadmin');
+        $easyadmin['item'] = $entity;
+        $this->request->attributes->set('easyadmin', $easyadmin);
+
+        $fields = $this->entity['new']['fields'];
+
+        $newForm = $this->executeDynamicMethod('create<EntityName>NewForm', array($entity, $fields));
+
+        $newForm->handleRequest($this->request);
+        if ($newForm->isValid()) {
+            $this->dispatch(EasyAdminEvents::PRE_PERSIST, array('entity' => $entity));
+
+            $this->executeDynamicMethod('prePersist<EntityName>Entity', array($entity));
+
+            $this->em->persist($entity);
+            $this->em->flush();
+
+            $this->dispatch(EasyAdminEvents::POST_PERSIST, array('entity' => $entity));
+
+            $refererUrl = $this->request->query->get('referer', '');
+
+            return !empty($refererUrl)
+                ? $this->redirect(urldecode($refererUrl))
+                : $this->redirect($this->generateUrl('easyadmin', array('action' => 'new', 'entity' => $this->entity['name'])));
+        }
+
+        $this->dispatch(EasyAdminEvents::POST_NEW, array(
+            'entity_fields' => $fields,
+            'form' => $newForm,
+            'entity' => $entity,
+        ));
+
+        return $this->render($this->entity['templates']['new'], array(
+            'form' => $newForm->createView(),
+            'entity_fields' => $fields,
+            'entity' => $entity,
+        ));
+    }
+
     // http://symfony.com/doc/current/book/security.html#security-encoding-password
     public function prePersistUsuarioEntity($entity)
     {
