@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Plato.
@@ -26,6 +27,7 @@ Producto
      * @var string
      *
      * @ORM\Column(name="codigo", type="string", length=20)
+     * @Assert\Length(min="1", max="12")
      */
     private $codigo;
 

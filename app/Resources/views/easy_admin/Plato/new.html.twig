@@ -64,7 +64,7 @@
 
         <div class="col-sm-8">
             <fieldset>
-                <legend> <h5><b>Valor Nutricional</b></h5></legend>
+                <legend><h5><b>Valor Nutricional</b></h5></legend>
 
                 <div class="col-sm-3">
                     <div class="col-sm-10">
@@ -91,7 +91,7 @@
 
         <div class="col-sm-4">
             <fieldset>
-                <legend> <h5><b>Parámetros de Cocción</b></h5></legend>
+                <legend><h5><b>Parámetros de Cocción</b></h5></legend>
 
                 <div class="col-sm-6">
                     <div class="col-sm-10">
@@ -100,7 +100,7 @@
                 </div>
                 <div class="col-sm-6">
                     <div class="col-sm-10">
-                        {{ form_row(form.tiempo) }}
+                        {{ form_row(form.tiempo, {'label': 'Tiempo(min)'}) }}
                     </div>
                 </div>
             </fieldset>
@@ -123,9 +123,10 @@
             </div>
         </div>
 
-        <div class="col-sm-10">
+        <div class="col-sm-8">
             <fieldset>
-                <legend> <h5><b>Ingredientes que componen el plato</b></h5></legend>
+                <legend><h5><b>Ingredientes que componen el plato</b></h5></legend>
+                {{ form_errors(form.productosPlato) }}
                 <div class="table-responsive" id="div_productos">
                     <table class="table" id="productos">
                         <thead>
@@ -141,7 +142,7 @@
                         {% for producto in form.productosPlato %}
                             <tr id="{{ 'plato_productosPlato_' ~ loop.index0 }}">
                                 <td>{{ form_widget(producto.producto) }}</td>
-                                <td>{{ form_widget(producto.pesoBruto) }}</td>
+                                <td>{{ form_widget(producto.pesoBruto) }}{{ form_errors(producto.pesoBruto) }}</td>
                                 {#<td>{{ form_widget(producto.pesoNeto) }}</td>#}
                                 <td>{{ form_widget(producto.unidadMedida) }}</td>
                                 <td>
@@ -163,12 +164,13 @@
                         {% endfor %}
                         </tbody>
                     </table>
+                </div>
             </fieldset>
 
-
-        {% set dp = form_row(form.productosPlato.vars.prototype) %}
-        <div id="div_plato_productosPlato" data-prototype="{{ dp }}"></div>
-        {#{{ form_row(form.productosPlato) }}#}
+            {% do form.productosPlato.setRendered %}
+            {% set dp = form_row(form.productosPlato.vars.prototype) %}
+            <div id="div_plato_productosPlato" data-prototype="{{ dp }}"></div>
+            {#{{ form_row(form.productosPlato) }}#}
         </div>
     </div>
 

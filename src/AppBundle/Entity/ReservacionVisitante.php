@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Validator\Constraints as AppAssert;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ReservacionVisitante
@@ -34,6 +35,8 @@ class ReservacionVisitante
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=100)
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $nombre;
 
@@ -41,6 +44,8 @@ class ReservacionVisitante
      * @var string
      *
      * @ORM\Column(name="apellido", type="string", length=100)
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $apellido;
 
@@ -48,6 +53,8 @@ class ReservacionVisitante
      * @var string
      *
      * @ORM\Column(name="segundoApellido", type="string", length=100)
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $segundoApellido;
 

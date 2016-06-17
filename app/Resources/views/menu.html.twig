@@ -4,37 +4,19 @@
             Nomencladores <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li class="dropdown-header text-blue"> Unidad de Medida</li>
-            <li>
-                <a href="{{ path('admin', { entity: 'UnidadMedida', action: 'new' }) }}">
-                    Adicionar
-                </a>
-            </li>
             <li>
                 <a href="{{ path('admin', { entity: 'UnidadMedida', action: 'list' }) }}">
-                    Listar
-                </a>
-            </li>
-            <li class="dropdown-header text-blue"> Producto</li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Producto', action: 'new' }) }}">
-                    Adicionar
+                    Unidad de medida
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Producto', action: 'list' }) }}">
-                    Listar
-                </a>
-            </li>
-            <li class="dropdown-header text-blue"> Categoria de plato</li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Categoria', action: 'new' }) }}">
-                    Adicionar
+                    Producto
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Categoria', action: 'list' }) }}">
-                    Listar
+                    Categoria de plato
                 </a>
             </li>
         </ul>
@@ -45,55 +27,23 @@
             Gestionar <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li class="dropdown-header text-blue"> Usuario</li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Usuario', action: 'new' }) }}">
-                    Adicionar
-                </a>
-            </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Usuario', action: 'list' }) }}">
-                    Listar
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Rol', action: 'new' }) }}">
-                    Adicionar Rol
+                    Usuario
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Rol', action: 'list' }) }}">
-                    Listar Rol
-                </a>
-            </li>
-            <li class="dropdown-header text-blue"> Menu</li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Menu', action: 'new' }) }}">
-                    Adicionar
-                </a>
-            </li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
-                    Listar
-                </a>
-            </li>
-            <li class="dropdown-header text-blue"> Plato</li>
-            <li>
-                <a href="{{ path('admin', { entity: 'Plato', action: 'new' }) }}">
-                    Adicionar
+                    Rol
                 </a>
             </li>
             <li>
                 <a href="{{ path('admin', { entity: 'Plato', action: 'list' }) }}">
-                    Listar
+                    Plato
                 </a>
             </li>
             <li class="divider"></li>
-            <li>
-                <a href="{{ path('aprobar_menu') }}">
-                    Aprobar Menu
-                </a>
-            </li>
+            <li class="dropdown-header text-blue"> Almacén</li>
             <li>
                 <a href="{{ path('salida_producto') }}">
                     Salida de Producto
@@ -105,6 +55,18 @@
                 </a>
             </li>
         </ul>
+    </li>
+
+    <li>
+        <a href="{{ path('admin', { entity: 'Menu', action: 'list' }) }}">
+            Menú semanal
+        </a>
+    </li>
+
+    <li>
+        <a href="{{ path('aprobar_menu') }}">
+            Aprobar menú
+        </a>
     </li>
 
     <li class="dropdown">
@@ -150,14 +112,21 @@
                     Cancelar
                 </a>
             </li>
+        </ul>
+    </li>
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Cobro <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
             <li>
                 <a href="{{ path('efectuar_cobro') }}">
-                    Efectuar Cobro
+                    Reservación semanal
                 </a>
             </li>
             <li>
                 <a href="{{ path('cobrar_visitante') }}">
-                    Efectuar Cobro Visitante
+                    Reservación a visitante
                 </a>
             </li>
         </ul>

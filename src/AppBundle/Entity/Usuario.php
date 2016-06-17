@@ -5,6 +5,9 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Usuario.
@@ -27,6 +30,8 @@ class Usuario implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="usuario", type="string", length=25, unique=true)
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $usuario;
 
@@ -34,6 +39,7 @@ class Usuario implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="clave", type="string", length=255)
+     * @Assert\Length(min="7")
      */
     private $clave;
 
@@ -49,21 +55,28 @@ class Usuario implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Type(type="integer")
      */
     private $noSolapin;
     
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $nombre;
     
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $apellido;
     
     /**
      * @ORM\Column(type="string")
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $segundoApellido;
 

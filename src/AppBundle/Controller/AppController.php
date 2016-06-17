@@ -32,6 +32,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -1281,7 +1283,7 @@ class AppController extends Controller
     private function createSearchForm()
     {
         $searchForm = $this->get('form.factory')->createNamedBuilder('searchForm')
-            ->add('solapin', TextType::class, [
+            ->add('solapin', IntegerType::class, [
                 //'class' => Usuario::class,
                 //'choice_label' => 'noSolapin',
                 'required' => false,

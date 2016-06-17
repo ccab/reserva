@@ -15,10 +15,17 @@ class ProductoPlatoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('producto')
+            ->add('producto', null, [
+                'required' => true,
+            ])
             ->add('pesoNeto')
-            ->add('pesoBruto')
-            ->add('unidadMedida')
+            ->add('pesoBruto', null, [
+                'required' => true,
+                //'invalid_message' => 'Este valor no es un numero correcto'
+            ])
+            ->add('unidadMedida', null, [
+                'required' => true,
+            ])
             //->add('alimento')
         ;
     }

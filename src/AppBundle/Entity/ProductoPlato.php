@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ProductoAlimento.
@@ -23,6 +24,7 @@ class ProductoPlato
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type(type="float", message="El peso bruto no es válido")
      */
     private $pesoBruto;
     

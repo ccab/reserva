@@ -15,10 +15,11 @@ easy_admin:
         Usuario:
             class: AppBundle\Entity\Usuario
             list:
+                title: 'Buscar usuario'
                 actions:
-                    - { name: 'cambiar_clave', type: 'route', label: 'Cambiar Clave', icon: 'key' }
+                    - { name: 'cambiar_clave', type: 'route', label: 'Cambiar clave', icon: 'key' }
                 fields:
-                    - { property: noSolapin, sortable: false }
+                    - { property: noSolapin, format: '%d', label: 'No. Solapín', sortable: false }
                     - { property: nombre, sortable: false }
                     - { property: apellido, label: 'Primer Apellido', sortable: false }
                     - { property: segundoApellido, sortable: false }
@@ -27,75 +28,78 @@ easy_admin:
         Rol:
             class: AppBundle\Entity\Rol
             list:
+                title: 'Buscar rol'
                 fields:
                     - { property: rol, sortable: false }
                     - { property: nombre, sortable: false }
+            edit:
+                title: 'Modificar rol'
+            new:
+                title: 'Nuevo rol'
             form:
                 fields:
                     rol:
                         property: rol
-                        css_class: 'col-sm-6'
-                        help: 'Rol usado por Symfony. Ej: ROLE_USUARIO'
+                        css_class: 'col-sm-4'
                     nombre:
                         property: nombre
-                        css_class: 'col-sm-6'
+                        css_class: 'col-sm-4'
         UnidadMedida:
             class: AppBundle\Entity\UnidadMedida
             list:
-                title: 'Unidad de Medida'
+                title: 'Buscar unidad de medida'
                 fields:
-                    - { property: nombre}
-                    - { property: abreviatura }
+                    - { property: nombre, sortable: false }
+                    - { property: abreviatura, sortable: false }
+            new:
+                title: 'Nueva unidad de medida'
             edit:
-                title: 'Modificar Unidad de Medida'
+                title: 'Modificar unidad de medida'
             form:
                 fields:
                     codigo:
                         property: nombre
-                        css_class: 'col-sm-6'
+                        css_class: 'col-sm-4'
                     descripcion:
                         property: abreviatura
-                        css_class: 'col-sm-6'
+                        css_class: 'col-sm-2'
         Producto:
             class: AppBundle\Entity\Producto
             list:
+                title: 'Buscar producto'
                 fields:
-                    - { property: codigo}
-                    - { property: descripcion }
+                    - { property: codigo, label: 'Código', sortable: false }
+                    - { property: descripcion, label: 'Descripción',sortable: false }
             new:
+                title: 'Nuevo producto'
+            edit:
+                title: 'Modificar producto'
+            form:
                 fields:
                       codigo:
                           property: codigo
                           css_class: 'col-sm-3'
+                          label: 'Código'
                       descripcion:
                           property: descripcion
+                          label: 'Descripción'
                           css_class: 'col-sm-5'
                       unidad:
                           property: unidadMedida
-                          css_class: 'col-sm-4'
+                          label: 'Unidad de medida'
+                          css_class: 'col-sm-2'
                           type_options: { required: true }
-            edit:
-                title: 'Modificar Producto'
-                fields:
-                    codigo:
-                        property: codigo
-                        css_class: 'col-sm-3'
-                    descripcion:
-                        property: descripcion
-                        css_class: 'col-sm-5'
-                    unidad:
-                        property: unidadMedida
-                        css_class: 'col-sm-4'
         Plato:
             class: AppBundle\Entity\Plato
             list:
+                title: 'Buscar plato'
                 actions:
                     - { name: 'carta_tecnica', type: 'route', label: 'Carta Técnica', icon: 'folder' }
                 fields:
                     - { property: codigo, label: 'Código', sortable: false }
                     - { property: nombre, sortable: false }
                     - { property: categoria, label: 'Categoría' ,sortable: false }
-                    - { property: precio, sortable: false }
+                    - { property: precio, sortable: false, label: 'Precio($)' }
             edit:
                 title: 'Modificar Plato'
         TipoMenu:
@@ -115,14 +119,17 @@ easy_admin:
         Categoria:
             class: AppBundle\Entity\Categoria
             list:
+                title: 'Buscar categoría del plato'
                 fields:
-                    - { property: nombre}
+                    - { property: nombre, sortable: false }
+            new:
+                title: 'Nueva categoría del plato'
             edit:
-                title: 'Modificar Categoria'
+                title: 'Modificar categoría del plato'
             form:
                 fields:
                     codigo:
                         property: nombre
-                        css_class: 'col-sm-6'
+                        css_class: 'col-sm-3'
         Conversion:
             class: AppBundle\Entity\Conversion

@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -23,7 +24,9 @@ class UsuarioType extends AbstractType
             ->add('nombre')
             ->add('apellido')
             ->add('segundoApellido')
-            ->add('rol');
+            ->add('rol', null, [
+                'required' => true,
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $entity = $event->getData();
@@ -31,6 +34,7 @@ class UsuarioType extends AbstractType
 
             if (!$entity || $entity->getId() === null) {
                 $form->add('clave', RepeatedType::class, [
+                    'type' => PasswordType::class,
                     'first_name' => 'clave',
                     'first_options' => ['label' => 'Clave'],
                     'second_name' => 'confirm',

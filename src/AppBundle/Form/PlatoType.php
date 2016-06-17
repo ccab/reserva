@@ -19,7 +19,9 @@ class PlatoType extends AbstractType
         $builder
             ->add('codigo')
             ->add('nombre')
-            ->add('categoria')
+            ->add('categoria', null, [
+                'required' => true,
+            ])
             ->add('precio')
             ->add('norma')
             ->add('valorNutricProteina')
@@ -37,6 +39,7 @@ class PlatoType extends AbstractType
                 'by_reference' => false,
                 'allow_delete' => true,
                 'label' => false,
+                'error_bubbling' => false,
             ])
         ;
     }

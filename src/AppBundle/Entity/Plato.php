@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as AppAssert;
 
 /**
  * Plato.
  *
  * @ORM\Table()
  * @ORM\Entity
+ * @AppAssert\PlatoVerificarProductos()
  */
 class Plato
 {
@@ -24,7 +27,8 @@ class Plato
     /**
      * @var string
      *
-     * @ORM\Column(name="codigo", type="string", length=50)
+     * @ORM\Column(name="codigo", type="integer", length=50)
+     * @Assert\Type(type="integer")
      */
     private $codigo;
 
@@ -32,6 +36,8 @@ class Plato
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=100)
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false)
      */
     private $nombre;
 
@@ -39,41 +45,49 @@ class Plato
      * @var float
      *
      * @ORM\Column(name="precio", type="float")
+     * @Assert\Type(type="float")
      */
     private $precio;
     
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Type(type="integer")
      */
     private $norma;
     
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type(type="float")
      */
     private $valorNutricProteina;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type(type="float")
      */
     private $valorNutricCarbohidrato;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type(type="float")
      */
     private $valorNutricGrasa;
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type(type="float")
      */
     private $valorNutricEnergia;
     
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type(type="float")
      */
     private $temperatura;
     
     /**
      * @ORM\Column(type="float")
+     * @Assert\Type(type="float")
      */
     private $tiempo;
     
@@ -120,7 +134,7 @@ class Plato
     /**
      * Set codigo.
      *
-     * @param string $codigo
+     * @param integer $codigo
      *
      * @return Plato
      */
@@ -134,7 +148,7 @@ class Plato
     /**
      * Get codigo.
      *
-     * @return string
+     * @return integer
      */
     public function getCodigo()
     {

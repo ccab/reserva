@@ -59,7 +59,7 @@
                     <td>{{ form_widget(recepcion.producto) }}</td>
                     <td id="{{ 'recepcion_' ~ loop.index0 ~ '_codigo'}}">{{ recepcion.vars.value.producto.codigo is defined ? recepcion.vars.value.producto.codigo }}</td>
                     <td id="{{ 'recepcion_' ~ loop.index0 ~ '_um'}}">{{ recepcion.vars.value.producto.unidadMedida.abreviatura is defined ? recepcion.vars.value.producto.unidadMedida.abreviatura }}</td>
-                    <td>{{ form_widget(recepcion.cantidad) }}</td>
+                    <td>{{ form_widget(recepcion.cantidad) }}{{ form_errors(recepcion.cantidad) }}</td>
                     <td>
                         <a href="#" onclick="
                                 $(function() {

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Rol.
@@ -26,6 +27,8 @@ class Rol implements RoleInterface
      * @var string
      *
      * @ORM\Column(name="rol", type="string", length=25, unique=true)
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $rol;
 
@@ -33,6 +36,8 @@ class Rol implements RoleInterface
      * @var string
      *
      * @ORM\Column(name="nombre", type="string", length=25)
+     * @Assert\Length(min="1", max="15")
+     * @Assert\Regex(pattern="/\d/", match=false, message="No puede insertar números en este campo")
      */
     private $nombre;
 
