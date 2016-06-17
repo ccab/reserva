@@ -9,7 +9,7 @@ use AppBundle\Validator\Constraints as AppAssert;
  * Menu.
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\MenuRepository")
  * @AppAssert\MenuComprobarPlatos()
  */
 class Menu

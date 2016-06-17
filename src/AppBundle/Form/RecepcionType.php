@@ -33,6 +33,10 @@ class RecepcionType extends AbstractType
             ])
             ->add('fecha', DateType::class, [
                 'data' => new \DateTime('today'),
+                'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
+                'attr' => ['class' => 'date datepicker'],
             ])
             ->add('aceptar',SubmitType::class)
             ->add('imprimir', SubmitType::class)

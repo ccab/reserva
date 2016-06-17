@@ -1,0 +1,52 @@
+{% extends 'easy_admin/list.html.twig' %}
+
+{% block head_stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/js/bootstrap-datepicker/css/datepicker.css') }}"/>
+{% endblock %}
+
+{% form_theme form '@EasyAdmin/form/bootstrap_3_horizontal_layout.html.twig' %}
+
+{% block content_header %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="button-action pull-right">
+                <a class="btn btn-primary" href="{{ path('admin', {'entity': _entity_config.name, 'action': 'new'}) }}">
+                    Adicionar Menú
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {{ form_start(form) }}
+        <div class="col-lg-12">
+            <div class="col-lg-4">
+                {{ form_row(form.tipo) }}
+            </div>
+            <div class="col-lg-4">
+                {{ form_row(form.fecha) }}
+            </div>
+            <div class="col-lg-1">
+                <button type="submit" class="btn btn-default"> Buscar</button>
+            </div>
+            <div class="col-lg-1">
+                <a href="{{ path('admin', {'entity': 'Menu', 'action': 'list'}) }}" class="btn btn-default">Limpiar</a>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock content_header %}
+
+{% block body_javascript %}
+    <script src="{{ asset('assets/js/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/bootstrap-datepicker/js/locales/bootstrap-datepicker.es.js') }}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+        });
+    </script>
+{% endblock %}

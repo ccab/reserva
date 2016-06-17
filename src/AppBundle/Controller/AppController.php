@@ -1284,8 +1284,6 @@ class AppController extends Controller
     {
         $searchForm = $this->get('form.factory')->createNamedBuilder('searchForm')
             ->add('solapin', IntegerType::class, [
-                //'class' => Usuario::class,
-                //'choice_label' => 'noSolapin',
                 'required' => false,
             ])
             ->getForm();
@@ -1378,6 +1376,10 @@ class AppController extends Controller
             ->add('fecha', DateType::class, [
                 'required' => false,
                 'data' => $fecha,
+                'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
+                'attr' => ['class' => 'date datepicker']
             ])
             ->add('buscar', SubmitType::class)
             ->getForm();
@@ -1393,11 +1395,19 @@ class AppController extends Controller
         $form = $this->createFormBuilder($data)
             ->add('inicio', DateType::class, [
                 'data' => is_null($data) ? new \DateTime('Monday next week') : $data['inicio'],
+                'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
+                'attr' => ['class' => 'date datepicker'],
             ])
             ->add('fin', DateType::class, [
                 'data' => is_null($data) ? new \DateTime('Sunday next week') : $data['fin'],
+                'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
+                'attr' => ['class' => 'date datepicker']
             ])
-            ->add('enviar', 'submit')
+            ->add('buscar', 'submit')
             ->getForm();
 
         return $form;

@@ -8,12 +8,17 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Menu;
+use AppBundle\Entity\TipoMenu;
 use AppBundle\Form\PlatoType;
 use AppBundle\Form\MenuType;
 use AppBundle\Form\UsuarioType;
 use JavierEguiluz\Bundle\EasyAdminBundle\Event\EasyAdminEvents;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Request;
 use JavierEguiluz\Bundle\EasyAdminBundle\Controller\AdminController as BaseAdminController;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class AdminController extends BaseAdminController
 {
@@ -169,26 +174,179 @@ class AdminController extends BaseAdminController
         return $this->createForm(UsuarioType::class, $entity);
     }
 
-    /*public function listUsuarioAction()
+    public function listUsuarioAction()
     {
         $fields = $this->entity['list']['fields'];
         $paginator = $this->findAll($this->entity['class'], $this->request->query->get('page', 1), $this->config['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'));
 
         $form = $this->createFormBuilder()
-            ->add('solapin')
+            ->add('solapin', IntegerType::class, [
+                'required' => false,
+            ])
+            ->add('nombre', null, [
+                'required' => false,
+                'constraints' => new Regex([
+                    'pattern' => '/\d/',
+                    'match' => false,
+                ])
+            ])
             ->getForm();
 
         $form->handleRequest($this->request);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $paginator = $this->getDoctrine()
+                ->getRepository('AppBundle:Usuario')->findBySearchParams($this->request->query->get('page', 1), $form->getData());
         }
-        
+
         return $this->render('easy_admin/Usuario/list.html.twig', array(
             'paginator' => $paginator,
             'fields' => $fields,
             'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
             'form' => $form->createView(),
         ));
-    }*/
+    }
+
+    public function listUnidadMedidaAction()
+    {
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findAll($this->entity['class'], $this->request->query->get('page', 1), $this->config['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'));
+
+        $form = $this->createFormBuilder()
+            ->add('nombre', null, [
+                'required' => false,
+                'constraints' => new Regex([
+                    'pattern' => '/\d/',
+                    'match' => false,
+                ])
+            ])
+            ->getForm();
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $paginator = $this->getDoctrine()
+                ->getRepository('AppBundle:UnidadMedida')->findBySearchParams($this->request->query->get('page', 1), $form->getData());
+        }
+
+        return $this->render('easy_admin/UnidadMedida/list.html.twig', array(
+            'paginator' => $paginator,
+            'fields' => $fields,
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+            'form' => $form->createView(),
+        ));
+    }
+
+    public function listProductoAction()
+    {
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findAll($this->entity['class'], $this->request->query->get('page', 1), $this->config['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'));
+
+        $form = $this->createFormBuilder()
+            ->add('codigo')
+            ->getForm();
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $paginator = $this->getDoctrine()
+                ->getRepository('AppBundle:Producto')->findBySearchParams($this->request->query->get('page', 1), $form->getData());
+        }
+
+        return $this->render('easy_admin/Producto/list.html.twig', array(
+            'paginator' => $paginator,
+            'fields' => $fields,
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+            'form' => $form->createView(),
+        ));
+    }
+
+    public function listCategoriaAction()
+    {
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findAll($this->entity['class'], $this->request->query->get('page', 1), $this->config['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'));
+
+        $form = $this->createFormBuilder()
+            ->add('nombre', null, [
+                'required' => true,
+                'constraints' => new Regex([
+                    'pattern' => '/\d/',
+                    'match' => false,
+                ])
+            ])
+            ->getForm();
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $paginator = $this->getDoctrine()
+                ->getRepository('AppBundle:Categoria')->findBySearchParams($this->request->query->get('page', 1), $form->getData());
+        }
+
+        return $this->render('easy_admin/Categoria/list.html.twig', array(
+            'paginator' => $paginator,
+            'fields' => $fields,
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+            'form' => $form->createView(),
+        ));
+    }
+
+    public function listPlatoAction()
+    {
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findAll($this->entity['class'], $this->request->query->get('page', 1), $this->config['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'));
+
+        $form = $this->createFormBuilder()
+            ->add('nombre', null, [
+                'required' => true,
+                'constraints' => new Regex([
+                    'pattern' => '/\d/',
+                    'match' => false,
+                ])
+            ])
+            ->getForm();
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $paginator = $this->getDoctrine()
+                ->getRepository('AppBundle:Plato')->findBySearchParams($this->request->query->get('page', 1), $form->getData());
+        }
+
+        return $this->render('easy_admin/Plato/list.html.twig', array(
+            'paginator' => $paginator,
+            'fields' => $fields,
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+            'form' => $form->createView(),
+        ));
+    }
+
+    public function listMenuAction()
+    {
+        $fields = $this->entity['list']['fields'];
+        $paginator = $this->findAll($this->entity['class'], $this->request->query->get('page', 1), $this->config['list']['max_results'], $this->request->query->get('sortField'), $this->request->query->get('sortDirection'));
+
+        $form = $this->createFormBuilder()
+            ->add('tipo', EntityType::class, [
+                'class' => TipoMenu::class,
+                'required' => false,
+            ])
+            ->add('fecha', DateType::class, [
+                'data' => new \DateTime('today'),
+                'widget' => 'single_text',
+                'html5' => false,
+                'format' => 'dd/MM/yyyy',
+                'attr' => ['class' => 'date datepicker'],
+            ])
+            ->getForm();
+
+        $form->handleRequest($this->request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $paginator = $this->getDoctrine()
+                ->getRepository('AppBundle:Menu')->findBySearchParams($this->request->query->get('page', 1), $form->getData());
+        }
+
+        return $this->render('easy_admin/Menu/list.html.twig', array(
+            'paginator' => $paginator,
+            'fields' => $fields,
+            'delete_form_template' => $this->createDeleteForm($this->entity['name'], '__id__')->createView(),
+            'form' => $form->createView(),
+        ));
+    }
 
 }

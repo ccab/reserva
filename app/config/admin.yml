@@ -96,7 +96,7 @@ easy_admin:
                 actions:
                     - { name: 'carta_tecnica', type: 'route', label: 'Carta Técnica', icon: 'folder' }
                 fields:
-                    - { property: codigo, label: 'Código', sortable: false }
+                    - { property: codigo, format: '%d', label: 'Código', sortable: false }
                     - { property: nombre, sortable: false }
                     - { property: categoria, label: 'Categoría' ,sortable: false }
                     - { property: precio, sortable: false, label: 'Precio($)' }

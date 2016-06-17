@@ -10,7 +10,7 @@ use AppBundle\Validator\Constraints as AppAssert;
  * Plato.
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\PlatoRepository")
  * @AppAssert\PlatoVerificarProductos()
  */
 class Plato
